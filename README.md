@@ -1,15 +1,14 @@
-# AutoPoco
-* As far as possible test are now consolidated to make testing shorter and more efficient
-
 # AutoPoco / holonsoft
 * Ported to newest .net version (at the moment 7)
 * Unit tests changed to Xunit (was Nunit)
 * Some more unit tests, now all datasources should be covered
+* As far as possible test are now consolidated to make testing shorter and more efficient
 * Several patches and fixes applied
 * Added some more datasources
 * All datasources now have a common base class
 * Shrinked projects from 4 to 2 (implementation and tests)
 * Several improvements regarding code
+
 
 # Behavior change (maybe, only some datasources)
 All datasources reproduce same results within same seed - important for testing. Additionally you can use
