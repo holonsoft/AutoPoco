@@ -1,4 +1,4 @@
-# AutoPoco / holonsoft
+# holonsoft / AutoPoco
 * Ported to newest .net version (at the moment 7)
 * Unit tests changed to Xunit (was Nunit)
 * Some more unit tests, now all datasources should be covered
