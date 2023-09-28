@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+    <TargetFrameworks>.net6.0;.net7.0</TargetFrameworks>
     <Version>3.7.1</Version>
     <Company>holonsoft</Company>
     <Authors>Christian Vogt</Authors>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Description>AutoPoco is a highly configurable framework for the purpose of fluently building readable test data from Plain Old CLR Objects. This is a modernized (i.e. net7) port of the excellent AutoPoco project which hasn't been maintained since 2014.</Description>
+    <Description>AutoPoco is a highly configurable framework for the purpose of fluently building readable test data from Plain Old CLR Objects. This is a modernized (i.e. net6 and higher) port of the excellent AutoPoco project which hasn't been maintained since 2014.</Description>
     <Copyright>Christian Vogt, holonsoft</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://www.nuget.org/packages/holonsoft.AutoPoco/</PackageProjectUrl>
@@ -50,6 +50,7 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+    <None Include="..\README.md" />
   </ItemGroup>
 
   <ItemGroup>
@@ -58,7 +59,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="README.md">
+    <None Update="..\README.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
