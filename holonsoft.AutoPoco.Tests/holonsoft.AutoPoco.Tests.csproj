@@ -1,0 +1,62 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>preview</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\holonsoft.AutoPoco\holonsoft.AutoPoco.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="6.12.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />
+    <PackageReference Include="Moq" Version="4.20.69" />
+    <PackageReference Include="xunit" Version="2.5.1" />
+    <PackageReference Include="xunit.abstractions" Version="2.0.3" />
+    <PackageReference Include="xunit.analyzers" Version="1.3.0" />
+    <PackageReference Include="xunit.assert" Version="2.5.1" />
+    <PackageReference Include="xunit.core" Version="2.5.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="xunit.abstractions">
+      <HintPath>xunit\xunit.abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.analyzers">
+      <HintPath>xunit\xunit.analyzers.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.assert">
+      <HintPath>xunit\xunit.assert.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.console">
+      <HintPath>xunit\xunit.console.exe</HintPath>
+    </Reference>
+    <Reference Include="xunit.console.x86">
+      <HintPath>xunit\xunit.console.x86.exe</HintPath>
+    </Reference>
+    <Reference Include="xunit.core">
+      <HintPath>xunit\xunit.core.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.execution.desktop">
+      <HintPath>xunit\xunit.execution.desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.runner.reporters.net452">
+      <HintPath>xunit\xunit.runner.reporters.net452.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.runner.tdnet">
+      <HintPath>xunit\xunit.runner.tdnet.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.runner.utility.net452">
+      <HintPath>xunit\xunit.runner.utility.net452.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

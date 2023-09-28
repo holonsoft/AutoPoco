@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "KU7Le9nH52yGBwHU9mycemfcDRT7EMDk7OH/UwWBNtvpv8vBH7j4CeFrlndaJCKHivbaeGYCiRK+gR+ZFt9e5w==",
+  "success": true,
+  "projectFilePath": "P:\\Git Repositories\\holonsoft.github\\AutoPoco\\holonsoft.AutoPoco\\holonsoft.AutoPoco.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Christian Vogt\\.nuget\\packages\\castle.core\\5.1.1\\castle.core.5.1.1.nupkg.sha512",
+    "C:\\Users\\Christian Vogt\\.nuget\\packages\\fluentassertions\\6.12.0\\fluentassertions.6.12.0.nupkg.sha512",
+    "C:\\Users\\Christian Vogt\\.nuget\\packages\\moq\\4.20.69\\moq.4.20.69.nupkg.sha512",
+    "C:\\Users\\Christian Vogt\\.nuget\\packages\\system.configuration.configurationmanager\\4.4.0\\system.configuration.configurationmanager.4.4.0.nupkg.sha512",
+    "C:\\Users\\Christian Vogt\\.nuget\\packages\\system.diagnostics.eventlog\\6.0.0\\system.diagnostics.eventlog.6.0.0.nupkg.sha512",
+    "C:\\Users\\Christian Vogt\\.nuget\\packages\\system.security.cryptography.protecteddata\\4.4.0\\system.security.cryptography.protecteddata.4.4.0.nupkg.sha512"
+  ],
+  "logs": []
+}

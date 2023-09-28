@@ -1,0 +1,7 @@
+P:\Git Repositories\holonsoft.github\AutoPoco\holonsoft.AutoPoco\obj\Debug\net5.0\holonsoft.AutoPoco.Properties.Resources.resources
+P:\Git Repositories\holonsoft.github\AutoPoco\holonsoft.AutoPoco\obj\Debug\net5.0\holonsoft.AutoPoco.csproj.GenerateResource.cache
+P:\Git Repositories\holonsoft.github\AutoPoco\holonsoft.AutoPoco\obj\Debug\net5.0\holonsoft.AutoPoco.GeneratedMSBuildEditorConfig.editorconfig
+P:\Git Repositories\holonsoft.github\AutoPoco\holonsoft.AutoPoco\obj\Debug\net5.0\holonsoft.AutoPoco.AssemblyInfoInputs.cache
+P:\Git Repositories\holonsoft.github\AutoPoco\holonsoft.AutoPoco\obj\Debug\net5.0\holonsoft.AutoPoco.AssemblyInfo.cs
+P:\Git Repositories\holonsoft.github\AutoPoco\holonsoft.AutoPoco\obj\Debug\net5.0\holonsoft.AutoPoco.csproj.CoreCompileInputs.cache
+P:\Git Repositories\holonsoft.github\AutoPoco\holonsoft.AutoPoco\obj\Debug\net5.0\holonsoft.AutoPoco.sourcelink.json

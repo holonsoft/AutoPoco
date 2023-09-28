@@ -1,0 +1,15 @@
+P:\Git Repositories\holonsoft.github\AutoPoco\holonsoft.AutoPoco\obj\Debug\net6.0\holonsoft.AutoPoco.csproj.AssemblyReference.cache
+P:\Git Repositories\holonsoft.github\AutoPoco\holonsoft.AutoPoco\obj\Debug\net6.0\holonsoft.AutoPoco.Properties.Resources.resources
+P:\Git Repositories\holonsoft.github\AutoPoco\holonsoft.AutoPoco\obj\Debug\net6.0\holonsoft.AutoPoco.csproj.GenerateResource.cache
+P:\Git Repositories\holonsoft.github\AutoPoco\holonsoft.AutoPoco\obj\Debug\net6.0\holonsoft.AutoPoco.GeneratedMSBuildEditorConfig.editorconfig
+P:\Git Repositories\holonsoft.github\AutoPoco\holonsoft.AutoPoco\obj\Debug\net6.0\holonsoft.AutoPoco.AssemblyInfoInputs.cache
+P:\Git Repositories\holonsoft.github\AutoPoco\holonsoft.AutoPoco\obj\Debug\net6.0\holonsoft.AutoPoco.AssemblyInfo.cs
+P:\Git Repositories\holonsoft.github\AutoPoco\holonsoft.AutoPoco\obj\Debug\net6.0\holonsoft.AutoPoco.csproj.CoreCompileInputs.cache
+P:\Git Repositories\holonsoft.github\AutoPoco\holonsoft.AutoPoco\obj\Debug\net6.0\holonsoft.AutoPoco.sourcelink.json
+P:\Git Repositories\holonsoft.github\AutoPoco\holonsoft.AutoPoco\bin\Debug\net6.0\holonsoft.AutoPoco.deps.json
+P:\Git Repositories\holonsoft.github\AutoPoco\holonsoft.AutoPoco\bin\Debug\net6.0\holonsoft.AutoPoco.dll
+P:\Git Repositories\holonsoft.github\AutoPoco\holonsoft.AutoPoco\bin\Debug\net6.0\holonsoft.AutoPoco.pdb
+P:\Git Repositories\holonsoft.github\AutoPoco\holonsoft.AutoPoco\obj\Debug\net6.0\holonsoft.AutoPoco.dll
+P:\Git Repositories\holonsoft.github\AutoPoco\holonsoft.AutoPoco\obj\Debug\net6.0\refint\holonsoft.AutoPoco.dll
+P:\Git Repositories\holonsoft.github\AutoPoco\holonsoft.AutoPoco\obj\Debug\net6.0\holonsoft.AutoPoco.pdb
+P:\Git Repositories\holonsoft.github\AutoPoco\holonsoft.AutoPoco\obj\Debug\net6.0\ref\holonsoft.AutoPoco.dll

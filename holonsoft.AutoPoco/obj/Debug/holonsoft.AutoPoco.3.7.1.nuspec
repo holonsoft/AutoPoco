@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>holonsoft.AutoPoco</id>
+    <version>3.7.1</version>
+    <title>Command Line Parser</title>
+    <authors>Christian Vogt</authors>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="file">LICENSE</license>
+    <licenseUrl>https://aka.ms/deprecateLicenseUrl</licenseUrl>
+    <readme>README.md</readme>
+    <projectUrl>https://www.nuget.org/packages/holonsoft.AutoPoco/</projectUrl>
+    <description>AutoPoco is a highly configurable framework for the purpose of fluently building readable test data from Plain Old CLR Objects. This is a modernized (i.e. net7) port of the excellent AutoPoco project which hasn't been maintained since 2014.</description>
+    <releaseNotes>Have fun</releaseNotes>
+    <copyright>Christian Vogt, holonsoft</copyright>
+    <tags>#net6.0 #net7.0 #parser #commandline #cmdline</tags>
+    <repository type="GIT" url="https://github.com/holonsoft/AutoPoco" commit="4b360e9b8629e9d0c07a9201bfeaf7f2be3ecca6" />
+    <dependencies>
+      <group targetFramework="net6.0">
+        <dependency id="FluentAssertions" version="6.12.0" exclude="Build,Analyzers" />
+        <dependency id="Moq" version="4.20.69" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net7.0">
+        <dependency id="FluentAssertions" version="6.12.0" exclude="Build,Analyzers" />
+        <dependency id="Moq" version="4.20.69" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="P:\Git Repositories\holonsoft.github\AutoPoco\holonsoft.AutoPoco\bin\Debug\net6.0\holonsoft.AutoPoco.dll" target="lib\net6.0\holonsoft.AutoPoco.dll" />
+    <file src="P:\Git Repositories\holonsoft.github\AutoPoco\holonsoft.AutoPoco\bin\Debug\net7.0\holonsoft.AutoPoco.dll" target="lib\net7.0\holonsoft.AutoPoco.dll" />
+    <file src="P:\Git Repositories\holonsoft.github\AutoPoco\LICENSE" target="LICENSE" />
+  </files>
+</package>
