@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using holonsoft.AutoPoco.Configuration.Interfaces;
-using holonsoft.AutoPoco.DataSources;
+using holonsoft.AutoPoco.DataSources.Base;
 
 namespace holonsoft.AutoPoco.Conventions;
 

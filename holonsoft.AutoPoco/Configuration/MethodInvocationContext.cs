@@ -1,4 +1,4 @@
-﻿using holonsoft.AutoPoco.DataSources;
+﻿using holonsoft.AutoPoco.DataSources.Base;
 
 namespace holonsoft.AutoPoco.Configuration;
 

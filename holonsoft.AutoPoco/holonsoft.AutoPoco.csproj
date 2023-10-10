@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>.net6.0;.net7.0</TargetFrameworks>
-    <Version>3.7.1</Version>
+    <Version>3.7.2</Version>
     <Company>holonsoft</Company>
     <Authors>Christian Vogt</Authors>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -15,13 +15,13 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageTags>#net6.0 #net7.0 #parser #commandline #cmdline</PackageTags>
     <PackageReleaseNotes>Have fun</PackageReleaseNotes>
-    <AssemblyVersion>3.7.1</AssemblyVersion>
-    <FileVersion>3.7.1</FileVersion>
+    <AssemblyVersion>3.7.2</AssemblyVersion>
+    <FileVersion>3.7.2</FileVersion>
     <IsPublishable>True</IsPublishable>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>preview</LangVersion>
-    <Title>Command Line Parser</Title>
+    <Title>AutoPoco by holonsoft</Title>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 

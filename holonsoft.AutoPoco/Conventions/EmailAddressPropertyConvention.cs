@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 using holonsoft.AutoPoco.Configuration.Interfaces;
-using holonsoft.AutoPoco.DataSources;
+using holonsoft.AutoPoco.DataSources.Business;
 
 namespace holonsoft.AutoPoco.Conventions;
 

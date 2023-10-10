@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Reflection;
 using holonsoft.AutoPoco.Configuration.Interfaces;
-using holonsoft.AutoPoco.DataSources;
+using holonsoft.AutoPoco.DataSources.Base;
+using holonsoft.AutoPoco.DataSources.Primitives;
 
 namespace holonsoft.AutoPoco.Extensions;
 

@@ -1,5 +1,5 @@
 ﻿using holonsoft.AutoPoco.Configuration.Interfaces;
-using holonsoft.AutoPoco.DataSources;
+using holonsoft.AutoPoco.DataSources.Base;
 using holonsoft.AutoPoco.Engine.Interfaces;
 
 namespace holonsoft.AutoPoco.Configuration;
