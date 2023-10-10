@@ -13,7 +13,7 @@
     <RepositoryUrl>https://github.com/holonsoft/AutoPoco</RepositoryUrl>
     <RepositoryType>GIT</RepositoryType>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageTags>#net6.0 #net7.0 #parser #commandline #cmdline</PackageTags>
+    <PackageTags>#net6.0 #net7.0 #autopoco #autogenerateobjects #autogenerate #generator</PackageTags>
     <PackageReleaseNotes>Have fun</PackageReleaseNotes>
     <AssemblyVersion>3.7.2</AssemblyVersion>
     <FileVersion>3.7.2</FileVersion>
