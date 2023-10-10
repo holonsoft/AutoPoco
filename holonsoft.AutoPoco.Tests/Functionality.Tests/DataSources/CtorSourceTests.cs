@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Moq;
 using Xunit;
-using holonsoft.AutoPoco.DataSources;
+using holonsoft.AutoPoco.DataSources.Primitives;
 using holonsoft.AutoPoco.Engine.Interfaces;
 
 namespace holonsoft.AutoPoco.Tests.Functionality.Tests.DataSources;

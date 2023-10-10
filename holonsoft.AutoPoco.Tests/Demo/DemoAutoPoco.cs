@@ -1,10 +1,11 @@
 ﻿using FluentAssertions;
 using Xunit;
 using holonsoft.AutoPoco.Configuration;
-using holonsoft.AutoPoco.DataSources;
 using holonsoft.AutoPoco.Engine.Interfaces;
 using holonsoft.AutoPoco.Extensions;
 using holonsoft.AutoPoco.Tests.Common;
+using holonsoft.AutoPoco.DataSources.Business;
+using holonsoft.AutoPoco.DataSources.Primitives;
 
 namespace holonsoft.AutoPoco.Tests.Demo;
 public class DemoAutoPoco {

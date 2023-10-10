@@ -1,9 +1,9 @@
 ﻿using FluentAssertions;
 using Xunit;
-using holonsoft.AutoPoco.DataSources;
 using holonsoft.AutoPoco.Engine.Interfaces;
 using holonsoft.AutoPoco.Extensions;
 using holonsoft.AutoPoco.Tests.Common;
+using holonsoft.AutoPoco.DataSources.Business;
 
 namespace holonsoft.AutoPoco.Tests.Integration.Tests.Complete;
 

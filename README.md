@@ -9,6 +9,16 @@
 * Shrinked projects from 4 to 2 (implementation and tests)
 * Several improvements regarding code
 
+# changes in 3.7.2
+
+Breaking change: Reorganized datasources
+
+* base
+* primitives
+* business
+
+We plan to add more datasources in future and so we want to provide a better overview over datasources
+
 
 # Behavior change (maybe, only some datasources)
 All datasources reproduce same results within same seed - important for testing. Additionally you can use

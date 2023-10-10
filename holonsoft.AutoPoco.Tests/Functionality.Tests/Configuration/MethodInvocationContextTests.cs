@@ -1,6 +1,6 @@
 ﻿using Xunit;
 using holonsoft.AutoPoco.Configuration;
-using holonsoft.AutoPoco.DataSources;
+using holonsoft.AutoPoco.DataSources.Primitives;
 
 namespace holonsoft.AutoPoco.Tests.Functionality.Tests.Configuration;
 

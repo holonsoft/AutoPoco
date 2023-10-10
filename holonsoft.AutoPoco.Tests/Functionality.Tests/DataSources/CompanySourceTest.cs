@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 using Xunit;
-using holonsoft.AutoPoco.DataSources;
+using holonsoft.AutoPoco.DataSources.Business;
 
 namespace holonsoft.AutoPoco.Tests.Functionality.Tests.DataSources;
 
