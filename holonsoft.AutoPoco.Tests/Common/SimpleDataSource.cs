@@ -4,5 +4,5 @@ using holonsoft.AutoPoco.Engine.Interfaces;
 namespace holonsoft.AutoPoco.Tests.Common;
 
 public class SimpleDataSource(string value) : DataSourceBase<string> {
-   public override string Next(IGenerationContext? context) => value;
+   protected override string GetNextValue(IGenerationContext? context) => value;
 }

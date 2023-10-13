@@ -1,37 +1,35 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EmailAddressSource.cs" company="AutoPoco">
-//   Microsoft Public License (Ms-PL)
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
+﻿using holonsoft.AutoPoco.Configuration;
 using holonsoft.AutoPoco.Engine;
 using holonsoft.AutoPoco.Engine.Interfaces;
 
 namespace holonsoft.AutoPoco.DataSources.Business;
 
+public abstract class EmailAddressSourceBase(string namePartPrefix, string domain, int? nullCreationThreshold = null) : DataSourceBase<string> {
+   private int _index;
+
+   protected override string GetNextValue(IGenerationContext? context) {
+      if (nullCreationThreshold.HasValue) {
+         if (RandomNullEvaluator.ShouldNextValueReturnNull())
+            return null!;
+      }
+
+      return $"{namePartPrefix}{_index++}@{domain}";
+   }
+}
+
 /// <summary>
-///   The email address source.
+/// Generate pseudo email address, tld is according to RFC2606 for empty constructor
 /// </summary>
-public class EmailAddressSource(string namePartPrefix, string domain) : DataSourceBase<string>
-{
-    /// <summary>
-    ///   The index.
-    /// </summary>
-    private int _index;
+/// <param name="namePartPrefix">namepart of email</param>
+/// <param name="domain">domain part of email</param>
+public class EmailAddressSource(string namePartPrefix, string domain) : EmailAddressSourceBase(namePartPrefix, domain) {
+   public EmailAddressSource() : this("eg", "example.test") { }
+}
 
-    public EmailAddressSource()
-       : this("eg", "example.com") { }
+public class NullableEmailAddressSource(string namePartPrefix, string domain, int nullCreationThreshold) : EmailAddressSourceBase(namePartPrefix, domain, nullCreationThreshold) {
+   public NullableEmailAddressSource() : this("eg", "example.test", AutoPocoGlobalSettings.NullCreationThreshold) { }
 
-    /// <summary>
-    ///   The next.
-    /// </summary>
-    /// <param name="context">
-    ///   The context.
-    /// </param>
-    /// <returns>
-    ///   The <see cref="string" />.
-    /// </returns>
-    public override string Next(IGenerationContext? context) =>
-       // TODO: See if first name/last name has been used in this context
-       $"{namePartPrefix}{_index++}@{domain}";
+   public NullableEmailAddressSource(string namePartPrefix, string domain) : this(namePartPrefix, domain, AutoPocoGlobalSettings.NullCreationThreshold) { }
+
+   public NullableEmailAddressSource(int nullCreationThreshold) : this("eg", "example.test", nullCreationThreshold) { }
 }

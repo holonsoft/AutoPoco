@@ -9,6 +9,6 @@ public class ObjectFieldSetFromSourceAction(EngineTypeFieldMember member, IDataS
       var fieldContext = new GenerationContext(context?.Builders!, new TypeFieldGenerationContextNode(
         context?.Node as TypeGenerationContextNode ?? throw new InvalidOperationException(), member));
 
-      member.FieldInfo.SetValue(target, source.Next(fieldContext));
+      member.FieldInfo.SetValue(target, source.InternalNext(fieldContext));
    }
 }

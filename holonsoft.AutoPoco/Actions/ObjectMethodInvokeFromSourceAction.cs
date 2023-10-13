@@ -12,6 +12,6 @@ public class ObjectMethodInvokeFromSourceAction(EngineTypeMethodMember member, I
         new TypeMethodGenerationContextNode(context?.Node as TypeGenerationContextNode
                                             ?? throw new InvalidOperationException(), member));
 
-      member.MethodInfo.Invoke(target, _sources.Select(source => source.Next(methodContext)).ToArray());
+      member.MethodInfo.Invoke(target, _sources.Select(source => source.InternalNext(methodContext)).ToArray());
    }
 }

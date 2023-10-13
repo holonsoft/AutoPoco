@@ -8,10 +8,12 @@ public class EngineConfigurationTypeMemberBuilder<TPoco, TMember>(EngineTypeMemb
   IEngineConfigurationTypeMemberBuilder<TPoco, TMember> {
    private readonly IEngineConfigurationTypeBuilder<TPoco> _parentConfiguration = parentConfiguration;
 
-   public IEngineConfigurationTypeBuilder<TPoco> Use<TSource>() where TSource : IDataSource<TMember> => Use<TSource>(Array.Empty<object>());
+   public IEngineConfigurationTypeBuilder<TPoco> Use<TSource>()
+      where TSource : IDataSource<TMember> => Use<TSource>(Array.Empty<object>());
 
    public IEngineConfigurationTypeBuilder<TPoco> Use<TSource>(params object[] args) where TSource : IDataSource<TMember> {
       var factory = new DataSourceFactory(typeof(TSource));
+
       factory.SetParams(args);
       SetDataSources(factory);
       return _parentConfiguration;

@@ -50,6 +50,6 @@ public class WhenTypePropertyConventionApplied : ConfigurationBaseTest {
    }
 
    public class TestDataSource : IDataSource {
-      public object? Next(IGenerationContext? context) => null;
+      public object? InternalNext(IGenerationContext? context) => null;
    }
 }

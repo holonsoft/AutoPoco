@@ -2,26 +2,40 @@
 using holonsoft.AutoPoco.Engine.Interfaces;
 
 namespace holonsoft.AutoPoco.DataSources.Primitives;
-public class FloatSource(float min, float max, int? decimals) : DataSourceBase<float>
-{
-    public FloatSource()
-       : this(float.MinValue, float.MaxValue, null) { }
+public abstract class FloatSourceBase<T>(float min, float max, int? decimals) : DataSourceBase<T> {
+   protected override T GetNextValue(IGenerationContext? context) {
+      // Perform arithmetic in double type to avoid overflowing
+      var range = (double) max - min;
+      var sample = Random.NextDouble();
+      var scaled = (sample * range) + min;
 
-    public FloatSource(float min, float max)
-       : this(min, max, null) { }
+      var result = decimals.HasValue
+            ? (float) Math.Round(scaled, decimals.Value)
+            : (float) scaled;
 
-    public FloatSource(int decimals)
-       : this(float.MinValue, float.MaxValue, decimals) { }
-
-    public override float Next(IGenerationContext? context)
-    {
-        // Perform arithmetic in double type to avoid overflowing
-        var range = (double)max - min;
-        var sample = Random.NextDouble();
-        var scaled = sample * range + min;
-
-        return decimals.HasValue
-              ? (float)Math.Round(scaled, decimals.Value)
-              : (float)scaled;
-    }
+      return (T) (object) result;
+   }
 }
+
+public class FloatSource(float min, float max, int? decimals) : FloatSourceBase<float>(min, max, decimals) {
+   public FloatSource()
+      : this(float.MinValue, float.MaxValue, null) { }
+
+   public FloatSource(float min, float max)
+      : this(min, max, null) { }
+
+   public FloatSource(int decimals)
+      : this(float.MinValue, float.MaxValue, decimals) { }
+}
+
+public class NullableFloatSource(float min, float max, int? decimals) : FloatSourceBase<float?>(min, max, decimals) {
+   public NullableFloatSource()
+      : this(float.MinValue, float.MaxValue, null) { }
+
+   public NullableFloatSource(float min, float max)
+      : this(min, max, null) { }
+
+   public NullableFloatSource(int decimals)
+      : this(float.MinValue, float.MaxValue, decimals) { }
+}
+

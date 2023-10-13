@@ -26,7 +26,7 @@ public class ObjectPropertySetFromSourceActionTests {
 
    [Fact]
    public void EnactSetsFieldWithSourceValue() {
-      _sourceMock.Setup(x => x.Next(It.IsAny<IGenerationContext>())).Returns("Test");
+      _sourceMock.Setup(x => x.InternalNext(It.IsAny<IGenerationContext>())).Returns("Test");
 
       var target = new SimplePropertyClass();
       _action.Enact(_context, target);
@@ -39,7 +39,7 @@ public class ObjectPropertySetFromSourceActionTests {
       var target = new SimplePropertyClass();
       _action.Enact(_context, target);
 
-      _sourceMock.Verify(x => x.Next(It.Is<IGenerationContext>(y =>
+      _sourceMock.Verify(x => x.InternalNext(It.Is<IGenerationContext>(y =>
           y.Node is TypePropertyGenerationContextNode &&
           y.Node.Parent == _parentNode)),
         Times.Once());

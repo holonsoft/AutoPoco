@@ -35,7 +35,7 @@ public class ObjectMethodInvokeFromSourceActionTests {
       _doubleArgAction.Enact(_context, target);
 
       _sourceMock.Verify(
-        x => x.Next(It.Is<IGenerationContext>(y =>
+        x => x.InternalNext(It.Is<IGenerationContext>(y =>
           y.Node is TypeMethodGenerationContextNode && y.Node.Parent == _parentNode)), Times.Exactly(2));
    }
 
@@ -43,7 +43,7 @@ public class ObjectMethodInvokeFromSourceActionTests {
    public void SharedDataSourceWithTwoParamsFirstParamPassedCorrectly() {
       var target = new SimpleMethodClass();
       var callCount = 0;
-      _sourceMock.Setup(x => x.Next(It.IsAny<IGenerationContext>())).Returns(() => {
+      _sourceMock.Setup(x => x.InternalNext(It.IsAny<IGenerationContext>())).Returns(() => {
          callCount++;
          return callCount.ToString();
       });
@@ -57,7 +57,7 @@ public class ObjectMethodInvokeFromSourceActionTests {
    public void SharedDataSourceWithTwoParamsSecondParamPassedCorrectly() {
       var target = new SimpleMethodClass();
       var callCount = 0;
-      _sourceMock.Setup(x => x.Next(It.IsAny<IGenerationContext>())).Returns(() => {
+      _sourceMock.Setup(x => x.InternalNext(It.IsAny<IGenerationContext>())).Returns(() => {
          callCount++;
          return callCount.ToString();
       });

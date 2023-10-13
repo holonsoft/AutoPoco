@@ -2,10 +2,10 @@
 using Xunit;
 using holonsoft.AutoPoco.Configuration;
 using holonsoft.AutoPoco.Configuration.Interfaces;
+using holonsoft.AutoPoco.DataSources.Base;
+using holonsoft.AutoPoco.DataSources.Business;
 using holonsoft.AutoPoco.Tests.Common;
 using holonsoft.AutoPoco.Util;
-using holonsoft.AutoPoco.DataSources.Business;
-using holonsoft.AutoPoco.DataSources.Base;
 
 namespace holonsoft.AutoPoco.Tests.Integration.Tests.Configuration;
 

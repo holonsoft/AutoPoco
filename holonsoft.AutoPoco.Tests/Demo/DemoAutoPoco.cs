@@ -1,18 +1,18 @@
 ﻿using FluentAssertions;
 using Xunit;
 using holonsoft.AutoPoco.Configuration;
+using holonsoft.AutoPoco.DataSources.Business;
+using holonsoft.AutoPoco.DataSources.Primitives;
 using holonsoft.AutoPoco.Engine.Interfaces;
 using holonsoft.AutoPoco.Extensions;
 using holonsoft.AutoPoco.Tests.Common;
-using holonsoft.AutoPoco.DataSources.Business;
-using holonsoft.AutoPoco.DataSources.Primitives;
 
 namespace holonsoft.AutoPoco.Tests.Demo;
 public class DemoAutoPoco {
 
    private static IGenerationSessionFactory _factoryWithDefaults = null!;
-   private static IGenerationSessionFactory _factoryWithCompexRule = null!;
-   private static IGenerationSessionFactory _factoryWithCompexRuleForRecords = null!;
+   private static IGenerationSessionFactory _factoryWithComplexRule = null!;
+   private static IGenerationSessionFactory _factoryWithComplexRuleForRecords = null!;
 
    private class PasswordSource() : RandomStringSource(5, 20, 'A', 'z');
 
@@ -24,7 +24,7 @@ public class DemoAutoPoco {
          x.AddFromAssemblyContainingType<SimpleUser>();
       });
 
-      _factoryWithCompexRule = AutoPocoContainer.Configure(x => {
+      _factoryWithComplexRule = AutoPocoContainer.Configure(x => {
          x.Include<SimpleUser>()
             .Setup(c => c.FirstName).Use<FirstNameSource>()
             .Setup(c => c.LastName).Use<LastNameSource>()
@@ -32,7 +32,7 @@ public class DemoAutoPoco {
             .Invoke(c => c.SetPassword(Use.Source<string, PasswordSource>()!));
       });
 
-      _factoryWithCompexRuleForRecords = AutoPocoContainer.Configure(x => {
+      _factoryWithComplexRuleForRecords = AutoPocoContainer.Configure(x => {
          x.Include<SimpleUserRecord>() // make sure that recordtype has a paramless ctor!
             .Setup(c => c.FirstName).Use<FirstNameSource>()
             .Setup(c => c.LastName).Use<LastNameSource>()
@@ -71,13 +71,13 @@ public class DemoAutoPoco {
                .Get()
                .ToArray();
 
-      var session2 = _factoryWithCompexRule.CreateSession();
+      var session2 = _factoryWithComplexRule.CreateSession();
 
       user = session2
                .Single<SimpleUser>()
                .Get();
 
-      user.FirstName.Should().Be("George");
+      user.FirstName.Should().Be("Olivia");
       user.LastName.Should().Be("Turner");
       user.RevealedPassword.Should().Be("GRvqwwLW");
 
@@ -126,13 +126,13 @@ public class DemoAutoPoco {
 
    [Fact]
    public void SomeDemonstrationOfComplexGenerationsWithRecords() {
-      var session = _factoryWithCompexRuleForRecords.CreateSession();
+      var session = _factoryWithComplexRuleForRecords.CreateSession();
 
       var user = session
                .Single<SimpleUserRecord>() // Works as long as recordtype has an additional paramless ctor!!!
                .Get();
 
-      user.FirstName.Should().Be("George");
+      user.FirstName.Should().Be("Olivia");
       user.LastName.Should().Be("Turner");
       user.RevealedPassword.Should().Be("GRvqwwLW");
 

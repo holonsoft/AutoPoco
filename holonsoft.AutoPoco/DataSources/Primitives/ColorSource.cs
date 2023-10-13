@@ -7,34 +7,24 @@
 using System.Drawing;
 using holonsoft.AutoPoco.Engine;
 using holonsoft.AutoPoco.Engine.Interfaces;
-using holonsoft.AutoPoco.Util;
 
 namespace holonsoft.AutoPoco.DataSources.Primitives;
 
-/// <summary>
-///   The color source.
-/// </summary>
-public class ColorSource(byte rangeStart, byte rangeEnd) : DataSourceBase<Color>
-{
-    /// <summary>
-    ///   Initializes a new instance of the <see cref="ColorSource" /> class.
-    /// </summary>
-    public ColorSource()
-       : this(0, 255) { }
+public abstract class ColorSourceBase<T>(byte rangeStart, byte rangeEnd) : DataSourceBase<T> {
+   protected override T GetNextValue(IGenerationContext? context)
+      => (T) (object)
+         Color.FromArgb(
+            Random.Next(rangeStart, rangeEnd),
+            Random.Next(rangeStart, rangeEnd),
+            Random.Next(rangeStart, rangeEnd));
+}
 
-    /// <summary>
-    ///   The next.
-    /// </summary>
-    /// <param name="context">
-    ///   The context.
-    /// </param>
-    /// <returns>
-    ///   The <see cref="Color" />.
-    /// </returns>
-    public override Color Next(IGenerationContext? context)
-       => Color.FromArgb(
-         RandomNumberGenerator.Current.Next(rangeStart, rangeEnd),
-         RandomNumberGenerator.Current.Next(rangeStart, rangeEnd),
-         RandomNumberGenerator.Current.Next(rangeStart, rangeEnd));
+public class ColorSource(byte rangeStart, byte rangeEnd) : ColorSourceBase<Color>(rangeStart, rangeEnd) {
+   public ColorSource()
+      : this(0, 255) { }
+}
 
+public class NullableColorSource(byte rangeStart, byte rangeEnd) : ColorSourceBase<Color?>(rangeStart, rangeEnd) {
+   public NullableColorSource()
+      : this(0, 255) { }
 }

@@ -3,8 +3,7 @@ using holonsoft.AutoPoco.Engine.Interfaces;
 
 namespace holonsoft.AutoPoco.DataSources.Base;
 
-public class AutoSource<T> : DataSourceBase<T>
-{
-    public override T Next(IGenerationContext? context)
-       => context!.Single<T>().Get();
+public class AutoSource<T> : DataSourceBase<T> {
+   protected override T GetNextValue(IGenerationContext? context)
+      => context!.Single<T>().Get();
 }

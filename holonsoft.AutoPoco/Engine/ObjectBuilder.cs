@@ -60,7 +60,7 @@ public class ObjectBuilder : IObjectBuilder {
       object? createdObject = null;
 
       if (_factory != null)
-         createdObject = _factory.Next(context);
+         createdObject = _factory.InternalNext(context);
       else
          createdObject = Activator.CreateInstance(InnerType);
 

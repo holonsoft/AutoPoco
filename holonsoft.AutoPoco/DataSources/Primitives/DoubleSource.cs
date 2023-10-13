@@ -2,25 +2,38 @@
 using holonsoft.AutoPoco.Engine.Interfaces;
 
 namespace holonsoft.AutoPoco.DataSources.Primitives;
-public class DoubleSource(double min, double max, int? decimals) : DataSourceBase<double>
-{
-    public DoubleSource()
-       : this(double.MinValue, double.MaxValue, null) { }
+public abstract class DoubleSourceBase<T>(double min, double max, int? decimals) : DataSourceBase<T> {
+   protected override T GetNextValue(IGenerationContext? context) {
+      // Perform arithmetic in double type to avoid overflowing
+      var range = max - min;
+      var sample = Random.NextDouble();
 
-    public DoubleSource(double min, double max)
-       : this(min, max, null) { }
+      var result = decimals.HasValue
+         ? Math.Round((sample * range) + min, decimals.Value)
+         : (sample * range) + min;
 
-    public DoubleSource(int decimals)
-       : this(double.MinValue, double.MaxValue, decimals) { }
+      return (T) (object) result;
+   }
+}
 
-    public override double Next(IGenerationContext? context)
-    {
-        // Perform arithmetic in double type to avoid overflowing
-        var range = max - min;
-        var sample = Random.NextDouble();
+public class DoubleSource(double min, double max, int? decimals) : DoubleSourceBase<double>(min, max, decimals) {
+   public DoubleSource()
+      : this(double.MinValue, double.MaxValue, null) { }
 
-        return decimals.HasValue
-           ? Math.Round(sample * range + min, decimals.Value)
-           : sample * range + min;
-    }
+   public DoubleSource(double min, double max)
+      : this(min, max, null) { }
+
+   public DoubleSource(int decimals)
+      : this(double.MinValue, double.MaxValue, decimals) { }
+}
+
+public class NullableDoubleSource(double min, double max, int? decimals) : DoubleSourceBase<double?>(min, max, decimals) {
+   public NullableDoubleSource()
+      : this(double.MinValue, double.MaxValue, null) { }
+
+   public NullableDoubleSource(double min, double max)
+      : this(min, max, null) { }
+
+   public NullableDoubleSource(int decimals)
+      : this(double.MinValue, double.MaxValue, decimals) { }
 }

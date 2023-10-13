@@ -18,9 +18,13 @@ namespace holonsoft.AutoPoco.DataSources.Primitives;
 /// <param name="max">
 ///   The max.
 /// </param>
-public class RandomNumberSource(int min, int max) : IntegerSource(min, max)
-{
+public class RandomNumberSource(int min, int max) : IntegerSource(min, max) {
 
-    public RandomNumberSource()
-       : this(int.MinValue, int.MaxValue) { }
+   public RandomNumberSource()
+      : this(int.MinValue, int.MaxValue) { }
+}
+
+public class NullableRandomSource(int min, int max) : NullableIntegerSource(min, max) {
+   public NullableRandomSource()
+      : this(int.MinValue, int.MaxValue) { }
 }

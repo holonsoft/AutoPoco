@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>.net6.0;.net7.0</TargetFrameworks>
-    <Version>3.7.2</Version>
+    <Version>4.0.1</Version>
     <Company>holonsoft</Company>
     <Authors>Christian Vogt</Authors>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -15,8 +15,8 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageTags>#net6.0 #net7.0 #autopoco #autogenerateobjects #autogenerate #generator</PackageTags>
     <PackageReleaseNotes>Have fun</PackageReleaseNotes>
-    <AssemblyVersion>3.7.2</AssemblyVersion>
-    <FileVersion>3.7.2</FileVersion>
+    <AssemblyVersion>4.0.1</AssemblyVersion>
+    <FileVersion>4.0.1</FileVersion>
     <IsPublishable>True</IsPublishable>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>

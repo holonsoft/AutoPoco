@@ -2,7 +2,7 @@
 using Xunit;
 using holonsoft.AutoPoco.Configuration.Interfaces;
 using holonsoft.AutoPoco.Conventions;
-using holonsoft.AutoPoco.DataSources.Primitives;
+using holonsoft.AutoPoco.DataSources.Base;
 
 namespace holonsoft.AutoPoco.Tests.Functionality.Tests.Conventions;
 

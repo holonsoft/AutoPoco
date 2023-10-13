@@ -1,11 +1,11 @@
-﻿using holonsoft.AutoPoco.DataSources.Base;
+﻿using holonsoft.AutoPoco.Configuration;
+using holonsoft.AutoPoco.DataSources.Base;
 
 namespace holonsoft.AutoPoco.DataSources.Business;
-public class CompanySource : FixedStringArraySourceBase
-{
-    protected override string[] Data => _companies;
+public abstract class CompanySourceBase(int? nullCreationThreshold = null) : FixedArrayWithStringsSourceBase(nullCreationThreshold) {
+   protected override string[] Data => _companies;
 
-    private static readonly string[] _companies = {
+   private static readonly string[] _companies = {
             "Acme, inc.",
             "Widget Corp",
             "123 Warehousing",
@@ -134,4 +134,14 @@ public class CompanySource : FixedStringArraySourceBase
             "The Backery Of Pommes"
         };
 
+}
+
+public class CompanySource : CompanySourceBase {
+   public CompanySource() : base() { }
+}
+
+public class NullableCompanySource : CompanySourceBase {
+   public NullableCompanySource() : base(AutoPocoGlobalSettings.NullCreationThreshold) { }
+
+   public NullableCompanySource(int nullCreationThreshold) : base(nullCreationThreshold) { }
 }

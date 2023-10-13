@@ -84,5 +84,5 @@ public class TypeConventionContextTests {
 }
 
 public class SimpleUserFactory : IDataSource<SimpleUser> {
-   public object Next(IGenerationContext? context) => throw new NotImplementedException();
+   public object InternalNext(IGenerationContext? context) => throw new NotImplementedException();
 }

@@ -74,6 +74,6 @@ public class RandomNumberGenerator : DataSourceBase<int>, IRandomNumberGenerator
    public void NextBytes(byte[] buffer)
       => Random.NextBytes(buffer);
 
-   public override int Next(IGenerationContext? context)
+   protected override int GetNextValue(IGenerationContext? context)
       => Random.Next();
 }

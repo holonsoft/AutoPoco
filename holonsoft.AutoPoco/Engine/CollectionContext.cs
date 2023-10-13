@@ -1,11 +1,12 @@
 ﻿using System.Linq.Expressions;
+using holonsoft.AutoPoco.Configuration;
 using holonsoft.AutoPoco.Engine.Interfaces;
 
 namespace holonsoft.AutoPoco.Engine;
 
 public class CollectionContext<TPoco, TCollection>(IEnumerable<IObjectGenerator<TPoco>> generators)
   : ICollectionContext<TPoco, TCollection> where TCollection : ICollection<TPoco> {
-   private readonly Random _random = new(1337);
+   private readonly Random _random = new(AutoPocoGlobalSettings.StandardSeed);
 
    public ICollectionContext<TPoco, TCollection> Impose<TMember>(Expression<Func<TPoco, TMember>> propertyExpr,
     TMember value) {

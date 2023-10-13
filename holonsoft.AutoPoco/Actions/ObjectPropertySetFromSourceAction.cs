@@ -8,6 +8,6 @@ public class ObjectPropertySetFromSourceAction(EngineTypePropertyMember member, 
    public void Enact(IGenerationContext? context, object target) {
       var propertyContext = new GenerationContext(context?.Builders!,
                               new TypePropertyGenerationContextNode(context?.Node as TypeGenerationContextNode ?? throw new InvalidOperationException(), member));
-      member.PropertyInfo.SetValue(target, source.Next(propertyContext), null);
+      member.PropertyInfo.SetValue(target, source.InternalNext(propertyContext), null);
    }
 }

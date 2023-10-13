@@ -1,4 +1,19 @@
 # holonsoft / AutoPoco
+
+# new in 4.0.1
+* most of XYdatasources now have a NullableXYDataSource pendant to get random NULL values instead of normal data back. Helpful for DTOs with nullable fields
+* some new datasources, e. g. DateOnlySource, TimeOnlySource, RandomTextSource, LongSource, LongIdSource (and their Nullable pendants)
+* RandomStringSOurce now supports a configurable range of chars (e. g. 'A' .. 'z') or a char[] of allowed chars
+* some bugfixes regarding index ranges, LINQ replacements for loops
+* AutoPocoGlobalSettings introduced, set the properies before every other action / creation to change framework behavior
+* Demo project (in tests) updated
+* Please note, the CountrySourceTest may fail on your system. It depends on the culture list of your operation system. 
+
+# breaking change in 4.0.1
+* behaviour change: EmailAddressSource, ExtendedEmailAddressSource now generate data according to RFC2606 to make sure that no valid data will be generated
+* some more grouping of datasources (primitives, business, country)
+
+# new in 3.7.x
 * Ported to newest .net version (at the moment 7)
 * Unit tests changed to Xunit (was Nunit)
 * Some more unit tests, now all datasources should be covered
@@ -8,6 +23,7 @@
 * All datasources now have a common base class
 * Shrinked projects from 4 to 2 (implementation and tests)
 * Several improvements regarding code
+* Demo project (in tests) updated
 
 # changes in 3.7.2
 

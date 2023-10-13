@@ -1,8 +1,7 @@
 ﻿namespace holonsoft.AutoPoco.Engine.Interfaces;
 
 public interface IDataSource {
-   object? Next(IGenerationContext? context);
+   object? InternalNext(IGenerationContext? context);
 }
 
-public interface IDataSource<T> : IDataSource {
-}
+public interface IDataSource<T> : IDataSource { }

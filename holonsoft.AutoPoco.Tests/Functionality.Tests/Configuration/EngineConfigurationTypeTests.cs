@@ -41,6 +41,6 @@ public class EngineConfigurationTypeTests {
    }
 
    public class TestFactory : IDataSource<SimpleCtorClass> {
-      public object Next(IGenerationContext? context) => throw new NotImplementedException();
+      public object InternalNext(IGenerationContext? context) => throw new NotImplementedException();
    }
 }

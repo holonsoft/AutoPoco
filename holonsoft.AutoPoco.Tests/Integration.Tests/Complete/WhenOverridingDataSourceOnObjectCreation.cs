@@ -34,6 +34,6 @@ public class WhenOverridingDataSourceOnObjectCreation {
    private class DummySource : IDataSource<string> {
       private int _count;
 
-      public object Next(IGenerationContext? context) => "Test" + _count++;
+      public object InternalNext(IGenerationContext? context) => "Test" + _count++;
    }
 }

@@ -2,8 +2,13 @@
 using holonsoft.AutoPoco.Engine.Interfaces;
 
 namespace holonsoft.AutoPoco.DataSources.Primitives;
-public class BooleanSource : DataSourceBase<bool>
-{
-    public override bool Next(IGenerationContext? context)
-       => Random.Next(2) == 1;
+
+public abstract class BooleanSourceBase<T> : DataSourceBase<T> {
+   protected override T GetNextValue(IGenerationContext? context)
+      => (T) (object) (Random.Next(2) == 1);
 }
+
+public class BooleanSource : BooleanSourceBase<bool> { }
+
+public class NullableBooleanSource : BooleanSourceBase<bool?> { }
+

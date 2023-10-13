@@ -1,58 +1,66 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RandomStringSource.cs" company="AutoPoco">
-//   Microsoft Public License (Ms-PL)
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-using System.Text;
+﻿using System.Text;
+using holonsoft.AutoPoco.Configuration;
 using holonsoft.AutoPoco.Engine;
 using holonsoft.AutoPoco.Engine.Interfaces;
 
 namespace holonsoft.AutoPoco.DataSources.Primitives;
 
-/// <summary>
-///   The random string source.
-/// </summary>
-/// <remarks>
-///   Initializes a new instance of the <see cref="RandomStringSource" /> class.
-/// </remarks>
-/// <param name="minLength">
-///   The min.
-/// </param>
-/// <param name="maxLength">
-///   The max.
-/// </param>
-/// <param name="minChar"></param>
-/// <param name="maxChar"></param>
-public class RandomStringSource(int minLength, int maxLength, char minChar, char maxChar) : DataSourceBase<string>
-{
+public abstract class RandomStringSourceBase<T>(int minLength, int maxLength, int? nullCreationThreshold = null, params char[] allowedChars) : DataSourceBase<T> {
+   private readonly IRandomNullEvaluator _defaultRandomNullEvaluator = new DefaultRandomNullEvaluator(nullCreationThreshold ?? AutoPocoGlobalSettings.NullCreationThreshold);
 
-    public RandomStringSource(int minLength, int maxLength)
-       : this(minLength, maxLength, (char)65, (char)123) { }
+   private readonly char[] _allowedChars = allowedChars;
 
-    public RandomStringSource()
-       : this(5, 10, 'A', 'z') { }
+   public RandomStringSourceBase(int minLength, int maxLength, char minChar, char maxChar, int? nullCreationThreshold = null)
+      : this(minLength, maxLength, nullCreationThreshold)
+      => _allowedChars = Enumerable.Range(minChar, maxChar - minChar + 1)
+                            .Select(i => (char) i)
+                            .ToArray();
 
-    /// <summary>
-    ///   The next.
-    /// </summary>
-    /// <param name="context">
-    ///   The context.
-    /// </param>
-    /// <returns>
-    ///   The <see cref="string" />.
-    /// </returns>
-    public override string Next(IGenerationContext? context)
-    {
-        var builder = new StringBuilder();
-        var length = Random.Next(minLength, maxLength + 1);
+   protected override T GetNextValue(IGenerationContext? context) {
+      if (nullCreationThreshold.HasValue) {
+         if (_defaultRandomNullEvaluator.ShouldNextValueReturnNull())
+            return (T) (object) null!;
+      }
 
-        for (var x = 0; x < length; x++)
-        {
-            var value = Random.Next(minChar, maxChar);
-            builder.Append((char)value);
-        }
+      var result = Enumerable.Range(0, Random.Next(minLength, maxLength + 1))
+            .Select(x => _allowedChars[Random.Next(0, _allowedChars.Length - 1)])
+            .Aggregate(new StringBuilder(), (builder, c) => builder.Append(c))
+            .ToString();
 
-        return builder.ToString();
-    }
+      return (T) (object) result;
+   }
+}
+
+public class RandomStringSource : RandomStringSourceBase<string> {
+   public RandomStringSource()
+      : this(5, 10, 'A', 'z') { }
+
+   public RandomStringSource(int minLength, int maxLength)
+     : this(minLength, maxLength, (char) 65, (char) 123) { }
+
+   public RandomStringSource(int minLength, int maxLength, char minChar, char maxChar)
+      : base(minLength, maxLength, minChar, maxChar, null) { }
+
+   public RandomStringSource(int minLength, int maxLength, char[] allowedChars)
+      : base(minLength, maxLength, null, allowedChars) { }
+}
+
+public class NullableRandomStringSource : RandomStringSourceBase<string> {
+   public NullableRandomStringSource()
+      : this(5, 10, 'A', 'z') { }
+
+   public NullableRandomStringSource(int minLength, int maxLength)
+     : this(minLength, maxLength, (char) 65, (char) 123) { }
+
+   public NullableRandomStringSource(int minLength, int maxLength, char minChar, char maxChar)
+      : base(minLength, maxLength, minChar, maxChar, AutoPocoGlobalSettings.NullCreationThreshold) { }
+
+   public NullableRandomStringSource(int minLength, int maxLength, char minChar, char maxChar, int? nullCreationThreshold)
+      : base(minLength, maxLength, minChar, maxChar, nullCreationThreshold) { }
+
+   public NullableRandomStringSource(int minLength, int maxLength, char[] allowedChars)
+      : base(minLength, maxLength, AutoPocoGlobalSettings.NullCreationThreshold, allowedChars) { }
+
+   public NullableRandomStringSource(int minLength, int maxLength, char[] allowedChars, int? nullCreationThreshold)
+      : base(minLength, maxLength, nullCreationThreshold, allowedChars) { }
 }

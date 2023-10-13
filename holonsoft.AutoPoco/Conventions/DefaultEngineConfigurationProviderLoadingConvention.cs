@@ -48,7 +48,8 @@ public class DefaultEngineConfigurationProviderLoadingConvention : IEngineConfig
 
       foreach (var existingMemberConfig in membersToApply) {
          var currentMemberConfig = type.GetRegisteredMember(existingMemberConfig.Member);
-         if (currentMemberConfig != null) continue;
+         if (currentMemberConfig != null)
+            continue;
 
          type.RegisterMember(existingMemberConfig.Member);
          currentMemberConfig = type.GetRegisteredMember(existingMemberConfig.Member);
@@ -77,10 +78,9 @@ public class DefaultEngineConfigurationProviderLoadingConvention : IEngineConfig
             configurationStack.Push(currentTypeConfiguration);
       }
 
-      var membersToApply = (from typeConfig in configurationStack
-                            from memberConfig in typeConfig.GetRegisteredMembers()
-                            select memberConfig).ToArray();
-
+      var membersToApply = configurationStack
+                              .SelectMany(typeConfig => typeConfig.GetRegisteredMembers())
+                              .ToArray();
       return membersToApply;
    }
 

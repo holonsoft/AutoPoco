@@ -24,10 +24,11 @@ namespace holonsoft.AutoPoco.DataSources.Base;
 /// </param>
 #pragma warning disable CA2208
 
-public class ValueSource<T>(T value) : IDataSource<T>
-{
-    public object Next(IGenerationContext? context)
-       => value != null
-             ? value
-             : throw new ArgumentNullException();
+public class ValueSource<T>(T value) : IDataSource<T> {
+   public IRandomNullEvaluator RandomNullEvaluator => throw new NotImplementedException();
+
+   public object InternalNext(IGenerationContext? context)
+      => value != null
+            ? value
+            : throw new ArgumentNullException();
 }

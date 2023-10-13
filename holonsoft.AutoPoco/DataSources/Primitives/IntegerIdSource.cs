@@ -12,12 +12,11 @@ namespace holonsoft.AutoPoco.DataSources.Primitives;
 /// <summary>
 ///   The integer id source.
 /// </summary>
-public class IntegerIdSource : DataSourceBase<int>
-{
-    /// <summary>
-    ///   The current id.
-    /// </summary>
-    private int _currentId;
+public class IntegerIdSource(int startValue = 0) : DataSourceBase<int> {
+   /// <summary>
+   ///   The current id.
+   /// </summary>
+   private int _currentId = startValue;
 
-    public override int Next(IGenerationContext? context) => _currentId++;
+   protected override int GetNextValue(IGenerationContext? context) => _currentId++;
 }

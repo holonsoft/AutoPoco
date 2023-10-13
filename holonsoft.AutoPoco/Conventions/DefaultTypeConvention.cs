@@ -28,20 +28,15 @@ public class DefaultTypeConvention : ITypeConvention {
       if (member.DeclaringType != type)
          return false;
 
-      if (member.MemberType != MemberTypes.Property || type.IsInterface) 
+      if (member.MemberType != MemberTypes.Property || type.IsInterface)
          return true;
 
       var property = (PropertyInfo) member;
-      
-      //FIXIT
-      var interfaceMethods =
-         from i in type.GetInterfaces()
-         from method in type.GetInterfaceMap(i).TargetMethods
-         select method;
-      
-      var exists = (from method in interfaceMethods
-         where property.GetAccessors().Contains(method)
-         select 1).Count() > 0;
+
+      var interfaceMethods = type.GetInterfaces()
+                                 .SelectMany(i => type.GetInterfaceMap(i).TargetMethods);
+
+      var exists = interfaceMethods.Any(method => property.GetAccessors().Contains(method));
 
       return !exists;
    }

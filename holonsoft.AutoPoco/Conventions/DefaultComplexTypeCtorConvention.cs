@@ -1,7 +1,6 @@
-﻿using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using holonsoft.AutoPoco.Configuration.Interfaces;
-using holonsoft.AutoPoco.DataSources.Primitives;
+using holonsoft.AutoPoco.DataSources.Base;
 
 namespace holonsoft.AutoPoco.Conventions;
 

@@ -4,13 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LastNameSource.cs" company="AutoPoco">
-//   Microsoft Public License (Ms-PL)
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
+using holonsoft.AutoPoco.Configuration;
 using holonsoft.AutoPoco.DataSources.Base;
 
 namespace holonsoft.AutoPoco.DataSources.Business;
@@ -18,13 +12,12 @@ namespace holonsoft.AutoPoco.DataSources.Business;
 /// <summary>
 ///   The last name source.
 /// </summary>
-public class LastNameSource : FixedStringArraySourceBase
-{
+public abstract class LastNameSourceBase(int? nullCreationThreshold = null) : FixedArrayWithStringsSourceBase(nullCreationThreshold) {
 
-    protected override string[] Data => _lastNames;
+   protected override string[] Data => _lastNames;
 
-    private static readonly string[] _lastNames =
-    {
+   private static readonly string[] _lastNames =
+   {
     "Smith",
     "Johnson",
     "Brown",
@@ -133,4 +126,12 @@ public class LastNameSource : FixedStringArraySourceBase
     "Ortiz",
     "Jenkins",
   };
+}
+
+public class LastNameSource : LastNameSourceBase { }
+
+public class NullableLastNameSource : LastNameSourceBase {
+   public NullableLastNameSource() : base(AutoPocoGlobalSettings.NullCreationThreshold) { }
+
+   public NullableLastNameSource(int nullCreationThreshold) : base(nullCreationThreshold) { }
 }

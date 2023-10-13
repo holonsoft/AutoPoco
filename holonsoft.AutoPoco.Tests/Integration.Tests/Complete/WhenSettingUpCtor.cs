@@ -30,5 +30,5 @@ public class WhenSettingUpCtor {
 }
 
 public class TestFactory : IDataSource<SimpleCtorClass> {
-   public object Next(IGenerationContext? context) => new SimpleCtorClass("one", "two");
+   public object InternalNext(IGenerationContext? context) => new SimpleCtorClass("one", "two");
 }

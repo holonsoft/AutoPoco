@@ -123,6 +123,6 @@ public class ObjectBuilderTests {
 
       public TestFactory(string value) => _value = value;
 
-      public object Next(IGenerationContext? context) => new SimpleCtorClass(_value);
+      public object InternalNext(IGenerationContext? context) => new SimpleCtorClass(_value);
    }
 }

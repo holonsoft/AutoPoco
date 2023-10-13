@@ -3,10 +3,18 @@ using holonsoft.AutoPoco.Engine.Interfaces;
 
 namespace holonsoft.AutoPoco.DataSources.Primitives;
 
-public class IntegerSource(int min, int max) : DataSourceBase<int>
-{
-    public IntegerSource()
-       : this(int.MinValue, int.MaxValue) { }
-
-    public override int Next(IGenerationContext? context) => Random.Next(min, max);
+public abstract class IntegerSourceBase<T>(int min, int max) : DataSourceBase<T> {
+   protected override T GetNextValue(IGenerationContext? context)
+      => (T) (object) Random.Next(min, max);
 }
+
+public class IntegerSource(int min, int max) : IntegerSourceBase<int>(min, max) {
+   public IntegerSource()
+      : this(int.MinValue, int.MaxValue) { }
+}
+
+public class NullableIntegerSource(int min, int max) : IntegerSourceBase<int?>(min, max) {
+   public NullableIntegerSource()
+      : this(int.MinValue, int.MaxValue) { }
+}
+

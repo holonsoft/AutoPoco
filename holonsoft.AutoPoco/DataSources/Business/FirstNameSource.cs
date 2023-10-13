@@ -1,34 +1,33 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FirstNameSource.cs" company="AutoPoco">
-//   Microsoft Public License (Ms-PL)
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FirstNameSource.cs" company="AutoPoco">
-//   Microsoft Public License (Ms-PL)
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
+﻿
+using holonsoft.AutoPoco.Configuration;
 using holonsoft.AutoPoco.DataSources.Base;
 
 namespace holonsoft.AutoPoco.DataSources.Business;
 
-/// <summary>
-///   The first name source.
-/// </summary>
-public class FirstNameSource : FixedStringArraySourceBase
-{
+public abstract class FirstNameSourceBase(int? nullCreationThreshold = null) : FixedArrayWithStringsSourceBase(nullCreationThreshold) {
 
-    protected override string[] Data => _firstNames;
+   protected override string[] Data => _firstNames;
 
-    private static readonly string[] _firstNames =
-    {
-    "Jack", "Thomas", "Oliver", "Joshua", "Harry", "Charlie", "Daniel", "William", "James", "Alfie", "Samuel", "George", "Megan",
-    "Joseph", "Benjamin", "Ethan", "Lewis", "Mohammed", "Jake", "Dylan", "Jacob", "Ruby", "Olivia", "Grace", "Emily", "Jessica",
-    "Chloe", "Lily", "Mia", "Lucy", "Amelia", "Evie", "Ella", "Katie", "Ellie", "Charlotte", "Summer", "Mohammed", "Hannah", "Ava",
-    "Isabella", "Sophia", "Noah", "Liam", "Jackson", "Lucas", "Lukas", "Luna", "Aiden", "Elijah", "Harper", "Evelyn", "Evelin", "David",
-    "Logan", "Sophie"
-  };
+   private static readonly string[] _firstNames =
+   {
+      "Alexa", "Claire", "Lucy", "Makayla", "Violet", "Aria", "Scarlet", "Maya", "Sophie", "Ariana",
+      "Michael", "David", "Christopher", "Andrew", "John", "Matthew", "Joseph", "Anthony", "Robert", "William",
+      "Sophia", "Olivia", "Emma", "Ava", "Isabella", "Mia", "Charlotte", "Amelia", "Harper", "Evelyn",
+      "Ethan", "Nicholas", "Daniel", "Tyler", "James", "Alexander", "Benjamin", "Samuel", "Ryan", "Johnathan",
+      "Abigail", "Emily", "Elizabeth", "Sofia", "Ella", "Madison", "Grace", "Avery", "Scarlett", "Victoria",
+      "Nathan", "Daniel", "Luke", "Benjamin", "Owen", "Carter", "Wyatt", "Isaac", "Landon", "Jackson",
+      "Chloe", "Camila", "Penelope", "Riley", "Layla", "Lila", "Nora", "Zoey", "Mila", "Hannah",
+      "Charles", "Robert", "Henry", "George", "Edward", "Thomas", "Arthur", "Matthew", "William", "James",
+      "Lily", "Addison", "Ellie", "Aubrey", "Leah", "Natalie", "Samantha", "Brooklyn", "Zoe", "Stella",
+      "Joseph", "David", "Daniel", "Brian", "Kevin", "Paul", "George", "Jason", "Scott", "Kenneth",
+      "Eric", "Mark", "Steven", "Richard", "Timothy"
+   };
+}
+
+public class FirstNameSource : FirstNameSourceBase { }
+
+public class NullableFirstNameSource : FirstNameSourceBase {
+   public NullableFirstNameSource() : base(AutoPocoGlobalSettings.NullCreationThreshold) { }
+
+   public NullableFirstNameSource(int nullCreationThreshold) : base(nullCreationThreshold) { }
 }

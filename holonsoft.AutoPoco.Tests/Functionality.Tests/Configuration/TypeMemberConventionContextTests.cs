@@ -31,7 +31,7 @@ public class TypeMemberConventionContextTests {
       _context.SetValue(10);
       var dataSource = source.Build()!;
 
-      dataSource.Next(null!).Should().Be(10);
+      dataSource.InternalNext(null!).Should().Be(10);
    }
 
    [Fact]
@@ -62,6 +62,6 @@ public class TypeMemberConventionContextTests {
    }
 
    public class TestSource : IDataSource {
-      public object Next(IGenerationContext? context) => throw new NotImplementedException();
+      public object InternalNext(IGenerationContext? context) => throw new NotImplementedException();
    }
 }

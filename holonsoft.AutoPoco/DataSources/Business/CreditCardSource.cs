@@ -1,159 +1,128 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CreditCardSource.cs" company="AutoPoco">
-//   Microsoft Public License (Ms-PL)
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-using System.Text;
+﻿using System.Text;
+using holonsoft.AutoPoco.Configuration;
 using holonsoft.AutoPoco.Engine;
 using holonsoft.AutoPoco.Engine.Interfaces;
-using holonsoft.AutoPoco.Util;
+using static holonsoft.AutoPoco.DataSources.Business.CreditCardSourceBase;
 
 namespace holonsoft.AutoPoco.DataSources.Business;
 
-/// <summary>
-///   The credit card source.
-/// </summary>
-/// <remarks>
-///   Initializes a new instance of the <see cref="CreditCardSource" /> class.
-/// </remarks>
-/// <param name="preferred">
-///   The preferred.
-/// </param>
-public class CreditCardSource(CreditCardSource.CreditCardType preferred) : DataSourceBase<string>
-{
-    /// <summary>
-    ///   The credit card type.
-    /// </summary>
-    public enum CreditCardType
-    {
-        /// <summary>
-        ///   The random.
-        /// </summary>
-        Random = 0,
+public abstract class CreditCardSourceBase(CreditCardSourceBase.CreditCardType preferred, int? nullCreationThreshold = null) : DataSourceBase<string>() {
+   /// <summary>
+   ///   The credit card type.
+   /// </summary>
+   public enum CreditCardType {
+      /// <summary>
+      ///   The random.
+      /// </summary>
+      Random = 0,
 
-        /// <summary>
-        ///   The master card.
-        /// </summary>
-        MasterCard = 1,
+      /// <summary>
+      ///   The master card.
+      /// </summary>
+      MasterCard = 1,
 
-        /// <summary>
-        ///   The visa.
-        /// </summary>
-        Visa = 2,
+      /// <summary>
+      ///   The visa.
+      /// </summary>
+      Visa = 2,
 
-        /// <summary>
-        ///   The american express.
-        /// </summary>
-        AmericanExpress = 3,
+      /// <summary>
+      ///   The american express.
+      /// </summary>
+      AmericanExpress = 3,
 
-        /// <summary>
-        ///   The discover.
-        /// </summary>
-        Discover = 4
-    }
+      /// <summary>
+      ///   The discover.
+      /// </summary>
+      Discover = 4
+   }
 
-    /// <summary>
-    ///   The m preferred.
-    /// </summary>
-    private readonly CreditCardType _preferred = preferred;
+   private readonly CreditCardType _preferred = preferred;
 
-    /// <summary>
-    ///   Initializes a new instance of the <see cref="CreditCardSource" /> class.
-    /// </summary>
-    public CreditCardSource()
-       : this(CreditCardType.Random)
-    {
-    }
+   public CreditCardSourceBase()
+      : this(CreditCardType.Random) {
+   }
 
-    /// <summary>
-    ///   The next.
-    /// </summary>
-    /// <param name="context">
-    ///   The context.
-    /// </param>
-    /// <returns>
-    ///   The <see cref="string" />.
-    /// </returns>
-    public override string Next(IGenerationContext? context)
-    {
-        var cardType = _preferred;
+   protected override string GetNextValue(IGenerationContext? context) {
+      if (nullCreationThreshold.HasValue) {
+         if (RandomNullEvaluator.ShouldNextValueReturnNull())
+            return null!;
+      }
 
-        if (_preferred == CreditCardType.Random)
-            cardType = (CreditCardType)RandomNumberGenerator.Current.Next(1, 4);
+      var cardType = _preferred;
 
-        return cardType switch
-        {
-            CreditCardType.AmericanExpress => FormatAmexCardNumber(GenerateCreditCardNumber(3, 15)),
-            CreditCardType.Discover => FormatCreditCardNumber(GenerateCreditCardNumber(6, 16)),
-            CreditCardType.MasterCard => FormatCreditCardNumber(GenerateCreditCardNumber(5, 16)),
-            CreditCardType.Visa => FormatCreditCardNumber(GenerateCreditCardNumber(4, 16)),
-            _ => null,
-        } ?? throw new InvalidOperationException();
-    }
+      if (_preferred == CreditCardType.Random)
+         cardType = (CreditCardType) Random.Next(1, 4);
 
-    private static string GenerateCreditCardNumber(int prefix, int length)
-    {
-        var cardNumber = new StringBuilder(prefix.ToString());
-        while (cardNumber.Length < length - 1)
-            cardNumber.Append(RandomNumberGenerator.Current.Next(0, 10));
+      return cardType switch {
+         CreditCardType.AmericanExpress => FormatAmexCardNumber(GenerateCreditCardNumber(3, 15)),
+         CreditCardType.Discover => FormatCreditCardNumber(GenerateCreditCardNumber(6, 16)),
+         CreditCardType.MasterCard => FormatCreditCardNumber(GenerateCreditCardNumber(5, 16)),
+         CreditCardType.Visa => FormatCreditCardNumber(GenerateCreditCardNumber(4, 16)),
+         _ => null,
+      } ?? throw new InvalidOperationException();
+   }
 
-        cardNumber.Append(CalculateLuhnDigit(cardNumber.ToString()));
-        return cardNumber.ToString();
-    }
+   private string GenerateCreditCardNumber(int prefix, int length) {
+      var cardNumber = new StringBuilder(prefix.ToString());
+      while (cardNumber.Length < length - 1)
+         cardNumber.Append(Random.Next(0, 10));
 
-    private static int CalculateLuhnDigit(string number)
-    {
-        var sum = 0;
-        var isEven = false;
-        for (var i = number.Length - 1; i >= 0; i--)
-        {
-            var digit = number[i] - '0';
-            if (isEven)
-            {
-                digit *= 2;
-                if (digit > 9)
-                {
-                    digit -= 9;
-                }
-            }
+      cardNumber.Append(CalculateLuhnDigit(cardNumber.ToString()));
+      return cardNumber.ToString();
+   }
 
-            sum += digit;
-            isEven = !isEven;
-        }
+   private static int CalculateLuhnDigit(string number) {
+      var sum = 0;
+      var isEven = false;
+      for (var i = number.Length - 1; i >= 0; i--) {
+         var digit = number[i] - '0';
+         if (isEven) {
+            digit *= 2;
+            if (digit > 9)
+               digit -= 9;
+         }
 
-        return (10 - sum % 10) % 10;
-    }
+         sum += digit;
+         isEven = !isEven;
+      }
 
-    private static string FormatCreditCardNumber(string number)
-    {
-        StringBuilder formattedNumber = new();
-        for (var i = 0; i < number.Length; i++)
-        {
-            if (i > 0 && i % 4 == 0)
-            {
-                formattedNumber.Append(' ');
-            }
+      return (10 - (sum % 10)) % 10;
+   }
 
-            formattedNumber.Append(number[i]);
-        }
+   private static string FormatCreditCardNumber(string number) {
+      StringBuilder formattedNumber = new();
+      for (var i = 0; i < number.Length; i++) {
+         if (i > 0 && i % 4 == 0)
+            formattedNumber.Append(' ');
 
-        return formattedNumber.ToString();
-    }
+         formattedNumber.Append(number[i]);
+      }
 
-    private static string FormatAmexCardNumber(string number)
-    {
-        StringBuilder formattedNumber = new();
-        for (var i = 0; i < number.Length; i++)
-        {
-            if (i is 4 or 10)
-            {
-                formattedNumber.Append(' ');
-            }
+      return formattedNumber.ToString();
+   }
 
-            formattedNumber.Append(number[i]);
-        }
+   private static string FormatAmexCardNumber(string number) {
+      StringBuilder formattedNumber = new();
+      for (var i = 0; i < number.Length; i++) {
+         if (i is 4 or 10)
+            formattedNumber.Append(' ');
 
-        return formattedNumber.ToString();
-    }
+         formattedNumber.Append(number[i]);
+      }
+
+      return formattedNumber.ToString();
+   }
+}
+
+public class CreditCardSource(CreditCardType creditCardType) : CreditCardSourceBase(creditCardType) {
+   public CreditCardSource() : this(CreditCardType.Random) { }
+}
+
+public class NullableCreditCardSource(CreditCardType creditCardType, int nullCreationThreshold) : CreditCardSourceBase(creditCardType, nullCreationThreshold) {
+   public NullableCreditCardSource() : this(CreditCardType.Random, AutoPocoGlobalSettings.NullCreationThreshold) { }
+
+   public NullableCreditCardSource(CreditCardType creditCardType) : this(creditCardType, AutoPocoGlobalSettings.NullCreationThreshold) { }
+
+   public NullableCreditCardSource(int nullCreationThreshold) : this(CreditCardType.Random, nullCreationThreshold) { }
 }
