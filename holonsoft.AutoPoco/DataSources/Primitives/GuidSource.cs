@@ -13,6 +13,13 @@ public abstract class GuidSourceBase<T> : DataSourceBase<T> {
    }
 }
 
+/// <summary>
+/// Create a GUID source
+/// </summary>
 public class GuidSource : GuidSourceBase<Guid> { }
 
+/// <summary>
+/// Create a nullable GUID source
+/// </summary>
+/// <seealso cref="AutoPocoGlobalSettings"/>
 public class NullableGuidSource : GuidSourceBase<Guid?> { }

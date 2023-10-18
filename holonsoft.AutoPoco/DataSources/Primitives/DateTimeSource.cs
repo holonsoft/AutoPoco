@@ -1,9 +1,18 @@
-﻿using holonsoft.AutoPoco.Engine;
+﻿using holonsoft.AutoPoco.Configuration;
+using holonsoft.AutoPoco.Engine;
 using holonsoft.AutoPoco.Engine.Interfaces;
 
 namespace holonsoft.AutoPoco.DataSources.Primitives;
 
 public abstract class DateTimeSourceBase<T>(DateTime minDate, DateTime maxDate) : DataSourceBase<T> {
+   public DateTime MinDate { get; private set; } = minDate;
+   public DateTime MaxDate { get; private set; } = maxDate;
+
+   public DateTimeSourceBase<T> SetDateRange(DateTime minDate, DateTime maxDate) {
+      MinDate = minDate;
+      MaxDate = maxDate;
+      return this;
+   }
 
    protected DateOnly GenerateDatePart(DateTime minDate, DateTime maxDate)
       => GenerateDatePart(DateOnly.FromDateTime(minDate), DateOnly.FromDateTime(maxDate));
@@ -71,24 +80,35 @@ public abstract class DateTimeSourceBase<T>(DateTime minDate, DateTime maxDate) 
    }
 
    protected override T GetNextValue(IGenerationContext? context) {
-      var dateOnly = GenerateDatePart(minDate, maxDate);
+      var dateOnly = GenerateDatePart(MinDate, MaxDate);
       var timeOnly = GenerateTimePart(TimeOnly.MinValue, TimeOnly.MaxValue);
       var result = dateOnly.ToDateTime(timeOnly);
 
-      if (result < minDate)
-         result = minDate;
-      if (result > maxDate)
-         result = maxDate;
+      if (result < MinDate)
+         result = MinDate;
+      if (result > MaxDate)
+         result = MaxDate;
 
       return (T) (object) result;
    }
 }
 
+/// <summary>
+/// Creates a datetime source (utc), that is aware about different month length and leap years
+/// </summary>
+/// <param name="minDate">minimum date</param>
+/// <param name="maxDate">maximum date</param>
 public class DateTimeSource(DateTime minDate, DateTime maxDate) : DateTimeSourceBase<DateTime>(minDate, maxDate) {
    public DateTimeSource()
       : this(DateTime.MinValue, DateTime.MaxValue) { }
 }
 
+/// <summary>
+/// Creates a nullable datetime source (utc), that is aware about different month length and leap years
+/// </summary>
+/// <param name="minDate">minimum date</param>
+/// <param name="maxDate">maximum date</param>
+/// <seealso cref="AutoPocoGlobalSettings"/>
 public class NullableDateTimeSource(DateTime minDate, DateTime maxDate) : DateTimeSourceBase<DateTime?>(minDate, maxDate) {
    public NullableDateTimeSource()
       : this(DateTime.MinValue, DateTime.MaxValue) { }

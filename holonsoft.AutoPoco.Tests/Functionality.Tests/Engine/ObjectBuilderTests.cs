@@ -23,7 +23,7 @@ public class ObjectBuilderTests {
    public void CreateObjectUsesFactoryToCreateObject() {
       var type = new Mock<IEngineConfigurationType>();
       type.SetupGet(x => x.RegisteredType).Returns(typeof(SimpleCtorClass));
-      type.Setup(x => x.GetFactory()).Returns(new DataSourceFactory(typeof(TestFactory)));
+      type.Setup(x => x.GetFactory()).Returns(new AutoPocoDataSourceFactory(typeof(TestFactory)));
 
       var builder = new ObjectBuilder(type.Object);
       var result = builder.CreateObject(CreateDummyContext()) as SimpleCtorClass;

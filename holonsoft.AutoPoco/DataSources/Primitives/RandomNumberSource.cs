@@ -24,7 +24,7 @@ public class RandomNumberSource(int min, int max) : IntegerSource(min, max) {
       : this(int.MinValue, int.MaxValue) { }
 }
 
-public class NullableRandomSource(int min, int max) : NullableIntegerSource(min, max) {
-   public NullableRandomSource()
+public class NullableRandomNumberSource(int min, int max) : NullableIntegerSource(min, max) {
+   public NullableRandomNumberSource()
       : this(int.MinValue, int.MaxValue) { }
 }

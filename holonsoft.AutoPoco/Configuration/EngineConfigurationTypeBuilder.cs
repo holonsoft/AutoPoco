@@ -5,7 +5,7 @@ using holonsoft.AutoPoco.Util;
 namespace holonsoft.AutoPoco.Configuration;
 
 public class EngineConfigurationTypeBuilder(Type type) : IEngineConfigurationTypeProvider, IEngineConfigurationTypeBuilder {
-   private DataSourceFactory? _factory;
+   private AutoPocoDataSourceFactory? _factory;
    private readonly List<IEngineConfigurationTypeMemberProvider> _members = new();
 
    IEngineConfigurationTypeMemberBuilder IEngineConfigurationTypeBuilder.SetupProperty(string propertyName) {
@@ -37,12 +37,12 @@ public class EngineConfigurationTypeBuilder(Type type) : IEngineConfigurationTyp
    }
 
    public IEngineConfigurationTypeBuilder ConstructWith(Type type) {
-      _factory = new DataSourceFactory(type);
+      _factory = new AutoPocoDataSourceFactory(type);
       return this;
    }
 
    public IEngineConfigurationTypeBuilder ConstructWith(Type type, params object[] args) {
-      _factory = new DataSourceFactory(type);
+      _factory = new AutoPocoDataSourceFactory(type);
       _factory.SetParams(args);
       return this;
    }

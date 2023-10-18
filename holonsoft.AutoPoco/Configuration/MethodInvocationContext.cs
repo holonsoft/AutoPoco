@@ -3,10 +3,10 @@
 namespace holonsoft.AutoPoco.Configuration;
 
 public class MethodInvocationContext {
-   private readonly List<DataSourceFactory> _arguments = new();
+   private readonly List<AutoPocoDataSourceFactory> _arguments = new();
 
    public void AddArgumentSource(Type source, params object[]? args) {
-      var factory = new DataSourceFactory(source);
+      var factory = new AutoPocoDataSourceFactory(source);
       factory.SetParams(args!);
       _arguments.Add(factory);
    }
@@ -17,6 +17,6 @@ public class MethodInvocationContext {
    public void AddArgumentValue(object value)
       => AddArgumentSource(typeof(ValueSource<object>), value);
 
-   public IEnumerable<DataSourceFactory> GetArguments()
+   public IEnumerable<AutoPocoDataSourceFactory> GetArguments()
       => _arguments;
 }

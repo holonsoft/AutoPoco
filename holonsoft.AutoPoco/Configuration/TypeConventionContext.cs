@@ -7,10 +7,10 @@ namespace holonsoft.AutoPoco.Configuration;
 public class TypeConventionContext(IEngineConfigurationType type) : ITypeConventionContext {
    public Type Target => type.RegisteredType;
 
-   public void SetFactory(Type factory) => type.SetFactory(new DataSourceFactory(factory));
+   public void SetFactory(Type factory) => type.SetFactory(new AutoPocoDataSourceFactory(factory));
 
    public void SetFactory(Type factory, params object[] ctorArgs) {
-      var sourceFactory = new DataSourceFactory(factory);
+      var sourceFactory = new AutoPocoDataSourceFactory(factory);
       sourceFactory.SetParams(ctorArgs);
       type.SetFactory(sourceFactory);
    }

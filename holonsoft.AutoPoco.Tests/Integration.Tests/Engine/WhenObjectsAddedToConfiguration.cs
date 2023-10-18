@@ -20,11 +20,11 @@ public class WhenObjectsAddedToConfiguration : GenerationSessionFactoryTestBase 
       simpleUserConfig.RegisterMember(firstNameMember);
       simpleUserConfig.RegisterMember(lastNameMember);
 
-      var emailSourceFactory = new DataSourceFactory(typeof(ValueSource<string>));
+      var emailSourceFactory = new AutoPocoDataSourceFactory(typeof(ValueSource<string>));
       emailSourceFactory.SetParams("test@test.com");
-      var firstNameFactory = new DataSourceFactory(typeof(ValueSource<string>));
+      var firstNameFactory = new AutoPocoDataSourceFactory(typeof(ValueSource<string>));
       firstNameFactory.SetParams("first");
-      var lastNameFactory = new DataSourceFactory(typeof(ValueSource<string>));
+      var lastNameFactory = new AutoPocoDataSourceFactory(typeof(ValueSource<string>));
       lastNameFactory.SetParams("last");
 
       simpleUserConfig.GetRegisteredMember(emailMember).SetDataSource(emailSourceFactory);
@@ -40,9 +40,9 @@ public class WhenObjectsAddedToConfiguration : GenerationSessionFactoryTestBase 
       simpleFieldConfig.RegisterMember(someFieldMember);
       simpleFieldConfig.RegisterMember(someOtherField);
 
-      var someFieldFactory = new DataSourceFactory(typeof(ValueSource<string>));
+      var someFieldFactory = new AutoPocoDataSourceFactory(typeof(ValueSource<string>));
       someFieldFactory.SetParams("one");
-      var someOtherFieldFactory = new DataSourceFactory(typeof(ValueSource<string>));
+      var someOtherFieldFactory = new AutoPocoDataSourceFactory(typeof(ValueSource<string>));
       someOtherFieldFactory.SetParams("other");
 
       simpleFieldConfig.GetRegisteredMember(someFieldMember).SetDataSource(someFieldFactory);

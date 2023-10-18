@@ -3,10 +3,6 @@ using holonsoft.AutoPoco.Engine.Interfaces;
 
 namespace holonsoft.AutoPoco.Engine;
 
-public interface IRandomNullEvaluatorSupport {
-   public IRandomNullEvaluator RandomNullEvaluator { get; }
-}
-
 public abstract class DataSourceBase<T> : IDataSource<T>, IRandomNullEvaluatorSupport {
    public IRandomNullEvaluator RandomNullEvaluator { get; set; } = new DefaultRandomNullEvaluator();
 
@@ -23,6 +19,11 @@ public abstract class DataSourceBase<T> : IDataSource<T>, IRandomNullEvaluatorSu
       RandomNullEvaluator.SetSeedToRandomValue(seed);
    }
 
+   public DataSourceBase<T> SetNullCreationThreshold(int nullCreationThreshold) {
+      RandomNullEvaluator = new DefaultRandomNullEvaluator(nullCreationThreshold);
+      return this;
+   }
+
    public void SetRandomNullEvaluator(IRandomNullEvaluator randomNullEvaluator)
       => RandomNullEvaluator = randomNullEvaluator;
 
@@ -32,7 +33,7 @@ public abstract class DataSourceBase<T> : IDataSource<T>, IRandomNullEvaluatorSu
    /// <summary>
    ///   Gets the next object from this data source
    /// </summary>
-   /// <returns></returns>
+   /// <returns>next value</returns>
    protected abstract T GetNextValue(IGenerationContext? context);
 
    public T Next(IGenerationContext? context) {

@@ -9,6 +9,14 @@ public class SimpleUser {
 
    public required SimpleUserRole Role { get; set; }
 
+   public DateOnly Birthday { get; set; }
+
+   public Int128 Id { get; set; }
+
+   public Int128 ExternalId { get; set; }
+
+   public string City { get; set; }
+
    private string? _hiddenPassword;
 
    public string RevealedPassword

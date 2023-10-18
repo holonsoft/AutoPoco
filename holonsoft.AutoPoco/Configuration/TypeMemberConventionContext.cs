@@ -11,7 +11,7 @@ public class TypeMemberConventionContext(IEngineConfiguration configuration, IEn
 
    public void SetValue(object value) {
       var type = typeof(ValueSource<>).MakeGenericType(value.GetType());
-      var factory = new DataSourceFactory(type);
+      var factory = new AutoPocoDataSourceFactory(type);
       factory.SetParams(value);
       member.SetDataSource(factory);
    }
@@ -20,5 +20,5 @@ public class TypeMemberConventionContext(IEngineConfiguration configuration, IEn
       => SetSource(typeof(T));
 
    public void SetSource(Type t) 
-      => member.SetDataSource(new DataSourceFactory(t));
+      => member.SetDataSource(new AutoPocoDataSourceFactory(t));
 }

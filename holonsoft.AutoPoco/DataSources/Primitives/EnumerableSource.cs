@@ -108,7 +108,7 @@ public class EnumerableSource<TSource, T> : DataSourceBase<IEnumerable<T>>
       _maxCount = maxCount;
       _args = args;
 
-      var factory = new DataSourceFactory(typeof(TSource));
+      var factory = new AutoPocoDataSourceFactory(typeof(TSource));
       factory.SetParams(_args);
       _source = (IDataSource<T>) factory.Build()! ?? throw new InvalidOperationException();
    }

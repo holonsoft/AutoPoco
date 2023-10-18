@@ -2,19 +2,40 @@
 using holonsoft.AutoPoco.Engine.Interfaces;
 
 namespace holonsoft.AutoPoco.DataSources.Primitives;
-public abstract class TimeSpanSourceBase<T>(TimeSpan min, TimeSpan max) : DataSourceBase<T> {
+public abstract class TimeSpanSourceBase<T>(TimeSpan minTimeSpan, TimeSpan maxTimeSpan) : DataSourceBase<T> {
+
+   public TimeSpan MinTimeSpan { get; private set; } = minTimeSpan;
+   public TimeSpan MaxTimeSpan { get; private set; } = maxTimeSpan;
+
+   public TimeSpanSourceBase<T> SetMinMaxRange(TimeSpan min, TimeSpan max) {
+      MinTimeSpan = min;
+      MaxTimeSpan = max;
+      return this;
+   }
+
    protected override T GetNextValue(IGenerationContext? context) {
-      var range = (max - min).Ticks;
+      var range = (MaxTimeSpan - MinTimeSpan).Ticks;
       var ticks = (long) (Random.NextDouble() * range);
-      var result = min.Add(TimeSpan.FromTicks(ticks));
+      var result = MinTimeSpan.Add(TimeSpan.FromTicks(ticks));
 
       return (T) (object) result;
    }
 }
 
-public class TimeSpanSource(TimeSpan min, TimeSpan max) : TimeSpanSourceBase<TimeSpan>(min, max) {
+/// <summary>
+/// Create a timespan source
+/// </summary>
+/// <param name="minTimeSpan">Minimum value</param>
+/// <param name="maxTimeSpan">maximum value</param>
+public class TimeSpanSource(TimeSpan minTimeSpan, TimeSpan maxTimeSpan) : TimeSpanSourceBase<TimeSpan>(minTimeSpan, maxTimeSpan) {
    public TimeSpanSource()
       : this(TimeSpan.MinValue, TimeSpan.MaxValue) { }
 }
 
-public class NullableTimeSpanSource(TimeSpan min, TimeSpan max) : TimeSpanSourceBase<TimeSpan?>(min, max) { }
+/// <summary>
+/// Create a timespan source
+/// </summary>
+/// <param name="minTimeSpan">Minimum value</param>
+/// <param name="maxTimeSpan">maximum value</param>
+/// <seealso cref="AutoPocoGlobalSettings"/>
+public class NullableTimeSpanSource(TimeSpan minTimeSpan, TimeSpan maxTimeSpan) : TimeSpanSourceBase<TimeSpan?>(minTimeSpan, maxTimeSpan) { }

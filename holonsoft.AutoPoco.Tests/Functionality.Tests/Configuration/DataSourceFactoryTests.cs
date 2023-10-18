@@ -8,7 +8,7 @@ namespace holonsoft.AutoPoco.Tests.Functionality.Tests.Configuration;
 public class DataSourceFactoryTests {
    [Fact]
    public void BuildReturnsNewFactory() {
-      var factory = new DataSourceFactory(typeof(BlankDataSource));
+      var factory = new AutoPocoDataSourceFactory(typeof(BlankDataSource));
       var source = factory.Build() as BlankDataSource;
 
       source.Should().NotBeNull();

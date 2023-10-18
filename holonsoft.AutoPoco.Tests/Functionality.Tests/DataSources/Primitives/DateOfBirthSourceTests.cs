@@ -14,20 +14,21 @@ public class DateOfBirthSourceTests : TestBase {
       value.Year.Should().BeInRange(2015, 2018);
    }
 
+   
    [Fact]
    public void NextReturnsStableDateTimeListInTermsOfTestability() {
       var source = new DateOfBirthSource();
       NextReturnsStableElementListInTermsOfTestability(source, new DateTime[] {
-         new(1925, 2, 9, 0,0,0,DateTimeKind.Utc),
-         new(2014, 10, 29,0,0,0, DateTimeKind.Utc),
-         new(2017, 3, 12, 0, 0, 0, DateTimeKind.Utc),
-         new(1936, 4, 9, 0, 0, 0, DateTimeKind.Utc),
-         new(1992, 1, 26, 0, 0, 0, DateTimeKind.Utc),
-         new(1901, 10, 29, 0, 0, 0, DateTimeKind.Utc),
-         new(2007, 1, 14, 0, 0, 0, DateTimeKind.Utc),
-         new(2006, 11, 4, 0, 0, 0, DateTimeKind.Utc),
-         new(1990, 6, 13, 0, 0, 0, DateTimeKind.Utc),
-         new(1912, 10, 26, 0, 0, 0, DateTimeKind.Utc)
+         new (1941, 2, 9, 0, 0, 0, DateTimeKind.Utc),
+         new (2086, 10, 29, 0, 0, 0, DateTimeKind.Utc),
+         new (2091, 3, 12, 0, 0, 0, DateTimeKind.Utc),
+         new (1958, 4, 9, 0, 0, 0, DateTimeKind.Utc),
+         new (2050, 1, 26, 0, 0, 0, DateTimeKind.Utc),
+         new (1902, 10, 29, 0, 0, 0, DateTimeKind.Utc),
+         new (2074, 1, 14, 0, 0, 0, DateTimeKind.Utc),
+         new (2072, 11, 4, 0, 0, 0, DateTimeKind.Utc),
+         new (2046, 6, 13, 0, 0, 0, DateTimeKind.Utc),
+         new (1920, 10, 26, 0, 0, 0, DateTimeKind.Utc)
       });
    }
 
@@ -35,16 +36,16 @@ public class DateOfBirthSourceTests : TestBase {
    public void NextReturnsStableDateTimeListInTermsOfTestabilityAndListCanContainNull() {
       var source = new NullableDateOfBirthSource();
       NextReturnsStableElementListInTermsOfTestability(source, new DateTime?[] {
-         new(1925, 2, 9, 0, 0, 0, DateTimeKind.Utc),
+         new (1941, 2, 9, 0, 0, 0, DateTimeKind.Utc),
          null,
-         new(2014, 10, 29, 0, 0, 0, DateTimeKind.Utc),
-         new(2017, 3, 12, 0, 0, 0, DateTimeKind.Utc),
-         new(1936, 4, 9, 0, 0, 0, DateTimeKind.Utc),
-         new(1992, 1, 26, 0, 0, 0, DateTimeKind.Utc),
-         new(1901, 10, 29, 0, 0, 0, DateTimeKind.Utc),
-         new(2007, 1, 14, 0, 0, 0, DateTimeKind.Utc),
-         new(2006, 11, 4, 0, 0, 0, DateTimeKind.Utc),
-         new(1990, 6, 13, 0, 0, 0, DateTimeKind.Utc)
+         new (2086, 10, 29, 0, 0, 0, DateTimeKind.Utc),
+         new (2091, 3, 12, 0, 0, 0, DateTimeKind.Utc),
+         new (1958, 4, 9, 0, 0, 0, DateTimeKind.Utc),
+         new (2050, 1, 26, 0, 0, 0, DateTimeKind.Utc),
+         new (1902, 10, 29, 0, 0, 0, DateTimeKind.Utc),
+         new (2074, 1, 14, 0, 0, 0, DateTimeKind.Utc),
+         new (2072, 11, 4, 0, 0, 0, DateTimeKind.Utc),
+         new (2046, 6, 13, 0, 0, 0, DateTimeKind.Utc),
       });
    }
 }

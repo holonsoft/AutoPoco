@@ -1,6 +1,38 @@
 # holonsoft / AutoPoco
+AutoPoco is a highly configurable framework for the purpose of fluently building readable (test) data.
+holonsoft has ported this famous lib to newest version of dotnet
 
-# new in 4.0.1
+# New in 4.1.1
+* support for typesafe settings via lambda chaining in USE
+* support for own factory outside of AutoPoco in USE
+* many datasources now support this notation
+* now its possible to set the random null evaluator if the standard implementation does not fit
+* now its possible to set the nullable threshold value if the standard value (15) does not fit
+* net7+ : new Int128Source / NullableInt128Source / Int128IdSource
+
+```CSHARP
+_factoryWithComplexRule = AutoPocoContainer.Configure(x => {
+         x.Include<SimpleUser>()
+            .Setup(c => c.FirstName).Use<FirstNameSource>()
+            .Setup(c => c.LastName).Use<LastNameSource>()
+            .Setup(c => c.EmailAddress).Use<EmailAddressSource>()
+            .Setup(c => c.Id).Use<Int128IdSource>(y => y.SetStartValue(100000))
+            .Setup(c => c.ExternalId).Use<Int128Source>()
+
+			// support for external factory
+            .Setup(c => c.City).Use<IDataSource<string>>(new StringDataSourceFactory())
+
+			// support for lambdas to configure a datasource
+            .Setup(c => c.Birthday).Use<DateOnlySource>(
+               x => x.SetMinDate(new DateOnly(1968, 1, 1))
+                     .SetMaxDate(new DateOnly(2023, 10, 17))
+            )
+            .Invoke(c => c.SetPassword(Use.Source<string, PasswordSource>()!));
+      });
+
+```
+
+# New in 4.0.1
 * most of XYdatasources now have a NullableXYDataSource pendant to get random NULL values instead of normal data back. Helpful for DTOs with nullable fields
 * some new datasources, e. g. DateOnlySource, TimeOnlySource, RandomTextSource, LongSource, LongIdSource (and their Nullable pendants)
 * RandomStringSOurce now supports a configurable range of chars (e. g. 'A' .. 'z') or a char[] of allowed chars
@@ -9,11 +41,11 @@
 * Demo project (in tests) updated
 * Please note, the CountrySourceTest may fail on your system. It depends on the culture list of your operation system. 
 
-# breaking change in 4.0.1
+# Breaking change in 4.0.1
 * behaviour change: EmailAddressSource, ExtendedEmailAddressSource now generate data according to RFC2606 to make sure that no valid data will be generated
 * some more grouping of datasources (primitives, business, country)
 
-# new in 3.7.x
+# New in 3.7.x
 * Ported to newest .net version (at the moment 7)
 * Unit tests changed to Xunit (was Nunit)
 * Some more unit tests, now all datasources should be covered
@@ -25,7 +57,7 @@
 * Several improvements regarding code
 * Demo project (in tests) updated
 
-# changes in 3.7.2
+# Changes in 3.7.2
 
 Breaking change: Reorganized datasources
 

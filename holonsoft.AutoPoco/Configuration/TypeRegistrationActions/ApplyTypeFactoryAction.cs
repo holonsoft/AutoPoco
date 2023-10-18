@@ -16,7 +16,7 @@ public class ApplyTypeFactoryAction(IEngineConfigurationProvider configurationPr
       else if (type.GetFactory() == null) {
          // Activator.CreateInstance as a last resort
          var fallbackType = typeof(DefaultSource<>).MakeGenericType(type.RegisteredType);
-         type.SetFactory(new DataSourceFactory(fallbackType));
+         type.SetFactory(new AutoPocoDataSourceFactory(fallbackType));
       }
    }
 }

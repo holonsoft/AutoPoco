@@ -29,6 +29,15 @@ public class DemoAutoPoco {
             .Setup(c => c.FirstName).Use<FirstNameSource>()
             .Setup(c => c.LastName).Use<LastNameSource>()
             .Setup(c => c.EmailAddress).Use<EmailAddressSource>()
+            .Setup(c => c.Id).Use<Int128IdSource>(y => y.SetStartValue(100000))
+            .Setup(c => c.ExternalId).Use<Int128Source>()
+            // support for external factory
+            .Setup(c => c.City).Use<IDataSource<string>>(new StringDataSourceFactory())
+            // support for lambdas to configure a datasource
+            .Setup(c => c.Birthday).Use<DateOnlySource>(
+               x => x.SetMinDate(new DateOnly(1968, 1, 1))
+                                 .SetMaxDate(new DateOnly(2023, 10, 17))
+            )
             .Invoke(c => c.SetPassword(Use.Source<string, PasswordSource>()!));
       });
 
@@ -37,13 +46,17 @@ public class DemoAutoPoco {
             .Setup(c => c.FirstName).Use<FirstNameSource>()
             .Setup(c => c.LastName).Use<LastNameSource>()
             .Setup(c => c.EmailAddress).Use<EmailAddressSource>()
+            .Setup(c => c.Id).Use<Int128IdSource>(y => y.SetStartValue(100000))
+            .Setup(c => c.ExternalId).Use<Int128Source>()
+            .Setup(c => c.City).Use<IDataSource<string>>(new StringDataSourceFactory())
+            .Setup(c => c.Birthday).Use<DateOnlySource>(
+               x => x.SetDateRange(new DateOnly(1968, 1, 1), new DateOnly(2023, 10, 17)))
             .Invoke(c => c.SetPassword(Use.Source<string, PasswordSource>()!));
       });
-
    }
 
    [Fact]
-   public void SomeDemostrationOfComplexGenerations() {
+   public void SomeDemonstrationOfComplexGenerations() {
       // Generate one of these per test (factory will be a static variable most likely)
       var session1 = _factoryWithDefaults.CreateSession();
 
@@ -80,6 +93,9 @@ public class DemoAutoPoco {
       user.FirstName.Should().Be("Olivia");
       user.LastName.Should().Be("Turner");
       user.RevealedPassword.Should().Be("GRvqwwLW");
+      user.ExternalId.Should().NotBe(0);
+      user.Id.Should().NotBe(0);
+      user.City.Should().NotBeNullOrWhiteSpace().And.NotBe("no-city");
 
       // Create three roles
       // Create 100 users
