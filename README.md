@@ -3,7 +3,7 @@ AutoPoco is a highly configurable framework for the purpose of fluently building
 holonsoft ported this famous lib to newest version of dotnet
 
 # New in 4.1.2
-* small bugix for TimeSpan (underflow / overflow) calculation
+* small bugfix for TimeSpan (underflow / overflow) calculation
 
 # New in 4.1.1
 * support for typesafe settings via lambda chaining in USE
