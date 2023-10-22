@@ -1,6 +1,9 @@
 # holonsoft / AutoPoco
 AutoPoco is a highly configurable framework for the purpose of fluently building readable (test) data.
-holonsoft has ported this famous lib to newest version of dotnet
+holonsoft ported this famous lib to newest version of dotnet
+
+# New in 4.1.2
+* small bugix for TimeSpan (underflow / overflow) calculation
 
 # New in 4.1.1
 * support for typesafe settings via lambda chaining in USE
@@ -19,10 +22,10 @@ _factoryWithComplexRule = AutoPocoContainer.Configure(x => {
             .Setup(c => c.Id).Use<Int128IdSource>(y => y.SetStartValue(100000))
             .Setup(c => c.ExternalId).Use<Int128Source>()
 
-			// support for external factory
+            // support for external factory
             .Setup(c => c.City).Use<IDataSource<string>>(new StringDataSourceFactory())
 
-			// support for lambdas to configure a datasource
+            // support for lambdas to configure a datasource
             .Setup(c => c.Birthday).Use<DateOnlySource>(
                x => x.SetMinDate(new DateOnly(1968, 1, 1))
                      .SetMaxDate(new DateOnly(2023, 10, 17))
