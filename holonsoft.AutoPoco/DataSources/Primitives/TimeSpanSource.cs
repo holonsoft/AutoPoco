@@ -16,6 +16,13 @@ public abstract class TimeSpanSourceBase<T>(TimeSpan minTimeSpan, TimeSpan maxTi
    protected override T GetNextValue(IGenerationContext? context) {
       var range = (MaxTimeSpan - MinTimeSpan).Ticks;
       var ticks = (long) (Random.NextDouble() * range);
+
+      while (ticks < MinTimeSpan.Ticks)
+         ticks *= Random.Next(1, 3);
+
+      while ((MinTimeSpan.Ticks + ticks) > MaxTimeSpan.Ticks)
+         ticks /= Random.Next(2, 4);
+
       var result = MinTimeSpan.Add(TimeSpan.FromTicks(ticks));
 
       return (T) (object) result;
@@ -38,4 +45,8 @@ public class TimeSpanSource(TimeSpan minTimeSpan, TimeSpan maxTimeSpan) : TimeSp
 /// <param name="minTimeSpan">Minimum value</param>
 /// <param name="maxTimeSpan">maximum value</param>
 /// <seealso cref="AutoPocoGlobalSettings"/>
-public class NullableTimeSpanSource(TimeSpan minTimeSpan, TimeSpan maxTimeSpan) : TimeSpanSourceBase<TimeSpan?>(minTimeSpan, maxTimeSpan) { }
+public class NullableTimeSpanSource(TimeSpan minTimeSpan, TimeSpan maxTimeSpan) : TimeSpanSourceBase<TimeSpan?>(minTimeSpan, maxTimeSpan)
+{
+   public NullableTimeSpanSource()
+      : this(TimeSpan.MinValue, TimeSpan.MaxValue) { }
+}
