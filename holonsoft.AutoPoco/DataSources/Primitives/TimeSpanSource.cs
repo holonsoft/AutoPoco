@@ -17,6 +17,12 @@ public abstract class TimeSpanSourceBase<T>(TimeSpan minTimeSpan, TimeSpan maxTi
       var range = (MaxTimeSpan - MinTimeSpan).Ticks;
       var ticks = (long) (Random.NextDouble() * range);
 
+      if (ticks < TimeSpan.MinValue.Ticks)
+         ticks = TimeSpan.MinValue.Ticks;
+
+      if (ticks > TimeSpan.MaxValue.Ticks) 
+         ticks = TimeSpan.MaxValue.Ticks;
+
       while (ticks < MinTimeSpan.Ticks)
          ticks *= Random.Next(1, 3);
 
