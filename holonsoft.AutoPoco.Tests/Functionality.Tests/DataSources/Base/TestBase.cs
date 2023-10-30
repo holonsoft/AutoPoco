@@ -21,19 +21,19 @@ public class TestBase() {
 
       List<T> randomGenerated1 = new();
       source.SetSeedToRandomValue();
-      for (var i = 0; i < 10; i++)
+      for (var i = 0; i < expectedValues.Length; i++)
          randomGenerated1.Add(source.Next(null));
 
       randomGenerated1.Should()
-         .HaveCount(10);
+         .HaveCount(expectedValues.Length);
 
       List<T> randomGenerated2 = new();
       source.SetSeedToRandomValue(1968);
-      for (var i = 0; i < 10; i++)
+      for (var i = 0; i < expectedValues.Length; i++)
          randomGenerated2.Add(source.Next(null));
 
       randomGenerated2.Should()
-         .HaveCount(10);
+         .HaveCount(expectedValues.Length);
 
       randomGenerated1.Should().NotBeEquivalentTo(expectedValues);
       randomGenerated2.Should().NotBeEquivalentTo(expectedValues);
