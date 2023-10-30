@@ -17,7 +17,7 @@ public class SimpleUser {
 
    public TimeSpan TimeSpan { get; set; }
 
-   public string City { get; set; }
+   public string? City { get; set; }
 
    private string? _hiddenPassword;
 
