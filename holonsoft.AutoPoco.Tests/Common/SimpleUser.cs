@@ -15,6 +15,8 @@ public class SimpleUser {
 
    public Int128 ExternalId { get; set; }
 
+   public TimeSpan TimeSpan { get; set; }
+
    public string City { get; set; }
 
    private string? _hiddenPassword;

@@ -15,17 +15,17 @@ public class TimeSpanSourceTests : TestBase {
       value2.Should().NotBe(value1);
 
       NextReturnsStableElementListInTermsOfTestability(source, new TimeSpan[] {
-            new(-3700680842),
-            new(8627187683),
-            new(6849344408),
-            new(9205046584),
-            new(9156634835),
-            new(-6115511263),
-            new(-2264435866),
-            new(-4121559893),
-            new(-3987557150),
-            new(-4349441889),
-         });
+         new(-3700680841),
+         new(8627187683),
+         new(6849344408),
+         new(9205046584),
+         new(9156634835),
+         new(-6115511262),
+         new(-2264435865),
+         new(-4121559892),
+         new(-3987557149),
+         new(-4349441888),
+      });
    }
 
    [Fact]
@@ -33,16 +33,16 @@ public class TimeSpanSourceTests : TestBase {
       var source = new NullableTimeSpanSource(new TimeSpan(-10000000000), new TimeSpan(10000000000));
 
       NextReturnsStableElementListInTermsOfTestability(source, new TimeSpan?[] {
-         new(-5822233184),
+         new(-5822233183),
          null,
-         new(-7639658450),
-         new(-3700680842),
+         new(-7639658449),
+         new(-3700680841),
          new(8627187683),
          new(6849344408),
          new(9205046584),
          new(9156634835),
-         new(-6115511263),
-         new(-2264435866),
-         });
+         new(-6115511262),
+         new(-2264435865),
+      });
    }
 }

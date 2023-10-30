@@ -31,6 +31,7 @@ public class DemoAutoPoco {
             .Setup(c => c.EmailAddress).Use<EmailAddressSource>()
             .Setup(c => c.Id).Use<Int128IdSource>(y => y.SetStartValue(100000))
             .Setup(c => c.ExternalId).Use<Int128Source>()
+            .Setup(c => c.TimeSpan).Use<TimeSpanSource>()
             // support for external factory
             .Setup(c => c.City).Use<IDataSource<string>>(new StringDataSourceFactory())
             // support for lambdas to configure a datasource
