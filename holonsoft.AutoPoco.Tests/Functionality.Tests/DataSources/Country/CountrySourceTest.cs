@@ -4,22 +4,37 @@ using holonsoft.AutoPoco.Tests.Functionality.Tests.DataSources.Base;
 
 namespace holonsoft.AutoPoco.Tests.Functionality.Tests.DataSources.Country;
 
-public class CountrySourceTest() : TestBase {
+public class CountrySourceTest : TestBase {
    [Fact]
    public void NextReturnsStableCountryListInTermsOfTestability()
       => NextReturnsStableElementListInTermsOfTestability(
          new CountrySource(),
-         // TODO: this list is depending on OS, WIN 11 has this result: 
-         "Cook Islands", "British Indian Ocean Territory", "France", "U.S. Outlying Islands", "St. Pierre & Miquelon", 
-         "Uruguay", "United States", "Colombia", "Guyana", "Europe"
-         );
+         "Croatia", "Brazil", "Gambia", "Uganda", "Sri Lanka", "Uzbekistan", "Uruguay", "Comoros", "India", "Fiji"
+      );
 
    [Fact]
    public void NextReturnsStableCountryListInTermsOfTestabilityAndListCanContainNull()
-         => NextReturnsStableElementListInTermsOfTestability(
-            new NullableCountrySource()!,
-            "Cook Islands", "British Indian Ocean Territory", "France", "U.S. Outlying Islands", "St. Pierre & Miquelon", 
-            "Uruguay", "United States", "Colombia", "Guyana", "Europe", "Faroe Islands", "Eswatini", "Rwanda", "Australia", "St. Pierre & Miquelon",
-            "Algeria", "Tanzania", "U.S. Virgin Islands", null, null
-            );
+      => NextReturnsStableElementListInTermsOfTestability(
+         new NullableCountrySource()!,
+         "Croatia", "Brazil", "Gambia", "Uganda", "Sri Lanka", "Uzbekistan", "Uruguay", "Comoros", "India", "Fiji",
+         "Finland", "Eswatini", "Saint Vincent and the Grenadines", "Austria", "Sri Lanka", "Algeria", "Tanzania",
+         "Ukraine", null, null, "Syria", "Albania"
+      );
+
+   [Fact]
+   public void NextReturnsStableCountryAbbreviationListInTermsOfTestability()
+      => NextReturnsStableElementListInTermsOfTestability(
+         new CountrySource(true),
+         "HRV", "BRA", "GMB", "UGA", "LKA", "UZB", "URY", "COM", "IND", "FJI"
+      );
+
+   [Fact]
+   public void NextReturnsStableCountryAbbreviationListInTermsOfTestabilityAndListCanContainNull()
+      => NextReturnsStableElementListInTermsOfTestability(
+         new NullableCountrySource(true)!,
+         "HRV", "BRA", "GMB", "UGA", "LKA", "UZB", "URY", "COM", "IND", "FJI",
+         "FIN", "SWZ", "VCT", "AUT", "LKA", "DZA", "TZA",
+         "UKR", null, null, "SYR", "ALB"
+      );
+
 }

@@ -1,53 +1,224 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CountrySource.cs" company="AutoPoco">
-//   Microsoft Public License (Ms-PL)
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-using System.Globalization;
+﻿using System.Globalization;
 using holonsoft.AutoPoco.Configuration;
 using holonsoft.AutoPoco.DataSources.Base;
 
 namespace holonsoft.AutoPoco.DataSources.Country;
 
-public abstract class CountrySourceBase(int? nullCreationThreshold = null) : FixedArrayWithStringsSourceBase(nullCreationThreshold) {
-   private static readonly string[] _englishCountryNamesFromCultureList;
-   protected override string[] Data => _englishCountryNamesFromCultureList;
+public abstract class CountrySourceBase(bool useAbbreviations, int? nullCreationThreshold = null) : DictionarySourceBase(useAbbreviations, nullCreationThreshold) {
+   private static readonly Dictionary<string, string> _countryCodes = new() {
+      { "Afghanistan", "AFG" },
+      { "Albania", "ALB" },
+      { "Algeria", "DZA" },
+      { "Andorra", "AND" },
+      { "Angola", "AGO" },
+      { "Antigua and Barbuda", "ATG" },
+      { "Argentina", "ARG" },
+      { "Armenia", "ARM" },
+      { "Australia", "AUS" },
+      { "Austria", "AUT" },
+      { "Azerbaijan", "AZE" },
+      { "Bahamas", "BHS" },
+      { "Bahrain", "BHR" },
+      { "Bangladesh", "BGD" },
+      { "Barbados", "BRB" },
+      { "Belarus", "BLR" },
+      { "Belgium", "BEL" },
+      { "Belize", "BLZ" },
+      { "Benin", "BEN" },
+      { "Bhutan", "BTN" },
+      { "Bolivia", "BOL" },
+      { "Bosnia and Herzegovina", "BIH" },
+      { "Botswana", "BWA" },
+      { "Brazil", "BRA" },
+      { "Brunei", "BRN" },
+      { "Bulgaria", "BGR" },
+      { "Burkina Faso", "BFA" },
+      { "Burundi", "BDI" },
+      { "Cabo Verde", "CPV" },
+      { "Cambodia", "KHM" },
+      { "Cameroon", "CMR" },
+      { "Canada", "CAN" },
+      { "Central African Republic", "CAF" },
+      { "Chad", "TCD" },
+      { "Chile", "CHL" },
+      { "China", "CHN" },
+      { "Colombia", "COL" },
+      { "Comoros", "COM" },
+      { "Congo", "COG" },
+      { "Costa Rica", "CRI" },
+      { "Croatia", "HRV" },
+      { "Cuba", "CUB" },
+      { "Cyprus", "CYP" },
+      { "Czechia", "CZE" },
+      { "Denmark", "DNK" },
+      { "Djibouti", "DJI" },
+      { "Dominica", "DMA" },
+      { "Dominican Republic", "DOM" },
+      { "East Timor", "TLS" },
+      { "Ecuador", "ECU" },
+      { "Egypt", "EGY" },
+      { "El Salvador", "SLV" },
+      { "Equatorial Guinea", "GNQ" },
+      { "Eritrea", "ERI" },
+      { "Estonia", "EST" },
+      { "Eswatini", "SWZ" },
+      { "Ethiopia", "ETH" },
+      { "Fiji", "FJI" },
+      { "Finland", "FIN" },
+      { "France", "FRA" },
+      { "Gabon", "GAB" },
+      { "Gambia", "GMB" },
+      { "Georgia", "GEO" },
+      { "Germany", "DEU" },
+      { "Ghana", "GHA" },
+      { "Greece", "GRC" },
+      { "Grenada", "GRD" },
+      { "Guatemala", "GTM" },
+      { "Guinea", "GIN" },
+      { "Guinea-Bissau", "GNB" },
+      { "Guyana", "GUY" },
+      { "Haiti", "HTI" },
+      { "Honduras", "HND" },
+      { "Hungary", "HUN" },
+      { "Iceland", "ISL" },
+      { "India", "IND" },
+      { "Indonesia", "IDN" },
+      { "Iran", "IRN" },
+      { "Iraq", "IRQ" },
+      { "Ireland", "IRL" },
+      { "Israel", "ISR" },
+      { "Italy", "ITA" },
+      { "Ivory Coast", "CIV" },
+      { "Jamaica", "JAM" },
+      { "Japan", "JPN" },
+      { "Jordan", "JOR" },
+      { "Kazakhstan", "KAZ" },
+      { "Kenya", "KEN" },
+      { "Kiribati", "KIR" },
+      { "Korea, North", "PRK" },
+      { "Korea, South", "KOR" },
+      { "Kosovo", "XKX" },
+      { "Kuwait", "KWT" },
+      { "Kyrgyzstan", "KGZ" },
+      { "Laos", "LAO" },
+      { "Latvia", "LVA" },
+      { "Lebanon", "LBN" },
+      { "Lesotho", "LSO" },
+      { "Liberia", "LBR" },
+      { "Libya", "LBY" },
+      { "Liechtenstein", "LIE" },
+      { "Lithuania", "LTU" },
+      { "Luxembourg", "LUX" },
+      { "Madagascar", "MDG" },
+      { "Malawi", "MWI" },
+      { "Malaysia", "MYS" },
+      { "Maldives", "MDV" },
+      { "Mali", "MLI" },
+      { "Malta", "MLT" },
+      { "Marshall Islands", "MHL" },
+      { "Mauritania", "MRT" },
+      { "Mauritius", "MUS" },
+      { "Mexico", "MEX" },
+      { "Micronesia", "FSM" },
+      { "Moldova", "MDA" },
+      { "Monaco", "MCO" },
+      { "Mongolia", "MNG" },
+      { "Montenegro", "MNE" },
+      { "Morocco", "MAR" },
+      { "Mozambique", "MOZ" },
+      { "Myanmar", "MMR" },
+      { "Namibia", "NAM" },
+      { "Nauru", "NRU" },
+      { "Nepal", "NPL" },
+      { "Netherlands", "NLD" },
+      { "New Zealand", "NZL" },
+      { "Nicaragua", "NIC" },
+      { "Niger", "NER" },
+      { "Nigeria", "NGA" },
+      { "North Macedonia", "MKD" },
+      { "Norway", "NOR" },
+      { "Oman", "OMN" },
+      { "Pakistan", "PAK" },
+      { "Palau", "PLW" },
+      { "Panama", "PAN" },
+      { "Papua New Guinea", "PNG" },
+      { "Paraguay", "PRY" },
+      { "Peru", "PER" },
+      { "Philippines", "PHL" },
+      { "Poland", "POL" },
+      { "Portugal", "PRT" },
+      { "Qatar", "QAT" },
+      { "Romania", "ROU" },
+      { "Russia", "RUS" },
+      { "Rwanda", "RWA" },
+      { "Saint Kitts and Nevis", "KNA" },
+      { "Saint Lucia", "LCA" },
+      { "Saint Vincent and the Grenadines", "VCT" },
+      { "Samoa", "WSM" },
+      { "San Marino", "SMR" },
+      { "Sao Tome and Principe", "STP" },
+      { "Saudi Arabia", "SAU" },
+      { "Senegal", "SEN" },
+      { "Serbia", "SRB" },
+      { "Seychelles", "SYC" },
+      { "Sierra Leone", "SLE" },
+      { "Singapore", "SGP" },
+      { "Slovakia", "SVK" },
+      { "Slovenia", "SVN" },
+      { "Solomon Islands", "SLB" },
+      { "Somalia", "SOM" },
+      { "South Africa", "ZAF" },
+      { "South Sudan", "SSD" },
+      { "Spain", "ESP" },
+      { "Sri Lanka", "LKA" },
+      { "Sudan", "SDN" },
+      { "Suriname", "SUR" },
+      { "Sweden", "SWE" },
+      { "Switzerland", "CHE" },
+      { "Syria", "SYR" },
+      { "Taiwan", "TWN" },
+      { "Tajikistan", "TJK" },
+      { "Tanzania", "TZA" },
+      { "Thailand", "THA" },
+      { "Togo", "TGO" },
+      { "Tonga", "TON" },
+      { "Trinidad and Tobago", "TTO" },
+      { "Tunisia", "TUN" },
+      { "Turkey", "TUR" },
+      { "Turkmenistan", "TKM" },
+      { "Tuvalu", "TUV" },
+      { "Uganda", "UGA" },
+      { "Ukraine", "UKR" },
+      { "United Arab Emirates", "ARE" },
+      { "United Kingdom", "GBR" },
+      { "United States", "USA" },
+      { "Uruguay", "URY" },
+      { "Uzbekistan", "UZB" },
+      { "Vanuatu", "VUT" },
+      { "Vatican City", "VAT" },
+      { "Venezuela", "VEN" },
+      { "Vietnam", "VNM" },
+      { "Yemen", "YEM" },
+      { "Zambia", "ZMB" },
+      { "Zimbabwe", "ZWE" }
+   };
 
-   static CountrySourceBase()
-      => _englishCountryNamesFromCultureList = CultureInfo
-         .GetCultures(CultureTypes.AllCultures & ~CultureTypes.NeutralCultures)
-         .Where(x => !x.EnglishName.Contains(','))
-         .Select(x => x.EnglishName)
-         .Select(FormatEnglishName)
-         .Distinct()
-         .OrderBy(FormatEnglishName)
-         .ToArray();
-
-   private static string FormatEnglishName(string englishName) {
-      var startIndex = englishName.IndexOf("(", StringComparison.Ordinal) + 1;
-      var endIndex = englishName.IndexOf(")", StringComparison.Ordinal);
-
-      if (startIndex > 0 && endIndex > startIndex)
-         return englishName[startIndex..endIndex];
-
-      return englishName;
-   }
+   public override Dictionary<string, string> Dictionary => _countryCodes;
 }
 
 /// <summary>
-///   The country source. Generated by reading all cultures 
+///   The country source. Static list with the status of 2023 
 /// </summary>
-public class CountrySource : CountrySourceBase {
-   public CountrySource() { }
+public class CountrySource(bool useAbbreviations) : CountrySourceBase(useAbbreviations, null) {
+   public CountrySource() : this(false) { }
 }
 
 /// <summary>
-///   The country source. Generated by reading all cultures 
+///   The country source. Static list with the status of 2023 
 ///   Result can be NULL, too 
 /// </summary>
-public class NullableCountrySource : CountrySourceBase {
-   public NullableCountrySource() : base(AutoPocoGlobalSettings.NullCreationThreshold) { }
+public class NullableCountrySource(bool useAbbreviations, int nullCreationThreshold) : CountrySourceBase(useAbbreviations, nullCreationThreshold) {
+   public NullableCountrySource() : this(false, AutoPocoGlobalSettings.NullCreationThreshold) { }
 
-   public NullableCountrySource(int nullCreationThreshold) : base(nullCreationThreshold) { }
+   public NullableCountrySource(bool useAbbreviations) : this(useAbbreviations, AutoPocoGlobalSettings.NullCreationThreshold) { }
 }
