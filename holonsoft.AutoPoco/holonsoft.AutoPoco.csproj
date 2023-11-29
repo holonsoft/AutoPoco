@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>.net6.0;.net7.0</TargetFrameworks>
-    <Version>4.1.3</Version>
+    <TargetFrameworks>.net6.0;.net7.0;net8.0</TargetFrameworks>
+    <Version>4.2.1</Version>
     <Company>holonsoft</Company>
     <Authors>Christian Vogt</Authors>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -13,10 +13,10 @@
     <RepositoryUrl>https://github.com/holonsoft/AutoPoco</RepositoryUrl>
     <RepositoryType>GIT</RepositoryType>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageTags>#net6.0 #net7.0 #autopoco #autogenerateobjects #autogenerate #generator</PackageTags>
+    <PackageTags>#net6.0 #net7.0 #net8.0 #autopoco #autogenerateobjects #autogenerate #generator</PackageTags>
     <PackageReleaseNotes>Have fun</PackageReleaseNotes>
-    <AssemblyVersion>4.1.3</AssemblyVersion>
-    <FileVersion>4.1.3</FileVersion>
+    <AssemblyVersion>4.2.1</AssemblyVersion>
+    <FileVersion>4.2.1</FileVersion>
     <IsPublishable>True</IsPublishable>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -55,7 +55,7 @@
 
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="6.12.0" />
-    <PackageReference Include="Moq" Version="4.20.69" />
+    <PackageReference Include="Moq" Version="4.20.70" />
   </ItemGroup>
 
   <ItemGroup>

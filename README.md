@@ -2,6 +2,11 @@
 AutoPoco is a highly configurable framework for the purpose of fluently building readable (test) data.
 holonsoft ported this famous lib to newest version of dotnet
 
+# New in 4.2.1
+* Support for .net8
+* Update of several nugets (xunit, moq) to newest version
+
+
 # New in 4.1.3
 * CountrySource as a stable country list (status of 2023) added, support for ISO3-Codes as abbreviation
 * CountrySource (old) is now CountryFromCultureListSource. This source is not stable in terms of repeatable test data because it depends on culture list of underlying operation system. This causes tests to fail e. g. in build pipelines.
