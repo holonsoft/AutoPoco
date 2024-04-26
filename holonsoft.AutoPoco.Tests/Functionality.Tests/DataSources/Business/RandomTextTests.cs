@@ -42,7 +42,7 @@ public class RandomTextTests : TestBase {
          loopProtectionCounter++;
 
          if (loopProtectionCounter > 20)
-            throw new Exception($"Expected to get a result NULL, but did not occure the last {loopProtectionCounter} times");
+            throw new Exception($"Expected to get a result NULL, but did not occur the last {loopProtectionCounter} times");
       }
    }
 }
