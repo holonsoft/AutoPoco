@@ -2,6 +2,9 @@
 AutoPoco is a highly configurable framework for the purpose of fluently building readable (test) data.
 holonsoft ported this famous lib to newest version of dotnet
 
+# New in 4.2.2
+* RandomUtfTextSource / NullableRandomUtfTextSource added
+
 # New in 4.2.1
 * Support for .net8
 * Update of several nugets (xunit, moq) to newest version
