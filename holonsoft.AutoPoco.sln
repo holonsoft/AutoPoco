@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.3.11218.70
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "holonsoft.AutoPoco", "holonsoft.AutoPoco\holonsoft.AutoPoco.csproj", "{13CB1620-6FC3-1C18-555F-892962877AD6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "holonsoft.AutoPoco.Tests", "holonsoft.AutoPoco.Tests\holonsoft.AutoPoco.Tests.csproj", "{55AA6D62-1BC3-6A80-0EB0-2653E7992D87}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{13CB1620-6FC3-1C18-555F-892962877AD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13CB1620-6FC3-1C18-555F-892962877AD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13CB1620-6FC3-1C18-555F-892962877AD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13CB1620-6FC3-1C18-555F-892962877AD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55AA6D62-1BC3-6A80-0EB0-2653E7992D87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55AA6D62-1BC3-6A80-0EB0-2653E7992D87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55AA6D62-1BC3-6A80-0EB0-2653E7992D87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55AA6D62-1BC3-6A80-0EB0-2653E7992D87}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {96D93318-B5D8-4D96-8AF3-38CFD4A11A94}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="holonsoft.AutoPoco.Tests/holonsoft.AutoPoco.Tests.csproj" />
+  <Project Path="holonsoft.AutoPoco/holonsoft.AutoPoco.csproj" />
+</Solution>
