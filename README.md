@@ -1,4 +1,8 @@
 # holonsoft / AutoPoco
+
+[![CI](https://github.com/holonsoft/AutoPoco/actions/workflows/ci.yml/badge.svg)](https://github.com/holonsoft/AutoPoco/actions/workflows/ci.yml)
+[![NuGet](https://img.shields.io/nuget/v/holonsoft.AutoPoco.svg)](https://www.nuget.org/packages/holonsoft.AutoPoco/)
+
 AutoPoco is a highly configurable framework for the purpose of fluently building readable (test) data.
 holonsoft ported this famous lib to newest version of dotnet
 
