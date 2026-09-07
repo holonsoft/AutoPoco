@@ -16,8 +16,6 @@ public class CapitalSourceTest() : TestBase {
    public void NextReturnsStableCapitalListInTermsOfTestabilityAndListCanContainNull()
       => NextReturnsStableElementListInTermsOfTestability(
          new NullableCapitalSource()!,
-         new string?[] {
-            "Ankara", "Stockholm", "Kuwait City", "Algiers", "Amman", "Nouakchott", "Nouakchott", "Athens", "Damascus", "Nairobi",
-            "Riyadh", "Accra", "Hanoi", "Amsterdam", "Jerusalem", "Paris", "Abu Dhabi", "Rabat", null, null
-         });
+         "Ankara", null, "Stockholm", "Kuwait City", "Algiers", "Amman", "Nouakchott", "Nouakchott", "Athens", "Damascus",
+         "Nairobi", "Riyadh", "Accra", null, "Hanoi", null, "Amsterdam", "Jerusalem", "Paris", null);
 }

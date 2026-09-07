@@ -15,9 +15,9 @@ public class FirstNameSourceTests : TestBase {
    public void NextReturnsStableFirstNameListInTermsOfTestabilityAndListCanContainNull()
       => NextReturnsStableElementListInTermsOfTestability(
          new NullableFirstNameSource()!,
-         "Olivia", "Christopher", "Tyler", "Jason", "Zoe", "Eric", "Eric", "Sophia", "Abigail", "Ethan", "Nicholas", "Evelyn", "James", "Aria", "Zoe",
-         "Claire", "Daniel", "Scott", null, null,
-         "David", "Alexa", "Scarlett", "Joseph", "Kenneth", "David", "Matthew", "Scarlett", "Grace", "Michael"
+         "Olivia", null, "Christopher", "Tyler", "Jason", "Zoe", "Eric", "Eric", "Sophia", "Abigail",
+         "Ethan", "Nicholas", "Evelyn", null, "James", null, "Aria", "Zoe", "Claire", null,
+         "Daniel", "Scott", "David", null, "Alexa", "Scarlett", "Joseph", null, "Kenneth", "David"
          );
 
 }

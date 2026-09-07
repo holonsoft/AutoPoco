@@ -23,4 +23,12 @@ public interface IEngineConfigurationBuilder {
    ///   Manually adds a type provider to the builder
    /// </summary>
    void RegisterTypeProvider(IEngineConfigurationTypeProvider provider);
+
+   /// <summary>
+   ///   Lets nullable annotations drive null generation: every property or field declared as nullable
+   ///   (<c>string?</c>, <c>int?</c>, ...) becomes null with the given probability, whatever its data source.
+   ///   Off by default. Members without a nullable annotation and values set by <c>Impose</c> are never touched.
+   /// </summary>
+   /// <param name="nullCreationThreshold">probability in percent (0 to 100), default is <see cref="AutoPocoGlobalSettings.NullCreationThreshold" /></param>
+   void RespectNullableAnnotations(int? nullCreationThreshold = null);
 }

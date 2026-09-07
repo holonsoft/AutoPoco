@@ -15,6 +15,6 @@ public class LastNameSourceTests : TestBase {
    public void NextReturnsStableLastNamesListInTermsOfTestabilityAndListCanContainNull()
       => NextReturnsStableElementListInTermsOfTestability(
          new NullableLastNameSource()!,
-         "Turner", "Martin", "Murphy", "Pierce", "Wells", "Scott", "Scott", "Baker", "Perez", "Evans");
+         "Turner", null, "Martin", "Murphy", "Pierce", "Wells", "Scott", "Scott", "Baker", "Perez");
 
 }

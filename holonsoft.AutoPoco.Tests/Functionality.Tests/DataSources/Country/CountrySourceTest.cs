@@ -16,9 +16,9 @@ public class CountrySourceTest : TestBase {
    public void NextReturnsStableCountryListInTermsOfTestabilityAndListCanContainNull()
       => NextReturnsStableElementListInTermsOfTestability(
          new NullableCountrySource()!,
-         "Croatia", "Brazil", "Gambia", "Uganda", "Sri Lanka", "Uzbekistan", "Uruguay", "Comoros", "India", "Fiji",
-         "Finland", "Eswatini", "Saint Vincent and the Grenadines", "Austria", "Sri Lanka", "Algeria", "Tanzania",
-         "Ukraine", null, null, "Syria", "Albania"
+         "Croatia", null, "Brazil", "Gambia", "Uganda", "Sri Lanka", "Uzbekistan", "Uruguay", "Comoros", "India",
+         "Fiji", "Finland", "Eswatini", null, "Saint Vincent and the Grenadines", null, "Austria", "Sri Lanka", "Algeria", null,
+         "Tanzania", "Ukraine"
       );
 
    [Fact]
@@ -32,9 +32,9 @@ public class CountrySourceTest : TestBase {
    public void NextReturnsStableCountryAbbreviationListInTermsOfTestabilityAndListCanContainNull()
       => NextReturnsStableElementListInTermsOfTestability(
          new NullableCountrySource(true)!,
-         "HRV", "BRA", "GMB", "UGA", "LKA", "UZB", "URY", "COM", "IND", "FJI",
-         "FIN", "SWZ", "VCT", "AUT", "LKA", "DZA", "TZA",
-         "UKR", null, null, "SYR", "ALB"
+         "HRV", null, "BRA", "GMB", "UGA", "LKA", "UZB", "URY", "COM", "IND",
+         "FJI", "FIN", "SWZ", null, "VCT", null, "AUT", "LKA", "DZA", null,
+         "TZA", "UKR"
       );
 
 }

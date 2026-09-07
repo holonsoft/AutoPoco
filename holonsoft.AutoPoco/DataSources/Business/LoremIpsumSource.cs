@@ -6,10 +6,10 @@ using holonsoft.AutoPoco.Properties;
 
 namespace holonsoft.AutoPoco.DataSources.Business;
 
-public abstract class LoremIpsumSourceBase(int count, int? nullCreationThreshold = null) : DataSourceBase<string> {
+public abstract class LoremIpsumSourceBase(int count, int? nullCreationThreshold = null) : DataSourceBase<string>(nullCreationThreshold) {
 
    protected override string GetNextValue(IGenerationContext? context) {
-      if (nullCreationThreshold.HasValue) {
+      if (NullCreationThreshold.HasValue) {
          if (RandomNullEvaluator.ShouldNextValueReturnNull())
             return null!;
       }

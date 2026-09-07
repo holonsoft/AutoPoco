@@ -4,11 +4,11 @@ using holonsoft.AutoPoco.Engine.Interfaces;
 
 namespace holonsoft.AutoPoco.DataSources.Business;
 
-public abstract class EmailAddressSourceBase(string namePartPrefix, string domain, int? nullCreationThreshold = null) : DataSourceBase<string> {
+public abstract class EmailAddressSourceBase(string namePartPrefix, string domain, int? nullCreationThreshold = null) : DataSourceBase<string>(nullCreationThreshold) {
    private int _index;
 
    protected override string GetNextValue(IGenerationContext? context) {
-      if (nullCreationThreshold.HasValue) {
+      if (NullCreationThreshold.HasValue) {
          if (RandomNullEvaluator.ShouldNextValueReturnNull())
             return null!;
       }

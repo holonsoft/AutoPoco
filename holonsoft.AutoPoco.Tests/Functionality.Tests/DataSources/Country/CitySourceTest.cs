@@ -17,8 +17,6 @@ public class CitySourceTest() : TestBase {
    public void NextReturnsStableCityListInTermsOfTestabilityAndListCanContainNull()
       => NextReturnsStableElementListInTermsOfTestability(
          new NullableCitySource()!,
-         new string?[] {
-         "Lima", "Lahore", "Rio de Janeiro", "Monaco", "Ulaanbaatar", "Basseterre", "Basseterre", "Mexico City", "Guangzhou", "Chennai", "Taipei", "Kuala Lumpur",
-            "Tripoli", "Dhaka", "Ulaanbaatar", "Beijing", "Asmara", "Vatican City", null, null
-         });
+         "Lima", null, "Lahore", "Rio de Janeiro", "Monaco", "Ulaanbaatar", "Basseterre", "Basseterre", "Mexico City", "Guangzhou",
+         "Chennai", "Taipei", "Kuala Lumpur", null, "Tripoli", null, "Dhaka", "Ulaanbaatar", "Beijing", null);
 }

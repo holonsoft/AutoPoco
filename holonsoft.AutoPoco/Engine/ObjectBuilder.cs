@@ -12,8 +12,10 @@ public class ObjectBuilder : IObjectBuilder {
    /// <summary>
    ///   Creates this object builder
    /// </summary>
-   /// <param name="type"></param>
-   public ObjectBuilder(IEngineConfigurationType type) {
+   /// <param name="type">the registered type this builder creates</param>
+   /// <param name="nullableAnnotations">optional, when enabled the sources of nullable members are wrapped in a <see cref="NullableMemberDataSource" /></param>
+   public ObjectBuilder(IEngineConfigurationType type, NullableAnnotationSettings? nullableAnnotations = null) {
+      ArgumentNullException.ThrowIfNull(type);
       InnerType = type.RegisteredType;
 
       if (type.GetFactory() != null)
@@ -30,14 +32,14 @@ public class ObjectBuilder : IObjectBuilder {
 
               AddAction(new ObjectFieldSetFromSourceAction(
               (EngineTypeFieldMember) x.Member,
-              sources.First() ?? throw new InvalidOperationException()));
+              NullableMemberDataSource.ForMember(sources.First() ?? throw new InvalidOperationException(), x.Member, nullableAnnotations)));
            } else if (x.Member.IsProperty) {
               if (sources.Count == 0)
                  return;
 
               AddAction(new ObjectPropertySetFromSourceAction(
               (EngineTypePropertyMember) x.Member,
-              sources.First() ?? throw new InvalidOperationException()));
+              NullableMemberDataSource.ForMember(sources.First() ?? throw new InvalidOperationException(), x.Member, nullableAnnotations)));
            } else if (x.Member.IsMethod)
               AddAction(new ObjectMethodInvokeFromSourceAction(
               (EngineTypeMethodMember) x.Member,

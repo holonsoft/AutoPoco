@@ -12,4 +12,14 @@ public class RandomUtfTextTests : TestBase {
 
       value.ShouldNotBeNullOrWhiteSpace();
    }
+
+   [Fact]
+   public void NextTerminatesForManyDrawsEvenWhenABlockHasNoAllowedCharacters() {
+      // regression: a block made only of excluded categories used to loop forever
+      var source = new RandomUtfTextSource();
+
+      var values = Enumerable.Range(0, 60).Select(_ => source.Next(null)).ToList();
+
+      values.ShouldAllBe(x => !string.IsNullOrWhiteSpace(x));
+   }
 }

@@ -1,4 +1,5 @@
 ﻿using holonsoft.AutoPoco.Configuration.Interfaces;
+using holonsoft.AutoPoco.Engine;
 
 namespace holonsoft.AutoPoco.Configuration;
 
@@ -7,6 +8,8 @@ public class EngineConfigurationBuilder : IEngineConfigurationBuilder, IEngineCo
    private readonly List<IEngineConfigurationTypeProvider> _types = new();
 
    public IEngineConventionProvider ConventionProvider => _conventions;
+
+   public NullableAnnotationSettings NullableAnnotations { get; private set; } = NullableAnnotationSettings.Disabled;
 
    public IEngineConfigurationTypeBuilder<T> Include<T>() {
       // Create the configuration
@@ -36,6 +39,9 @@ public class EngineConfigurationBuilder : IEngineConfigurationBuilder, IEngineCo
    public void RegisterTypeProvider(IEngineConfigurationTypeProvider provider) 
       => _types.Add(provider);
 
-   public IEnumerable<IEngineConfigurationTypeProvider> GetConfigurationTypes() 
+   public IEnumerable<IEngineConfigurationTypeProvider> GetConfigurationTypes()
       => _types;
+
+   public void RespectNullableAnnotations(int? nullCreationThreshold = null)
+      => NullableAnnotations = NullableAnnotationSettings.Enabled(nullCreationThreshold);
 }

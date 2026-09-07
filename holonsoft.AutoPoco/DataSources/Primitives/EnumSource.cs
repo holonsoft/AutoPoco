@@ -2,10 +2,10 @@
 using holonsoft.AutoPoco.Engine.Interfaces;
 
 namespace holonsoft.AutoPoco.DataSources.Primitives;
-public abstract class EnumSourceBase<T>(int? nullCreationThreshold = null) : DataSourceBase<T>
+public abstract class EnumSourceBase<T>(int? nullCreationThreshold = null) : DataSourceBase<T>(nullCreationThreshold)
       where T : Enum {
    protected override T GetNextValue(IGenerationContext? context) {
-      if (nullCreationThreshold.HasValue) {
+      if (NullCreationThreshold.HasValue) {
          if (RandomNullEvaluator.ShouldNextValueReturnNull())
             return default!;
       }

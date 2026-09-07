@@ -25,7 +25,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>autopoco;testdata;test-data;poco;generator;fluent;fake-data</PackageTags>
-    <PackageReleaseNotes>6.0: Lambda data sources (FuncSource, Setup(...).From(() => ...), Source(expr, () => ...) at generation time). Build and packaging modernized: GitHub Actions CI, trusted publishing to nuget.org, MinVer tag based versioning, central package management, xunit.v3 tests on net8/9/10. FluentAssertions and Moq are no longer dependencies of the library. See README for details.</PackageReleaseNotes>
+    <PackageReleaseNotes>6.0: Lambda data sources (FuncSource, Setup(...).From(() => ...), Source(expr, () => ...) at generation time). Opt-in nullability-aware null generation via RespectNullableAnnotations(threshold). IDataSource&lt;T&gt; is covariant. Bug fixes: Nullable* sources honor an explicit null creation threshold (null positions of stable sequences changed), DateTime/DateOnly/TimeOnly/DateOfBirth sources cover their whole range including the upper bound (sequences changed), RandomUtfTextSource no longer loops forever. Build and packaging modernized: GitHub Actions CI, trusted publishing to nuget.org, MinVer tag based versioning, central package management, xunit.v3 tests on net8/9/10. FluentAssertions and Moq are no longer dependencies of the library. See README for details.</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Label="Package build">

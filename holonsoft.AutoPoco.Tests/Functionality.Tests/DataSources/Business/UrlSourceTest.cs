@@ -19,12 +19,9 @@ public class UrlSourceTest() : TestBase {
    public void NextReturnsStableUrlListInTermsOfTestabilityAndListCanContainNull()
       => NextReturnsStableElementListInTermsOfTestability(
          new NullableUrlSource()!,
-            "http://www.chxv.se", "http://www.xejhhhsbva.fr", "http://www.xvalvxcslk.pt", "http://www.vvt.in", "http://www.xmmrnnhc.su",
-            "http://www.ebouffktxs.iq", "http://www.hvwie.iq", "http://www.ejnv.nl", "http://www.nmqig.me", "http://www.dmiptch.hu",
-            "http://www.jhngaiwcl.hu", "http://www.bpdni.gr", "http://www.xobun.kg", "http://www.dvy.mil", "http://www.plkqntpot.su",
-            "http://www.qdmmkkbigq.org", "http://www.odyrea.mv", "http://www.gidqhe.in",
-            null, null,
-            "http://www.lrtthaos.mm", "http://www.qtcnjc.com"
+            "http://www.chxv.se", null, "http://www.xejhhhsbva.fr", "http://www.xvalvxcslk.pt", "http://www.vvt.in", "http://www.xmmrnnhc.su", "http://www.ebouffktxs.iq", "http://www.hvwie.iq", "http://www.ejnv.nl", "http://www.nmqig.me",
+         "http://www.dmiptch.hu", "http://www.jhngaiwcl.hu", "http://www.bpdni.gr", null, "http://www.xobun.kg", null, "http://www.dvy.mil", "http://www.plkqntpot.su", "http://www.qdmmkkbigq.org", null,
+         "http://www.odyrea.mv", "http://www.gidqhe.in"
          );
 }
 

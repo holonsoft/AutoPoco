@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 namespace holonsoft.AutoPoco.DataSources.Business;
 
 public abstract class RandomUtfTextSourceBase(int? nullCreationThreshold, int maxLengthOfText, int minParagraphCount, int maxParagraphCount, int minSentenceCount, int maxSentenceCount,
-   IReadOnlySet<UnicodeCategory>? mayExcludeCategories = null) : DataSourceBase<string> {
+   IReadOnlySet<UnicodeCategory>? mayExcludeCategories = null) : DataSourceBase<string>(nullCreationThreshold) {
    protected override string GetNextValue(IGenerationContext? context) {
-      if (nullCreationThreshold.HasValue) {
+      if (NullCreationThreshold.HasValue) {
          if (RandomNullEvaluator.ShouldNextValueReturnNull())
             return null!;
       }
@@ -63,19 +63,31 @@ public class NullableRandomUtfTextSource(int? nullCreationThreshold, int maxLeng
 }
 
 public record UnicodeBlock(int Start, int End, int CharCount, int ExistingChars) {
+   /// <summary>
+   ///   Tries a bounded number of code points from this block. A block that consists only of excluded
+   ///   categories (surrogates, private use, unassigned) yields -1 instead of looping forever.
+   /// </summary>
    private int GetRandomCharFromBlock(Random random, IReadOnlySet<UnicodeCategory> excludeCategories) {
-      UnicodeCategory category;
-      int result;
-      do {
-         result = random.Next(Start, End + 1);
-         category = CharUnicodeInfo.GetUnicodeCategory(result);
-      } while (excludeCategories.Contains(category) || result == 0);
+      const int maxAttempts = 64;
 
-      return result;
+      for (var attempt = 0; attempt < maxAttempts; attempt++) {
+         var result = random.Next(Start, End + 1);
+         var category = CharUnicodeInfo.GetUnicodeCategory(result);
+
+         if (result != 0 && !excludeCategories.Contains(category))
+            return result;
+      }
+
+      return -1;
    }
 
-   private static int GetRandomChar(Random random, IReadOnlySet<UnicodeCategory> excludeCategories)
-      => _unicodeBlocks[random.Next(0, _unicodeBlocks.Length)].GetRandomCharFromBlock(random, excludeCategories);
+   private static int GetRandomChar(Random random, IReadOnlySet<UnicodeCategory> excludeCategories) {
+      while (true) {
+         var result = _unicodeBlocks[random.Next(0, _unicodeBlocks.Length)].GetRandomCharFromBlock(random, excludeCategories);
+         if (result >= 0)
+            return result;
+      }
+   }
 
    public static string GetRandomString(Random random, int length, IReadOnlySet<UnicodeCategory> excludeCategories) {
       var ints = new int[length];

@@ -11,9 +11,9 @@ using holonsoft.AutoPoco.Engine.Interfaces;
 
 namespace holonsoft.AutoPoco.DataSources.Business;
 
-public abstract class RandomTextSourceBase(int? nullCreationThreshold, int maxLengthOfText, int minParagraphCount, int maxParagraphCount, int minSentenceCount, int maxSentenceCount, params char[] allowedCharacters) : DataSourceBase<string> {
+public abstract class RandomTextSourceBase(int? nullCreationThreshold, int maxLengthOfText, int minParagraphCount, int maxParagraphCount, int minSentenceCount, int maxSentenceCount, params char[] allowedCharacters) : DataSourceBase<string>(nullCreationThreshold) {
    protected override string GetNextValue(IGenerationContext? context) {
-      if (nullCreationThreshold.HasValue) {
+      if (NullCreationThreshold.HasValue) {
          if (RandomNullEvaluator.ShouldNextValueReturnNull())
             return null!;
       }

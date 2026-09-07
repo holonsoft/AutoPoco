@@ -3,9 +3,10 @@ using holonsoft.AutoPoco.Engine.Interfaces;
 
 namespace holonsoft.AutoPoco.Engine;
 
-public class GenerationSessionFactory(IEngineConfiguration config, IEngineConventionProvider conventionProvider) : IGenerationSessionFactory {
-   public IGenerationSession CreateSession(int recursionLimit) 
-      => new GenerationContext(new GenerationConfiguration(config, conventionProvider, recursionLimit));
+public class GenerationSessionFactory(IEngineConfiguration config, IEngineConventionProvider conventionProvider,
+  NullableAnnotationSettings? nullableAnnotations = null) : IGenerationSessionFactory {
+   public IGenerationSession CreateSession(int recursionLimit)
+      => new GenerationContext(new GenerationConfiguration(config, conventionProvider, recursionLimit, nullableAnnotations));
 
    public IGenerationSession CreateSession() =>
       // TODO: Need to deep-clone the config

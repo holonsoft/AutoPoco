@@ -6,10 +6,12 @@ using holonsoft.AutoPoco.Engine.Interfaces;
 namespace holonsoft.AutoPoco.Engine;
 
 public class GenerationConfiguration(IEngineConfiguration configuration, IEngineConventionProvider conventionProvider,
-  int recursionLimit) : IGenerationConfiguration {
+  int recursionLimit, NullableAnnotationSettings? nullableAnnotations = null) : IGenerationConfiguration {
    private readonly List<IObjectBuilder> _objectBuilders = new();
 
    public int RecursionLimit { get; } = recursionLimit;
+
+   public NullableAnnotationSettings NullableAnnotations { get; } = nullableAnnotations ?? NullableAnnotationSettings.Disabled;
 
    public IObjectBuilder GetBuilderForType(Type searchType) {
       var builder = _objectBuilders.SingleOrDefault(x => x.InnerType == searchType);
@@ -20,7 +22,7 @@ public class GenerationConfiguration(IEngineConfiguration configuration, IEngine
    private IObjectBuilder CreateBuilderForType(Type searchType) {
       EnsureTypeExists(searchType);
       var type = configuration.GetRegisteredType(searchType);
-      var builder = new ObjectBuilder(type!);
+      var builder = new ObjectBuilder(type!, NullableAnnotations);
       _objectBuilders.Add(builder);
       return builder;
    }

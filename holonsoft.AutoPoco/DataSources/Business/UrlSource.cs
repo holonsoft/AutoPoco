@@ -20,7 +20,7 @@ public abstract class UrlSourceBase(int? nullCreationThreshold = null) : FixedAr
    protected override string[] Data => _tlds;
 
    protected override string GetNextValue(IGenerationContext? context) {
-      if (_nullCreationThreshold.HasValue) {
+      if (NullCreationThreshold.HasValue) {
          if (RandomNullEvaluator.ShouldNextValueReturnNull())
             return null!;
       }

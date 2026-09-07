@@ -17,84 +17,52 @@ public abstract class DateTimeSourceBase<T>(DateTime minDate, DateTime maxDate) 
    protected DateOnly GenerateDatePart(DateTime minDate, DateTime maxDate)
       => GenerateDatePart(DateOnly.FromDateTime(minDate), DateOnly.FromDateTime(maxDate));
 
+   /// <summary>
+   ///   Picks a day between <paramref name="minDate" /> and <paramref name="maxDate" />, both inclusive,
+   ///   with every day of the range equally likely. Month lengths and leap years fall out of the day arithmetic.
+   /// </summary>
    protected DateOnly GenerateDatePart(DateOnly minDate, DateOnly maxDate) {
-      var year = Random.Next(minDate.Year, maxDate.Year);
-      var month = Random.Next(1, 12);
+      if (maxDate < minDate)
+         throw new ArgumentOutOfRangeException(nameof(maxDate), maxDate, $"The maximum date must not be before the minimum date ({minDate:O}).");
 
-      var day = 0;
-      switch (month) {
-         case 1:
-         case 3:
-         case 5:
-         case 7:
-         case 8:
-         case 10:
-         case 12:
-            day = Random.Next(1, 31);
-            break;
-         case 4:
-         case 6:
-         case 9:
-         case 11:
-            day = Random.Next(1, 30);
-            break;
-         case 2:
-            day = DateTime.IsLeapYear(year)
-               ? Random.Next(1, 29)
-               : Random.Next(1, 28);
-            break;
-      }
-
-      var result = new DateOnly(year, month, day);
-
-      if (result > maxDate)
-         result = result.AddYears(-1);
-      if (result < minDate)
-         result = result.AddYears(1);
-
-      return result;
+      var days = maxDate.DayNumber - minDate.DayNumber;
+      return DateOnly.FromDayNumber(minDate.DayNumber + Random.Next(0, days + 1));
    }
 
    protected TimeOnly GenerateTimePart(DateTime minTime, DateTime maxTime)
       => GenerateTimePart(TimeOnly.FromDateTime(minTime), TimeOnly.FromDateTime(maxTime));
 
+   /// <summary>
+   ///   Picks a time between <paramref name="minTime" /> and <paramref name="maxTime" />, both inclusive, with tick resolution.
+   ///   When the maximum lies before the minimum the range wraps around midnight (22:00 to 02:00).
+   /// </summary>
    protected TimeOnly GenerateTimePart(TimeOnly minTime, TimeOnly maxTime) {
-      var hour = Random.Next(minTime.Hour, maxTime.Hour);
-      var minute = Random.Next(0, 59);
-      var second = Random.Next(0, 59);
-      var millisecond = Random.Next(0, 999);
-      var microsecond = Random.Next(0, 999);
-#if NET7_0_OR_GREATER
-      var result = new TimeOnly(hour, minute, second, millisecond, microsecond);
-#elif NET5_0_OR_GREATER
-      var result = new TimeOnly(hour, minute, second, millisecond);
-#endif
+      var span = maxTime.Ticks - minTime.Ticks;
+      if (span < 0)
+         span += TimeSpan.TicksPerDay;
 
-      if (result < minTime)
-         result = minTime;
-
-      if (result >= maxTime)
-         result = maxTime;
-
-      return result;
+      var ticks = (minTime.Ticks + NextTicks(span)) % TimeSpan.TicksPerDay;
+      return new TimeOnly(ticks);
    }
 
    protected override T GetNextValue(IGenerationContext? context) {
-      var dateOnly = GenerateDatePart(MinDate, MaxDate);
-      var timeOnly = GenerateTimePart(TimeOnly.MinValue, TimeOnly.MaxValue);
-      var result = dateOnly.ToDateTime(timeOnly);
+      if (MaxDate < MinDate)
+         throw new ArgumentOutOfRangeException(nameof(MaxDate), MaxDate, $"The maximum date must not be before the minimum date ({MinDate:O}).");
 
-      if (result < MinDate)
-         result = MinDate;
-      if (result > MaxDate)
-         result = MaxDate;
-
-      return (T) (object) result;
+      var ticks = MinDate.Ticks + NextTicks(MaxDate.Ticks - MinDate.Ticks);
+      return (T) (object) new DateTime(ticks, MinDate.Kind);
    }
+
+   /// <summary>
+   ///   Random tick count in [0, <paramref name="spanInclusive" />].
+   /// </summary>
+   private long NextTicks(long spanInclusive)
+      => Random.NextInt64(0, spanInclusive + 1);
 }
 
 /// <summary>
-/// Creates a datetime source (utc), that is aware about different month length and leap years
+/// Creates a datetime source that picks any instant between the minimum and the maximum date, both inclusive.
+/// The result keeps the <see cref="DateTimeKind" /> of the minimum date.
 /// </summary>
 /// <param name="minDate">minimum date</param>
 /// <param name="maxDate">maximum date</param>
@@ -104,7 +72,8 @@ public class DateTimeSource(DateTime minDate, DateTime maxDate) : DateTimeSource
 }
 
 /// <summary>
-/// Creates a nullable datetime source (utc), that is aware about different month length and leap years
+/// Creates a nullable datetime source that picks any instant between the minimum and the maximum date, both inclusive.
+/// The result keeps the <see cref="DateTimeKind" /> of the minimum date.
 /// </summary>
 /// <param name="minDate">minimum date</param>
 /// <param name="maxDate">maximum date</param>

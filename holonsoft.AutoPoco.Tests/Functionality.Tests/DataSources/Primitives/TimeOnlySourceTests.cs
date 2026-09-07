@@ -9,6 +9,9 @@ public class TimeOnlySourceTests : TestBase {
    private readonly TimeOnly _minDate = new(8, 0, 0);
    private readonly TimeOnly _maxDate = new(17, 0, 0);
 
+   private static List<TimeOnly> Draw(TimeOnlySource source, int count)
+      => Enumerable.Range(0, count).Select(_ => source.Next(null)).ToList();
+
    [Fact]
    public void NextReturnsDateBetweenMinAndMax() {
       var source = new TimeOnlySource(_minDate, _maxDate);
@@ -18,14 +21,69 @@ public class TimeOnlySourceTests : TestBase {
    }
 
    [Fact]
+   public void NextStaysInRangeOverManyDraws() {
+      var source = new TimeOnlySource(_minDate, _maxDate);
+
+      Draw(source, 2000).ShouldAllBe(x => x >= _minDate && x <= _maxDate);
+   }
+
+   [Fact]
+   public void NextReachesTheLastHourMinuteAndSecondOfTheDay() {
+      var source = new TimeOnlySource();
+      var values = Draw(source, 3000);
+
+      values.ShouldContain(x => x.Hour == 23);
+      values.ShouldContain(x => x.Minute == 59);
+      values.ShouldContain(x => x.Second == 59);
+      values.ShouldContain(x => x.Hour == 0);
+   }
+
+   [Fact]
+   public void NextReachesTheUpperBoundOfAShortRange() {
+      var min = new TimeOnly(23, 59, 59);
+      var max = TimeOnly.MaxValue;
+      var source = new TimeOnlySource(min, max);
+      var values = Draw(source, 300);
+
+      values.ShouldAllBe(x => x >= min && x <= max);
+      values.ShouldContain(x => x.Millisecond == 999);
+   }
+
+   [Fact]
+   public void NextWrapsAroundMidnightWhenMaxIsBeforeMin() {
+      var source = new TimeOnlySource(new TimeOnly(22, 0, 0), new TimeOnly(2, 0, 0));
+      var values = Draw(source, 500);
+
+      values.ShouldAllBe(x => x.Hour >= 22 || x.Hour < 2 || x == new TimeOnly(2, 0, 0));
+      values.ShouldContain(x => x.Hour >= 22);
+      values.ShouldContain(x => x.Hour < 2);
+   }
+
+   [Fact]
+   public void NextWithMinEqualToMaxReturnsThatTime() {
+      var time = new TimeOnly(12, 34, 56, 789);
+      var source = new TimeOnlySource(time, time);
+
+      Draw(source, 10).ShouldAllBe(x => x == time);
+   }
+
+   [Fact]
+   public void SetMinMaxRangeChangesTheRange() {
+      var source = new TimeOnlySource(_minDate, _maxDate);
+      source.SetMinMaxRange(new TimeOnly(10, 0, 0), new TimeOnly(10, 0, 1));
+
+      Draw(source, 100).ShouldAllBe(x => x >= new TimeOnly(10, 0, 0) && x <= new TimeOnly(10, 0, 1));
+   }
+
+   [Fact]
    public void NextReturnsStableDateTimeListInTermsOfTestability() {
       var source = new TimeOnlySource(_minDate, _maxDate);
       NextReturnsStableElementListInTermsOfTestability(source, new TimeOnly[] {
-         new TimeOnly(9,6,18,930,841),
-         new TimeOnly(16,56,11,386,293),
-         new TimeOnly(10,16,44,50,843),
-         new TimeOnly(8,52,55,869,7),
-         new TimeOnly(12,50,56,107,732),
+         new TimeOnly(461154038194), // 12:48:35.4038194
+         new TimeOnly(500633488837), // 13:54:23.3488837
+         new TimeOnly(443321001900), // 12:18:52.1001900
+         new TimeOnly(543535877990), // 15:05:53.5877990
+         new TimeOnly(347410193632)  // 09:39:01.0193632
       });
    }
 
@@ -33,11 +91,11 @@ public class TimeOnlySourceTests : TestBase {
    public void NextReturnsStableDateTimeListInTermsOfTestabilityAndListCanContainNull() {
       var source = new NullableTimeOnlySource(_minDate, _maxDate);
       NextReturnsStableElementListInTermsOfTestability(source, new TimeOnly?[] {
-         new TimeOnly(9,6,18,930,841),
+         new TimeOnly(461154038194), // 12:48:35.4038194
          null,
-         new TimeOnly(16,56,11,386,293),
-         new TimeOnly(10,16,44,50,843),
-         new TimeOnly(8,52,55,869,7),
+         new TimeOnly(500633488837), // 13:54:23.3488837
+         new TimeOnly(443321001900), // 12:18:52.1001900
+         new TimeOnly(543535877990)  // 15:05:53.5877990
       });
    }
 }

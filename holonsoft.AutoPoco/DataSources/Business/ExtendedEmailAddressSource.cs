@@ -3,7 +3,7 @@ using holonsoft.AutoPoco.Engine;
 using holonsoft.AutoPoco.Engine.Interfaces;
 
 namespace holonsoft.AutoPoco.DataSources.Business;
-public abstract class ExtendedEmailAddressSourceBase(int? nullCreationThreshold = null, params string[] domains) : DataSourceBase<string> {
+public abstract class ExtendedEmailAddressSourceBase(int? nullCreationThreshold = null, params string[] domains) : DataSourceBase<string>(nullCreationThreshold) {
    private readonly FirstNameSource _firstNameSource = new();
    private readonly LastNameSource _lastNameSource = new();
 
@@ -58,7 +58,7 @@ public abstract class ExtendedEmailAddressSourceBase(int? nullCreationThreshold 
    };
 
    protected override string GetNextValue(IGenerationContext? context) {
-      if (nullCreationThreshold.HasValue) {
+      if (NullCreationThreshold.HasValue) {
          if (RandomNullEvaluator.ShouldNextValueReturnNull())
             return null!;
       }

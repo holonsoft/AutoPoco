@@ -6,7 +6,7 @@ using static holonsoft.AutoPoco.DataSources.Business.CreditCardSourceBase;
 
 namespace holonsoft.AutoPoco.DataSources.Business;
 
-public abstract class CreditCardSourceBase(CreditCardSourceBase.CreditCardType preferred, int? nullCreationThreshold = null) : DataSourceBase<string>() {
+public abstract class CreditCardSourceBase(CreditCardSourceBase.CreditCardType preferred, int? nullCreationThreshold = null) : DataSourceBase<string>(nullCreationThreshold) {
    /// <summary>
    ///   The credit card type.
    /// </summary>
@@ -44,7 +44,7 @@ public abstract class CreditCardSourceBase(CreditCardSourceBase.CreditCardType p
    }
 
    protected override string GetNextValue(IGenerationContext? context) {
-      if (nullCreationThreshold.HasValue) {
+      if (NullCreationThreshold.HasValue) {
          if (RandomNullEvaluator.ShouldNextValueReturnNull())
             return null!;
       }

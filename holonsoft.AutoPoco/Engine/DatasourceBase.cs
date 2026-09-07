@@ -8,6 +8,24 @@ public abstract class DataSourceBase<T> : IDataSource<T>, IRandomNullEvaluatorSu
 
    protected Random Random { get; private set; } = new(AutoPocoGlobalSettings.StandardSeed);
 
+   protected DataSourceBase() { }
+
+   /// <summary>
+   ///   Creates the source with an explicit null creation threshold (percent).
+   ///   A null threshold keeps the default evaluator, see <see cref="AutoPocoGlobalSettings.NullCreationThreshold" />.
+   /// </summary>
+   protected DataSourceBase(int? nullCreationThreshold) {
+      NullCreationThreshold = nullCreationThreshold;
+      if (nullCreationThreshold.HasValue)
+         RandomNullEvaluator = new DefaultRandomNullEvaluator(nullCreationThreshold.Value);
+   }
+
+   /// <summary>
+   ///   The explicit null creation threshold given at construction, null when the source was created without one.
+   ///   Reference type sources use it to decide whether they produce nulls at all.
+   /// </summary>
+   protected int? NullCreationThreshold { get; }
+
    public virtual void SetSeedToRandomValue() {
       var seed = Guid.NewGuid().GetHashCode();
       Random = new(seed);

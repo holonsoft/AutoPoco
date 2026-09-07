@@ -28,6 +28,22 @@ var users = session.List<SimpleUser>(10)
 ```
 
   The lambda is in charge of the value, including null. `FuncSource<T>` is the class behind it and can be used directly wherever an `IDataSource` is expected.
+* Nullability-aware null generation, opt-in: `x.RespectNullableAnnotations(threshold)` turns every property or field declared as nullable (`string?`, `int?`, `DateTime?`, ...) into null with the given probability in percent (default 15), whatever data source is configured for it. Members without a nullable annotation, members of types compiled without nullable annotations and values set by `Impose` are never touched.
+
+```CSHARP
+var factory = AutoPocoContainer.Configure(x => {
+   x.RespectNullableAnnotations(20);   // 20 percent of the nullable members become null
+   x.Conventions(c => c.UseDefaultConventions());
+   x.Include<Customer>()
+      .Setup(c => c.City).Use<CitySource>();   // City is string?, so it is null now and then
+});
+```
+
+  Every nullable member gets its own deterministic null pattern, so the nullable members of one object do not all become null at once, and two sessions of the same factory produce the same pattern. Sources that produce nulls on their own (the `Nullable*` sources) keep doing so on top of it. Generation time overrides via `Source(...)` are covered as well.
+* `IDataSource<T>` is covariant now, so a source of `string` (e.g. `CitySource`) can be used for a `string?` member without a nullability warning.
+* Bug fix: every `Nullable*` source ignored an explicit null creation threshold. The fixed array and dictionary based sources (names, companies, cities, capitals, countries, states, zip codes, urls) even used the threshold as their random seed. The threshold is honored now. As a consequence the null positions in the stable sequences of these sources changed, the data itself comes in the same order as before.
+* Bug fix: `DateTimeSource`, `DateOnlySource`, `TimeOnlySource` and `DateOfBirthSource` never produced the upper end of their ranges: no December, no 31st, no 23:00, no minute or second 59, and the maximum year of a date of birth was never reached. Ranges within a single year could produce values outside the range. All four sources now pick uniformly from the whole range, both bounds inclusive, and throw an `ArgumentOutOfRangeException` when the maximum lies before the minimum. `TimeOnlySource` supports ranges that wrap around midnight (22:00 to 02:00). `DateTimeSource` keeps the `DateTimeKind` of the minimum date. The generated sequences for a given seed changed.
+* Bug fix: `RandomUtfTextSource` could loop forever when it hit a Unicode block without any allowed character.
 * Build and packaging: GitHub Actions CI, trusted publishing to nuget.org, MinVer versioning from git tags, central package management, tests on xunit.v3 for net8/9/10
 * The library no longer drags FluentAssertions and Moq into your project as dependencies
 
