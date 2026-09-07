@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # MinVer reads the version from git tags
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: |
+            8.0.x
+            9.0.x
+            10.0.x
+
+      - name: Restore
+        run: dotnet restore holonsoft.AutoPoco.slnx
+
+      - name: Build
+        run: dotnet build holonsoft.AutoPoco.slnx -c Release --no-restore
+
+      - name: Test
+        run: dotnet test holonsoft.AutoPoco.Tests/holonsoft.AutoPoco.Tests.csproj -c Release --no-build
+
+      - name: Pack
+        run: dotnet pack holonsoft.AutoPoco.slnx -c Release --no-build -o artifacts
+
+      - name: Upload packages
+        if: matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@v7
+        with:
+          name: packages
+          path: artifacts/*.nupkg
