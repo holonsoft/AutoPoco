@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.Configuration;
 using holonsoft.AutoPoco.Configuration.Interfaces;
@@ -12,6 +12,6 @@ public class GenerationSessionFactoryTests {
       IEngineConventionProvider conventionProvider = new EngineConventionConfiguration();
       var config = new GenerationSessionFactory(new EngineConfiguration(), conventionProvider);
       var session = config.CreateSession();
-      session.Should().NotBeNull();
+      session.ShouldNotBeNull();
    }
 }

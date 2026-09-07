@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.Configuration;
 using holonsoft.AutoPoco.DataSources.Base;
@@ -52,30 +52,30 @@ public class WhenObjectsAddedToConfiguration : GenerationSessionFactoryTestBase 
    [Fact]
    public void CreateSimpleFieldClassSomeFieldIsSet() {
       var simpleFieldClass = GenerationSession.Single<SimpleFieldClass>().Get();
-      simpleFieldClass.SomeField.Should().Be("one");
+      simpleFieldClass.SomeField.ShouldBe("one");
    }
 
    [Fact]
    public void CreateSimpleFieldClassSomeOtherFieldIsSet() {
       var simpleFieldClass = GenerationSession.Single<SimpleFieldClass>().Get();
-      simpleFieldClass.SomeOtherField.Should().Be("other");
+      simpleFieldClass.SomeOtherField.ShouldBe("other");
    }
 
    [Fact]
    public void CreateUserEmailAddressIsSet() {
       var user = GenerationSession.Single<SimpleUser>().Get();
-      user.EmailAddress.Should().Be("test@test.com");
+      user.EmailAddress.ShouldBe("test@test.com");
    }
 
    [Fact]
    public void CreateUserFirstNameIsSet() {
       var user = GenerationSession.Single<SimpleUser>().Get();
-      user.FirstName.Should().Be("first");
+      user.FirstName.ShouldBe("first");
    }
 
    [Fact]
    public void CreateUserLastNameIsSet() {
       var user = GenerationSession.Single<SimpleUser>().Get();
-      user.LastName.Should().Be("last");
+      user.LastName.ShouldBe("last");
    }
 }

@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.Engine.Interfaces;
 using holonsoft.AutoPoco.Tests.Common;
@@ -17,6 +17,6 @@ public class WhenRequestingClosedGenericType {
    [Fact]
    public void CreatedObjectIsReturned() {
       var created = _session.Single<OpenGeneric<object>>().Get();
-      created.Should().NotBeNull();
+      created.ShouldNotBeNull();
    }
 }

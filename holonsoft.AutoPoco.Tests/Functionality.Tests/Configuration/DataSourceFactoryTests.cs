@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.Configuration;
 using holonsoft.AutoPoco.Tests.Common;
@@ -11,6 +11,6 @@ public class DataSourceFactoryTests {
       var factory = new AutoPocoDataSourceFactory(typeof(BlankDataSource));
       var source = factory.Build() as BlankDataSource;
 
-      source.Should().NotBeNull();
+      source.ShouldNotBeNull();
    }
 }

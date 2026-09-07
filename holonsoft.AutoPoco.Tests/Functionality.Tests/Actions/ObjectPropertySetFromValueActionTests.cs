@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.Actions;
 using holonsoft.AutoPoco.Configuration;
@@ -16,6 +16,6 @@ public class ObjectPropertySetFromValueActionTests {
       var target = new SimplePropertyClass();
       action.Enact(null, target);
 
-      target.SomeProperty.Should().Be("Test");
+      target.SomeProperty.ShouldBe("Test");
    }
 }

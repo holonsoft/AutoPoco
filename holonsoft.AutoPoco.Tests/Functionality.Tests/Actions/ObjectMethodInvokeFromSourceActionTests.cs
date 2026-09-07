@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Moq;
 using Xunit;
 using holonsoft.AutoPoco.Actions;
@@ -50,7 +50,7 @@ public class ObjectMethodInvokeFromSourceActionTests {
 
       _doubleArgAction.Enact(_context, target);
 
-      target.Value.Should().Be("1");
+      target.Value.ShouldBe("1");
    }
 
    [Fact]
@@ -64,6 +64,6 @@ public class ObjectMethodInvokeFromSourceActionTests {
 
       _doubleArgAction.Enact(_context, target);
 
-      target.OtherValue.Should().Be("2");
+      target.OtherValue.ShouldBe("2");
    }
 }

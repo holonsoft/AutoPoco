@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.Engine.Interfaces;
 using holonsoft.AutoPoco.Tests.Common;
@@ -18,6 +18,6 @@ public class WhenCreatingObjectsWithHaveAnInterfaceThatIsNotConfigured {
    [Fact]
    public void DefaultInterfaceRulesCascadeOntoImplementingTypes() {
       var obj = _session.Single<SimpleBaseClass>().Get();
-      obj.InterfaceValue.Should().NotBeNull();
+      obj.InterfaceValue.ShouldNotBeNull();
    }
 }

@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Moq;
 using Xunit;
 using holonsoft.AutoPoco.Configuration;
@@ -17,7 +17,7 @@ public class EngineConfigurationTypeMemberTests {
 
       var source2 = member.GetDataSources().First();
 
-      source2.Should().BeSameAs(sourceMock.Object);
+      source2.ShouldBeSameAs(sourceMock.Object);
 
       //Assert.AreEqual(sourceMock.Object, source2);
    }

@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.DataSources.Primitives;
 using holonsoft.AutoPoco.Tests.Functionality.Tests.DataSources.Base;
@@ -12,7 +12,7 @@ public class RandomNumberSourceTests : TestBase {
       var value1 = source.Next(null);
       var value2 = source.Next(null);
 
-      value2.Should().NotBe(value1);
+      value2.ShouldNotBe(value1);
 
       NextReturnsStableElementListInTermsOfTestability(
          source,

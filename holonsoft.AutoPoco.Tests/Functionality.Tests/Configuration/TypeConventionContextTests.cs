@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Moq;
 using Xunit;
 using holonsoft.AutoPoco.Configuration;
@@ -66,7 +66,7 @@ public class TypeConventionContextTests {
    [Fact]
    public void TargetReturnsConfigurationType() {
       _typeMock.SetupGet(x => x.RegisteredType).Returns(typeof(TestClass));
-      _context.Target.Should().Be(typeof(TestClass));
+      _context.Target.ShouldBe(typeof(TestClass));
       //Assert.AreEqual(typeof(TestClass), _context.Target);
    }
 

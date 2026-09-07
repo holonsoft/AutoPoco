@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using holonsoft.AutoPoco.DataSources.Primitives;
 using holonsoft.AutoPoco.Tests.Functionality.Tests.DataSources.Base;
 using Xunit;
@@ -12,7 +12,7 @@ public class Int128SourceTests : TestBase {
       var value1 = source.Next(null);
       var value2 = source.Next(null);
 
-      value2.Should().NotBe(value1);
+      value2.ShouldNotBe(value1);
 
       var expectedValues = new Int128[] {
          Int128.Parse("143690171173498817360163827402810620233"),

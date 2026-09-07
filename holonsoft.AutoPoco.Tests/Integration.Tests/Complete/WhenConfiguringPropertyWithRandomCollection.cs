@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.Engine.Interfaces;
 using holonsoft.AutoPoco.Extensions;
@@ -22,7 +22,7 @@ public class WhenConfiguringPropertyWithRandomCollection {
    public void CollectionIsSetWithValidNumberInIt() {
       for (var x = 0; x < 10; x++) {
          var node = _session.Next<SimpleNode>();
-         node.Children.Count.Should().BeInRange(0, 3);
+         node.Children.Count.ShouldBeInRange(0, 3);
       }
    }
 }

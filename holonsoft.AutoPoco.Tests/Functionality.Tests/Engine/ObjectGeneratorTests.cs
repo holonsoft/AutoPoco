@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Moq;
 using Xunit;
 using holonsoft.AutoPoco.Actions;
@@ -51,9 +51,9 @@ public class ObjectGeneratorTests {
    [Fact]
    public void SingleReturnsSingleObject() {
       var user = _userGenerator.Get();
-      user.FirstName.Should().Be(_testPropertyValue);
-      user.LastName.Should().Be(_testPropertyValue);
-      user.EmailAddress.Should().Be(_testPropertyValue);
+      user.FirstName.ShouldBe(_testPropertyValue);
+      user.LastName.ShouldBe(_testPropertyValue);
+      user.EmailAddress.ShouldBe(_testPropertyValue);
    }
 
    [Fact]
@@ -76,7 +76,7 @@ public class ObjectGeneratorTests {
       _userGenerator.AddAction(action.Object);
       var user = _userGenerator.Get();
 
-      user.Should().Be(actionObject);
+      user.ShouldBe(actionObject);
    }
 
    [Fact]
@@ -84,16 +84,16 @@ public class ObjectGeneratorTests {
       var newValue = "SomethingElse";
       var user = _userGenerator.Impose(x => x.EmailAddress, newValue).Get();
 
-      user.FirstName.Should().Be(_testPropertyValue);
-      user.LastName.Should().Be(_testPropertyValue);
-      user.EmailAddress.Should().Be(newValue);
+      user.FirstName.ShouldBe(_testPropertyValue);
+      user.LastName.ShouldBe(_testPropertyValue);
+      user.EmailAddress.ShouldBe(newValue);
    }
 
    [Fact]
    public void ImposeReturnsGenerator() {
       var generator = _userGenerator.Impose(x => x.EmailAddress, "");
 
-      generator.Should().Be(_userGenerator);
+      generator.ShouldBe(_userGenerator);
    }
 
    [Fact]
@@ -101,7 +101,7 @@ public class ObjectGeneratorTests {
       var generator = _methodGenerator.Invoke(
         x => x.ReturnSomething());
 
-      generator.Should().Be(_methodGenerator);
+      generator.ShouldBe(_methodGenerator);
    }
 
    [Fact]
@@ -109,6 +109,6 @@ public class ObjectGeneratorTests {
       var generator = _methodGenerator.Invoke(
         x => x.SetSomething("Test"));
 
-      generator.Should().Be(_methodGenerator);
+      generator.ShouldBe(_methodGenerator);
    }
 }

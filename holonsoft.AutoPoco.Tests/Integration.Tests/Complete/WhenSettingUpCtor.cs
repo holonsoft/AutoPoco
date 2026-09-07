@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.Engine.Interfaces;
 using holonsoft.AutoPoco.Tests.Common;
@@ -14,8 +14,8 @@ public class WhenSettingUpCtor {
         .ConstructWith<TestFactory>()).CreateSession();
 
       var result = _session.Next<SimpleCtorClass>();
-      result.ReadOnlyProperty.Should().Be("one");
-      result.SecondaryProperty.Should().Be("two");
+      result.ReadOnlyProperty.ShouldBe("one");
+      result.SecondaryProperty.ShouldBe("two");
    }
 
    [Fact]

@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.Configuration;
 using holonsoft.AutoPoco.Configuration.Interfaces;
@@ -34,18 +34,18 @@ public class WhenMethodIsRegisteredWithArguments : ConfigurationBaseTest {
 
    [Fact]
    public void BothMethodsAreRegistered()
-      => _engineConfigurationType.GetRegisteredMembers().Count().Should().Be(2);
+      => _engineConfigurationType.GetRegisteredMembers().Count().ShouldBe(2);
 
    [Fact]
    public void MethodWithLiteralArgumentExposedInConfiguration() {
       var member = _engineConfigurationType.GetRegisteredMember(_singleArgMethod);
-      member.Should().NotBeNull();
+      member.ShouldNotBeNull();
    }
 
    [Fact]
    public void MethodWithLiteralArgumentHasOneDatasource() {
       var member = _engineConfigurationType.GetRegisteredMember(_singleArgMethod);
-      member.GetDataSources().Count().Should().Be(1);
+      member.GetDataSources().Count().ShouldBe(1);
    }
 
    [Fact]
@@ -54,20 +54,20 @@ public class WhenMethodIsRegisteredWithArguments : ConfigurationBaseTest {
       var configurationSource = member.GetDataSources().Single();
       var source = configurationSource.Build()!;
 
-      source.GetType().Should().Be(typeof(ValueSource<object>));
+      source.GetType().ShouldBe(typeof(ValueSource<object>));
    }
 
    [Fact]
    public void MethodWithDatasourceArgumentExposedInConfiguration() {
       var member = _engineConfigurationType.GetRegisteredMember(_doubleArgMethod);
-      member.Should().NotBeNull();
+      member.ShouldNotBeNull();
    }
 
    [Fact]
    public void MethodWithTwoArgumentsHasOneTwosources() {
       var member = _engineConfigurationType.GetRegisteredMember(_doubleArgMethod);
 
-      member.GetDataSources().Count().Should().Be(2);
+      member.GetDataSources().Count().ShouldBe(2);
    }
 
    [Theory]
@@ -78,6 +78,6 @@ public class WhenMethodIsRegisteredWithArguments : ConfigurationBaseTest {
       var sourceConfig = member.GetDataSources().Skip(skip).First();
       var source = sourceConfig.Build()!;
 
-      source.GetType().Should().Be(expectedType);
+      source.GetType().ShouldBe(expectedType);
    }
 }

@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.Configuration;
 using holonsoft.AutoPoco.Tests.Common;
@@ -26,7 +26,7 @@ public class TypeMemberConventionRequirementsTests {
       var context = new TypePropertyConventionRequirements();
       context.Name(x => x == test);
       var member = (EngineTypePropertyMember) ReflectionHelper.GetMember<SimpleUser>(x => x.EmailAddress);
-      context.IsValid(member).Should().Be(result);
+      context.IsValid(member).ShouldBe(result);
    }
 
    [Theory]
@@ -38,7 +38,7 @@ public class TypeMemberConventionRequirementsTests {
       context.Name(x => x == test);
       var member = (EngineTypeFieldMember) ReflectionHelper.GetMember<SimpleFieldClass>(x => x.SomeField!);
 
-      context.IsValid(member).Should().Be(result);
+      context.IsValid(member).ShouldBe(result);
       //Assert.AreEqual(result, context.IsValid(member));
    }
 
@@ -51,7 +51,7 @@ public class TypeMemberConventionRequirementsTests {
       context.Type(x => x == test);
       var member = (EngineTypePropertyMember) ReflectionHelper.GetMember<SimpleUser>(x => x.EmailAddress);
 
-      context.IsValid(member).Should().Be(result);
+      context.IsValid(member).ShouldBe(result);
 
       //Assert.AreEqual(result, context.IsValid(member));
    }
@@ -64,7 +64,7 @@ public class TypeMemberConventionRequirementsTests {
       var context = new TypeFieldConventionRequirements();
       context.Type(x => x == test);
       var member = (EngineTypeFieldMember) ReflectionHelper.GetMember<SimpleFieldClass>(x => x.SomeField!);
-      context.IsValid(member).Should().Be(result);
+      context.IsValid(member).ShouldBe(result);
       //Assert.AreEqual(result, context.IsValid(member));
    }
 }

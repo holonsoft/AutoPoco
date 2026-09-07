@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using holonsoft.AutoPoco.DataSources.Business;
 using holonsoft.AutoPoco.Tests.Functionality.Tests.DataSources.Base;
 using Xunit;
@@ -10,6 +10,6 @@ public class RandomUtfTextTests : TestBase {
       var source = new RandomUtfTextSource(256, 2, 3, 2, 3);
       var value = source.Next(null);
 
-      value.Should().NotBeNullOrWhiteSpace();
+      value.ShouldNotBeNullOrWhiteSpace();
    }
 }

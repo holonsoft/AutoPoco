@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.DataSources.Business;
 using holonsoft.AutoPoco.Engine.Interfaces;
@@ -31,24 +31,24 @@ public class WhenCreatedTypeHasBaseTypes {
    [Fact]
    public void DerivedTypeHasInterfaceValue() {
       var derivedClass = _session.Single<SimpleDerivedClass>().Get();
-      derivedClass.InterfaceValue.Should().Be("Interface");
+      derivedClass.InterfaceValue.ShouldBe("Interface");
    }
 
    [Fact]
    public void DerivedTypeHasOverrideInterfaceValue() {
       var derivedClass = _session.Single<SimpleDerivedClass>().Get();
-      derivedClass.OtherInterfaceValue.Should().Be("Derived");
+      derivedClass.OtherInterfaceValue.ShouldBe("Derived");
    }
 
    [Fact]
    public void DerivedTypeOverriddenMemberHasDerivedValue() {
       var derivedClass = _session.Single<SimpleDerivedClass>().Get();
-      derivedClass.BaseVirtualProperty.Should().Be("Derived");
+      derivedClass.BaseVirtualProperty.ShouldBe("Derived");
    }
 
    [Fact]
    public void DerivedTypeContainsBaseValues() {
       var derivedClass = _session.Single<SimpleDerivedClass>().Get();
-      derivedClass.BaseProperty.Should().Be("Test");
+      derivedClass.BaseProperty.ShouldBe("Test");
    }
 }

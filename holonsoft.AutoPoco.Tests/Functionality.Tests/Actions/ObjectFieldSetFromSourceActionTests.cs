@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Moq;
 using Xunit;
 using holonsoft.AutoPoco.Actions;
@@ -31,7 +31,7 @@ public class ObjectFieldSetFromSourceActionTests {
 
       var target = new SimpleFieldClass();
       _action.Enact(_context, target);
-      target.SomeField.Should().Be("Test");
+      target.SomeField.ShouldBe("Test");
    }
 
    [Fact]

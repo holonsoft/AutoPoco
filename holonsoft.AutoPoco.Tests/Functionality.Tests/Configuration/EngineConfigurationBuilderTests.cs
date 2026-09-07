@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Moq;
 using Xunit;
 using holonsoft.AutoPoco.Configuration;
@@ -30,7 +30,7 @@ public class EngineConfigurationBuilderTests {
       var wasInvoked = false;
       config.Conventions(x => { wasInvoked = true; });
 
-      wasInvoked.Should().BeTrue();
+      wasInvoked.ShouldBeTrue();
    }
 
    [Fact]
@@ -39,6 +39,6 @@ public class EngineConfigurationBuilderTests {
       var providerMock = new Mock<IEngineConfigurationTypeProvider>();
       config.RegisterTypeProvider(providerMock.Object);
 
-      config.GetConfigurationTypes().Contains(providerMock.Object).Should().BeTrue();
+      config.GetConfigurationTypes().Contains(providerMock.Object).ShouldBeTrue();
    }
 }

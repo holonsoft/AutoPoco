@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using FluentAssertions;
+using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.DataSources.Base;
 using holonsoft.AutoPoco.Extensions;
@@ -30,7 +30,7 @@ public class WhenConfiguringPropertyWithParent {
 
       var node = session.Next<SimpleNode>();
 
-      node.Parent.Should().BeNull();
+      node.Parent.ShouldBeNull();
    }
 
    /// <summary>
@@ -45,6 +45,6 @@ public class WhenConfiguringPropertyWithParent {
           .Setup(y => y.Parent).Use<ParentSource<SimpleNode>>()).CreateSession();
 
       var node = session.Next<SimpleNode>();
-      node.Children.First().Parent.Should().Be(node);
+      node.Children.First().Parent.ShouldBe(node);
    }
 }

@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.Extensions;
 
@@ -12,8 +12,8 @@ public class WhenConfiguringClosedGenericCollection {
           .Setup(x => x.Children).Collection(3, 3)).CreateSession();
 
       var result = session.Next<TestObject>();
-      result.Should().NotBeNull();
-      result.Children.Should().HaveCount(3);
+      result.ShouldNotBeNull();
+      result.Children.Count().ShouldBe(3);
    }
 
    public class TestObject {

@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.Tests.Common;
 
@@ -11,8 +11,8 @@ public class WhenUsingDefaultSession {
       var session = AutoPocoContainer.CreateDefaultSession();
       var user = session.Next<SimpleUser>();
 
-      user.Should().NotBeNull("User was not created");
-      user.FirstName.Should().NotBeNull("User did not get first name");
+      user.ShouldNotBeNull("User was not created");
+      user.FirstName.ShouldNotBeNull("User did not get first name");
    }
 
    [Fact]
@@ -23,8 +23,8 @@ public class WhenUsingDefaultSession {
          all.Impose(x => x.LastName, "Hanselman");
       });
 
-      user.FirstName.Should().Be("Scott");
-      user.LastName.Should().Be("Hanselman");
+      user.FirstName.ShouldBe("Scott");
+      user.LastName.ShouldBe("Hanselman");
    }
 
    [Fact]
@@ -42,10 +42,10 @@ public class WhenUsingDefaultSession {
            .Impose(x => x.LastName, "Blue");
       }).ToList();
 
-      users.Count(x => x.FirstName == "Rob").Should().Be(5);
-      users.Count(x => x.FirstName == "Scott").Should().Be(5);
-      users.Count(x => x.LastName == "Red").Should().Be(5);
-      users.Count(x => x.LastName == "Blue").Should().Be(5);
+      users.Count(x => x.FirstName == "Rob").ShouldBe(5);
+      users.Count(x => x.FirstName == "Scott").ShouldBe(5);
+      users.Count(x => x.LastName == "Red").ShouldBe(5);
+      users.Count(x => x.LastName == "Blue").ShouldBe(5);
    }
 
    [Fact]
@@ -54,8 +54,8 @@ public class WhenUsingDefaultSession {
       var users = session.Collection<SimpleUser>(10).ToList();
 
       users.ForEach(x => {
-         x.Should().NotBeNull("User was not created");
-         x.FirstName.Should().NotBeNull("User did not get first name");
+         x.ShouldNotBeNull("User was not created");
+         x.FirstName.ShouldNotBeNull("User did not get first name");
       });
    }
 }

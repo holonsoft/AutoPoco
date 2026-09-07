@@ -6,6 +6,31 @@
 AutoPoco is a highly configurable framework for the purpose of fluently building readable (test) data.
 holonsoft ported this famous lib to newest version of dotnet
 
+# New in 6.0.0 (in progress)
+* Lambda data sources: compute a member value inline instead of writing a data source class
+
+```CSHARP
+var counter = 0;
+var factory = AutoPocoContainer.Configure(x => {
+   x.Conventions(c => c.UseDefaultConventions());
+   x.Include<SimpleUser>()
+      // runs once per generated object
+      .Setup(c => c.Id).From(() => ++counter)
+      .Setup(c => c.EmailAddress).From(() => $"user{counter}@example.org")
+      // the context variant can build related objects
+      .Setup(c => c.Role).From(ctx => ctx!.Single<SimpleUserRole>().Impose(r => r.Name, "Guest").Get());
+});
+
+// the same at generation time, overriding the configuration for this call only
+var users = session.List<SimpleUser>(10)
+   .Source(u => u.LastName, () => "Smith")
+   .Get();
+```
+
+  The lambda is in charge of the value, including null. `FuncSource<T>` is the class behind it and can be used directly wherever an `IDataSource` is expected.
+* Build and packaging: GitHub Actions CI, trusted publishing to nuget.org, MinVer versioning from git tags, central package management, tests on xunit.v3 for net8/9/10
+* The library no longer drags FluentAssertions and Moq into your project as dependencies
+
 # New in 5.1.1
 * Support for .NET 9 / .NET 10 added
 

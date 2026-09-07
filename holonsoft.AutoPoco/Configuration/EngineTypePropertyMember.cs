@@ -3,7 +3,12 @@ using System.Reflection;
 
 namespace holonsoft.AutoPoco.Configuration;
 
-public class EngineTypePropertyMember(PropertyInfo propertyInfo) : EngineTypeMember {
+public class EngineTypePropertyMember : EngineTypeMember {
+   public EngineTypePropertyMember(PropertyInfo propertyInfo) {
+      ArgumentNullException.ThrowIfNull(propertyInfo);
+      PropertyInfo = propertyInfo;
+   }
+
    public override string Name => PropertyInfo.Name;
 
    public override bool IsMethod => false;
@@ -12,7 +17,7 @@ public class EngineTypePropertyMember(PropertyInfo propertyInfo) : EngineTypeMem
 
    public override bool IsProperty => true;
 
-   public PropertyInfo PropertyInfo { get; } = propertyInfo ?? throw new ArgumentNullException($"{nameof(propertyInfo)}");
+   public PropertyInfo PropertyInfo { get; }
 
    public override bool Equals(object? obj) {
       var otherMember = obj as EngineTypePropertyMember;

@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using FluentAssertions;
+using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.DataSources.Base;
 
@@ -33,5 +33,21 @@ public class ValueSourceTests {
    /// </summary>
    [Fact]
    public void NextReturnsValue()
-      => _source.InternalNext(null).Should().Be(10);
+      => _source.InternalNext(null).ShouldBe(10);
+
+   [Fact]
+   public void NextReturnsTheSameValueEveryTime()
+      => Enumerable.Range(0, 5).Select(_ => _source.InternalNext(null)).ShouldAllBe(x => (int) x == 10);
+
+   [Fact]
+   public void ReferenceValuesAreReturnedAsIs() {
+      var value = new object();
+      new ValueSource<object>(value).InternalNext(null).ShouldBeSameAs(value);
+   }
+
+   [Fact]
+   public void NullIsRejectedAtConstructionTime() {
+      Action act = () => new ValueSource<string>(null!);
+      Should.Throw<ArgumentNullException>(act).ParamName.ShouldBe("value");
+   }
 }

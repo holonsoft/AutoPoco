@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.Configuration;
 using holonsoft.AutoPoco.Configuration.Interfaces;
@@ -15,7 +15,7 @@ public class EngineConfigurationTypeBuilderTests {
 
       var t = ((IEngineConfigurationTypeProvider) configuration).GetFactory();
 
-      t!.Build()!.GetType().Should().Be(typeof(TestFactory));
+      t!.Build()!.GetType().ShouldBe(typeof(TestFactory));
 
    }
 
@@ -26,8 +26,8 @@ public class EngineConfigurationTypeBuilderTests {
 
       var t = (TestFactory) ((IEngineConfigurationTypeProvider) configuration).GetFactory()!.Build()!;
 
-      t.ArgOne.Should().Be("one");
-      t.ArgTwo.Should().Be("two");
+      t.ArgOne.ShouldBe("one");
+      t.ArgTwo.ShouldBe("two");
    }
 
    [Fact]
@@ -35,7 +35,7 @@ public class EngineConfigurationTypeBuilderTests {
       IEngineConfigurationTypeBuilder configuration = new EngineConfigurationTypeBuilder(typeof(SimplePropertyClass));
       var memberConfiguration = configuration.SetupProperty("SomeProperty");
 
-      memberConfiguration.Should().NotBeNull();
+      memberConfiguration.ShouldNotBeNull();
    }
 
    [Fact]
@@ -43,7 +43,7 @@ public class EngineConfigurationTypeBuilderTests {
       IEngineConfigurationTypeBuilder configuration = new EngineConfigurationTypeBuilder(typeof(SimpleFieldClass));
       var memberConfiguration = configuration.SetupField("SomeField");
 
-      memberConfiguration.Should().NotBeNull();
+      memberConfiguration.ShouldNotBeNull();
    }
 
    [Fact]
@@ -70,7 +70,7 @@ public class EngineConfigurationTypeBuilderTests {
       var configuration = new EngineConfigurationTypeBuilder<SimpleMethodClass>();
       var returnValue = configuration.Invoke(x => x.SetSomething("Something"));
 
-      returnValue.Should().Be(configuration);
+      returnValue.ShouldBe(configuration);
    }
 
    [Fact]
@@ -78,7 +78,7 @@ public class EngineConfigurationTypeBuilderTests {
       var configuration = new EngineConfigurationTypeBuilder<SimpleMethodClass>();
       var returnValue = configuration.Invoke(x => x.ReturnSomething());
 
-      returnValue.Should().Be(configuration);
+      returnValue.ShouldBe(configuration);
    }
 
    [Fact]
@@ -86,7 +86,7 @@ public class EngineConfigurationTypeBuilderTests {
       var configuration = new EngineConfigurationTypeBuilder(typeof(SimpleMethodClass));
       var returnValue = configuration.SetupMethod("ReturnSomething");
 
-      returnValue.Should().Be(configuration);
+      returnValue.ShouldBe(configuration);
    }
 
    [Fact]
@@ -96,7 +96,7 @@ public class EngineConfigurationTypeBuilderTests {
       context.AddArgumentValue("Hello");
       var returnValue = configuration.SetupMethod("SetSomething", context);
 
-      returnValue.Should().Be(configuration);
+      returnValue.ShouldBe(configuration);
    }
 
    [Fact]
@@ -112,7 +112,7 @@ public class EngineConfigurationTypeBuilderTests {
       var configuration = new EngineConfigurationTypeBuilder<SimpleFieldClass>();
       var memberConfiguration = configuration.Setup(x => x.SomeField);
 
-      memberConfiguration.Should().NotBeNull();
+      memberConfiguration.ShouldNotBeNull();
    }
 
    [Fact]
@@ -120,7 +120,7 @@ public class EngineConfigurationTypeBuilderTests {
       IEngineConfigurationTypeProvider configuration = new EngineConfigurationTypeBuilder<SimpleFieldClass>();
       var type = configuration.GetConfigurationType();
 
-      type.Should().Be(typeof(SimpleFieldClass));
+      type.ShouldBe(typeof(SimpleFieldClass));
    }
 
    [Fact]
@@ -132,7 +132,7 @@ public class EngineConfigurationTypeBuilderTests {
 
       var members = ((IEngineConfigurationTypeProvider) configuration).GetConfigurationMembers();
 
-      members.Should().HaveCount(2);
+      members.Count().ShouldBe(2);
    }
 
    [Fact]
@@ -144,7 +144,7 @@ public class EngineConfigurationTypeBuilderTests {
 
       var members = ((IEngineConfigurationTypeProvider) configuration).GetConfigurationMembers();
 
-      members.Should().HaveCount(2);
+      members.Count().ShouldBe(2);
    }
 
    [Fact]

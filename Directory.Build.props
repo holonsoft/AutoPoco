@@ -25,7 +25,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>autopoco;testdata;test-data;poco;generator;fluent;fake-data</PackageTags>
-    <PackageReleaseNotes>Build and packaging modernized: GitHub Actions CI, trusted publishing to nuget.org, MinVer tag based versioning, central package management. FluentAssertions and Moq are no longer dependencies of the library.</PackageReleaseNotes>
+    <PackageReleaseNotes>6.0: Lambda data sources (FuncSource, Setup(...).From(() => ...), Source(expr, () => ...) at generation time). Build and packaging modernized: GitHub Actions CI, trusted publishing to nuget.org, MinVer tag based versioning, central package management, xunit.v3 tests on net8/9/10. FluentAssertions and Moq are no longer dependencies of the library. See README for details.</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Label="Package build">
@@ -41,10 +41,10 @@
   </ItemGroup>
 
   <PropertyGroup Label="Versioning">
-    <!-- MinVer derives the version from git tags (v5.2.0). Untagged commits become 5.2.0-preview.0.N. -->
-    <!-- A tag on the current commit always wins, even below the minimum, so v5.1.2 would be honored too. -->
+    <!-- MinVer derives the version from git tags (v6.0.0). Untagged commits become 6.0.0-preview.0.N. -->
+    <!-- A tag on the current commit always wins, even below the minimum, so a v5.x tag would be honored too. -->
     <MinVerTagPrefix>v</MinVerTagPrefix>
-    <MinVerMinimumMajorMinor>5.2</MinVerMinimumMajorMinor>
+    <MinVerMinimumMajorMinor>6.0</MinVerMinimumMajorMinor>
     <MinVerDefaultPreReleaseIdentifiers>preview.0</MinVerDefaultPreReleaseIdentifiers>
   </PropertyGroup>
 

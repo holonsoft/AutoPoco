@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.Engine.Interfaces;
 using holonsoft.AutoPoco.Tests.Common;
@@ -24,84 +24,84 @@ public class WhenUsingDefaultConventionsWithNoExplicitSetup {
    [Fact]
    public void SimpleUserEmailIsNotNull() {
       var user = _session.Single<SimpleUser>().Get();
-      user.EmailAddress.Should().NotBeNull();
+      user.EmailAddress.ShouldNotBeNull();
    }
 
    [Fact]
    public void SimpleUserRoleIsNotNull() {
       var user = _session.Single<SimpleUser>().Get();
-      user.Role.Should().NotBeNull();
+      user.Role.ShouldNotBeNull();
    }
 
    [Fact]
    public void SimpleUserFirstNameNotNull() {
       var user = _session.Single<SimpleUser>().Get();
-      user.FirstName.Should().NotBeNull();
+      user.FirstName.ShouldNotBeNull();
    }
 
    [Fact]
    public void SimpleUserLastNameNotNull() {
       var user = _session.Single<SimpleUser>().Get();
-      user.LastName.Should().NotBeNull();
+      user.LastName.ShouldNotBeNull();
    }
 
    [Fact]
    public void SimpleFieldClassSomePropertyNotNull() {
       var fieldClass = _session.Single<SimpleFieldClass>().Get();
-      fieldClass.SomeField.Should().NotBeNull();
+      fieldClass.SomeField.ShouldNotBeNull();
    }
 
    [Fact]
    public void SimpleFieldClassSomeOtherPropertyNotNull() {
       var fieldClass = _session.Single<SimpleFieldClass>().Get();
-      fieldClass.SomeOtherField.Should().NotBeNull();
+      fieldClass.SomeOtherField.ShouldNotBeNull();
    }
 
    [Fact]
    public void DefaultPropertyClassStringIsEmpty() {
       var propertyClass = _session.Single<DefaultPropertyClass>().Get();
-      propertyClass.String.Should().BeEmpty();
+      propertyClass.String.ShouldBeEmpty();
    }
 
    [Fact]
    public void DefaultPropertyClassFloatEqualsZero() {
       var propertyClass = _session.Single<DefaultPropertyClass>().Get();
-      propertyClass.Float.Should().Be(0);
+      propertyClass.Float.ShouldBe(0);
    }
 
    [Fact]
    public void DefaultPropertyClassIntegerEqualsZero() {
       var propertyClass = _session.Single<DefaultPropertyClass>().Get();
-      propertyClass.Integer.Should().Be(0);
+      propertyClass.Integer.ShouldBe(0);
    }
 
    [Fact]
    public void DefaultPropertyClassDateTimeIsMin() {
       var propertyClass = _session.Single<DefaultPropertyClass>().Get();
-      propertyClass.Date.Should().Be(DateTime.MinValue);
+      propertyClass.Date.ShouldBe(DateTime.MinValue);
    }
 
    [Fact]
    public void DefaultFieldClassStringIsEmpty() {
       var propertyClass = _session.Single<DefaultFieldClass>().Get();
-      propertyClass.String.Should().BeEmpty();
+      propertyClass.String.ShouldBeEmpty();
    }
 
    [Fact]
    public void DefaultFieldClassFloatEqualsZero() {
       var propertyClass = _session.Single<DefaultFieldClass>().Get();
-      propertyClass.Float.Should().Be(0);
+      propertyClass.Float.ShouldBe(0);
    }
 
    [Fact]
    public void DefaultFieldClassIntegerEqualsZero() {
       var propertyClass = _session.Single<DefaultFieldClass>().Get();
-      propertyClass.Integer.Should().Be(0);
+      propertyClass.Integer.ShouldBe(0);
    }
 
    [Fact]
    public void DefaultFieldClassDateTimeIsMin() {
       var propertyClass = _session.Single<DefaultFieldClass>().Get();
-      propertyClass.Date.Should().Be(DateTime.MinValue);
+      propertyClass.Date.ShouldBe(DateTime.MinValue);
    }
 }

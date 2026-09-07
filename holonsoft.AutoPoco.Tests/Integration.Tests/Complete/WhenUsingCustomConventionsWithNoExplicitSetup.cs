@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.Configuration.Interfaces;
 using holonsoft.AutoPoco.Engine.Interfaces;
@@ -22,25 +22,25 @@ public class WhenUsingCustomConventionsWithNoExplicitSetup {
    [Fact]
    public void TestPropertyHasTestValue() {
       var testType = _session.Single<TestType>().Get();
-      testType.TestProperty.Should().Be("Test");
+      testType.TestProperty.ShouldBe("Test");
    }
 
    [Fact]
    public void TestFieldHasTestValue() {
       var testType = _session.Single<TestType>().Get();
-      testType.TestField.Should().Be("Test");
+      testType.TestField.ShouldBe("Test");
    }
 
    [Fact]
    public void TestEmptyFieldIsNull() {
       var testType = _session.Single<TestType>().Get();
-      testType.TestEmptyField.Should().BeNull();
+      testType.TestEmptyField.ShouldBeNull();
    }
 
    [Fact]
    public void TestEmptyPropertyIsNull() {
       var testType = _session.Single<TestType>().Get();
-      testType.TestEmptyProperty.Should().BeNull();
+      testType.TestEmptyProperty.ShouldBeNull();
    }
 
    public class TestType {

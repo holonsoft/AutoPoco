@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.Configuration;
 using holonsoft.AutoPoco.DataSources.Business;
@@ -45,32 +45,32 @@ public class WhenUsingDefaultConventionsWithExplicitSetup {
    [Fact]
    public void SingleSimpleMethodClassSetSomethingSetsValueCorrectlyFromSource() {
       var result = _session.Single<SimpleMethodClass>().Get();
-      result.Value!.Length.Should().BeInRange(5, 10);
+      result.Value!.Length.ShouldBeInRange(5, 10);
    }
 
    [Fact]
    public void SingleSimpleMethodClassSetSomethingSetsOtherValueCorrectlyFromSource() {
       var result = _session.Single<SimpleMethodClass>().Get();
-      result.OtherValue!.Length.Should().BeGreaterThanOrEqualTo(2);
+      result.OtherValue!.Length.ShouldBeGreaterThanOrEqualTo(2);
    }
 
    [Fact]
    public void SingleSimpleUserRoleHasRandomName() {
       var role = _session.Single<SimpleUserRole>().Get();
-      role.Name.Length.Should().BeInRange(5, 10);
+      role.Name.Length.ShouldBeInRange(5, 10);
    }
 
    [Fact]
    public void SingleSimpleUserHasValidEmailAddress() {
       var user = _session.Single<SimpleUser>().Get();
-      user.EmailAddress.Should().Contain("@", Exactly.Once());
+      user.EmailAddress.Count(c => c == '@').ShouldBe(1);
    }
 
    [Fact]
    public void SingleSimpleSeveralUsersHaveUniqueEmailAddresses() {
       var users = _session.List<SimpleUser>(10).Get().ToArray();
 
-      users.Where(x => users.Count(y => y.EmailAddress == x.EmailAddress) > 1).Count().Should().Be(0);
+      users.Where(x => users.Count(y => y.EmailAddress == x.EmailAddress) > 1).Count().ShouldBe(0);
    }
 
    [Fact]
@@ -81,79 +81,79 @@ public class WhenUsingDefaultConventionsWithExplicitSetup {
         .Impose(x => x.LastName, "Override")
         .Get();
 
-      user.EmailAddress.Should().Be("override@override.com");
+      user.EmailAddress.ShouldBe("override@override.com");
    }
 
    [Fact]
    public void SingleSimpleUserHasValidFirstName() {
       var user = _session.Single<SimpleUser>().Get();
-      user.FirstName.Length.Should().BeGreaterThan(2);
+      user.FirstName.Length.ShouldBeGreaterThan(2);
    }
 
    [Fact]
    public void SingleSimpleUserHasValidLastName() {
       var user = _session.Single<SimpleUser>().Get();
-      user.LastName.Length.Should().BeGreaterThan(2);
+      user.LastName.Length.ShouldBeGreaterThan(2);
    }
 
    [Fact]
    public void SimpleFieldClassSomePropertyNotNull() {
       var fieldClass = _session.Single<SimpleFieldClass>().Get();
-      fieldClass.SomeField.Should().NotBeNull();
+      fieldClass.SomeField.ShouldNotBeNull();
    }
 
    [Fact]
    public void SimpleFieldClassSomeOtherPropertyNotNull() {
       var fieldClass = _session.Single<SimpleFieldClass>().Get();
-      fieldClass.SomeOtherField.Should().NotBeNull();
+      fieldClass.SomeOtherField.ShouldNotBeNull();
    }
 
    [Fact]
    public void DefaultPropertyClassStringIsEmpty() {
       var propertyClass = _session.Single<DefaultPropertyClass>().Get();
-      propertyClass.String.Should().BeEmpty();
+      propertyClass.String.ShouldBeEmpty();
    }
 
    [Fact]
    public void DefaultPropertyClassFloatEqualsZero() {
       var propertyClass = _session.Single<DefaultPropertyClass>().Get();
-      propertyClass.Float.Should().Be(0);
+      propertyClass.Float.ShouldBe(0);
    }
 
    [Fact]
    public void DefaultPropertyClassIntegerEqualsZero() {
       var propertyClass = _session.Single<DefaultPropertyClass>().Get();
-      propertyClass.Integer.Should().Be(0);
+      propertyClass.Integer.ShouldBe(0);
    }
 
    [Fact]
    public void DefaultPropertyClassDateTimeIsMin() {
       var propertyClass = _session.Single<DefaultPropertyClass>().Get();
-      propertyClass.Date.Should().Be(DateTime.MinValue);
+      propertyClass.Date.ShouldBe(DateTime.MinValue);
    }
 
    [Fact]
    public void DefaultFieldClassStringIsEmpty() {
       var propertyClass = _session.Single<DefaultFieldClass>().Get();
-      propertyClass.String.Should().BeEmpty();
+      propertyClass.String.ShouldBeEmpty();
    }
 
    [Fact]
    public void DefaultFieldClassFloatEqualsZero() {
       var propertyClass = _session.Single<DefaultFieldClass>().Get();
-      propertyClass.Float.Should().Be(0);
+      propertyClass.Float.ShouldBe(0);
    }
 
    [Fact]
    public void DefaultFieldClassIntegerEqualsZero() {
       var propertyClass = _session.Single<DefaultFieldClass>().Get();
-      propertyClass.Integer.Should().Be(0);
+      propertyClass.Integer.ShouldBe(0);
    }
 
    [Fact]
    public void DefaultFieldClassDateTimeIsMin() {
       var propertyClass = _session.Single<DefaultFieldClass>().Get();
-      propertyClass.Date.Should().Be(DateTime.MinValue);
+      propertyClass.Date.ShouldBe(DateTime.MinValue);
    }
 
    [Fact]
@@ -165,9 +165,9 @@ public class WhenUsingDefaultConventionsWithExplicitSetup {
         .Impose(x => x.LastName, "last")
         .All().Get();
 
-      list.Should().HaveCount(10);
-      list.Count(x => x.LastName == "first").Should().Be(5);
-      list.Count(x => x.LastName == "last").Should().Be(5);
+      list.Count().ShouldBe(10);
+      list.Count(x => x.LastName == "first").ShouldBe(5);
+      list.Count(x => x.LastName == "last").ShouldBe(5);
    }
 
    [Fact]

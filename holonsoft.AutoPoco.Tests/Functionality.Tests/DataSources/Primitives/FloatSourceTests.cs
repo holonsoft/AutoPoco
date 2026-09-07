@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.DataSources.Primitives;
 using holonsoft.AutoPoco.Tests.Functionality.Tests.DataSources.Base;
@@ -12,7 +12,7 @@ public class FloatSourceTests : TestBase {
       var value1 = source.Next(null);
       var value2 = source.Next(null);
 
-      value2.Should().NotBe(value1);
+      value2.ShouldNotBe(value1);
 
       var expectedValues = new[] { -1.2592764E+38F, 2.9356796E+38F, 2.330711E+38F, 3.132315E+38F, 3.1158412E+38F, -2.0810006E+38F, -7.7054755E+37F, -1.402494E+38F, -1.3568953E+38F, -1.4800383E+38F };
 
@@ -25,7 +25,7 @@ public class FloatSourceTests : TestBase {
       var value1 = source.Next(null);
       var value2 = source.Next(null);
 
-      value2.Should().NotBe(value1);
+      value2.ShouldNotBe(value1);
 
       var expectedValues = new float?[] {
          -2.5996409E+38F, -1.2592764E+38F, 2.9356796E+38F, 2.330711E+38F, 3.132315E+38F, 3.1158412E+38F, -2.0810006E+38F, -7.7054755E+37F,
