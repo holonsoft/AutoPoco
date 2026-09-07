@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Moq;
 using Xunit;
 using holonsoft.AutoPoco.Configuration;
@@ -17,6 +17,6 @@ public class EngineConfigurationFactoryTests {
         configurationProviderMock.Object,
         conventionProviderMock.Object);
 
-      configuration.Should().NotBeNull();
+      configuration.ShouldNotBeNull();
    }
 }

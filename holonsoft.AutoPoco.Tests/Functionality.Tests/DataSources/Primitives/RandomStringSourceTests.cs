@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.DataSources.Primitives;
 using holonsoft.AutoPoco.Tests.Functionality.Tests.DataSources.Base;
@@ -15,8 +15,8 @@ public class RandomStringSourceTests : TestBase {
       for (var x = 0; x < 10; x++) {
          var value = source.Next(null);
 
-         value.Length.Should().BeGreaterThanOrEqualTo(min);
-         value.Length.Should().BeLessThanOrEqualTo(max);
+         value.Length.ShouldBeGreaterThanOrEqualTo(min);
+         value.Length.ShouldBeLessThanOrEqualTo(max);
       }
    }
 

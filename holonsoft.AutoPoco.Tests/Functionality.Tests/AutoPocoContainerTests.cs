@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 
 namespace holonsoft.AutoPoco.Tests.Functionality.Tests;
@@ -8,12 +8,12 @@ public class AutoPocoContainerTests {
    public void ConfigureRunsActions() {
       var hasRun = false;
       AutoPocoContainer.Configure(x => { hasRun = true; });
-      hasRun.Should().BeTrue();
+      hasRun.ShouldBeTrue();
    }
 
    [Fact]
    public void ConfigureReturnsFactory() {
       var factory = AutoPocoContainer.Configure(x => { });
-      factory.Should().NotBeNull();
+      factory.ShouldNotBeNull();
    }
 }

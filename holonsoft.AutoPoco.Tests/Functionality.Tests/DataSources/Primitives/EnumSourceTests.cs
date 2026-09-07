@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.DataSources.Primitives;
 using holonsoft.AutoPoco.Tests.Functionality.Tests.DataSources.Base;
@@ -24,7 +24,7 @@ public class EnumSourceTests : TestBase {
       var source = new EnumSource<MyTestEnum>();
       var value = source.Next(null);
 
-      value.Should().Be(MyTestEnum.three);
+      value.ShouldBe(MyTestEnum.three);
    }
 
    [Fact]

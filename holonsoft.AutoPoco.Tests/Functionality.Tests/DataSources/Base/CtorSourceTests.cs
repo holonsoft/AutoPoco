@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Moq;
 using Xunit;
 using holonsoft.AutoPoco.DataSources.Base;
@@ -18,7 +18,7 @@ public class CtorSourceTests {
 
       var result = source.Next(context.Object);
 
-      result.Dependency.Should().NotBeNull();
+      result.Dependency.ShouldNotBeNull();
    }
 }
 

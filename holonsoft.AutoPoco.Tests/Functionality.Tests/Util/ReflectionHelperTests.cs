@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.Tests.Common;
 using holonsoft.AutoPoco.Util;
@@ -10,27 +10,27 @@ public class ReflectionHelperTests {
    public void GetPropertyReturnsPropertyInfo() {
       var info = ReflectionHelper.GetProperty<SimplePropertyClass>(x => x.SomeProperty!);
 
-      info.Name.Should().Be("SomeProperty");
+      info.Name.ShouldBe("SomeProperty");
    }
 
    [Fact]
    public void GetMemberAsPropertyReturnsMember() {
       var member = ReflectionHelper.GetMember<SimplePropertyClass>(x => x.SomeProperty!);
-      member.Name.Should().Be("SomeProperty");
-      member.IsProperty.Should().BeTrue();
+      member.Name.ShouldBe("SomeProperty");
+      member.IsProperty.ShouldBeTrue();
    }
 
    [Fact]
    public void GetMemberAsFieldReturnsField() {
       var member = ReflectionHelper.GetMember<SimpleFieldClass>(x => x.SomeField!);
-      member.Name.Should().Be("SomeField");
-      member.IsField.Should().BeTrue();
+      member.Name.ShouldBe("SomeField");
+      member.IsField.ShouldBeTrue();
    }
 
    [Fact]
    public void GetFieldReturnsFieldInfo() {
       var info = ReflectionHelper.GetField<SimpleFieldClass>(x => x.SomeField!);
 
-      info.Name.Should().Be("SomeField");
+      info.Name.ShouldBe("SomeField");
    }
 }

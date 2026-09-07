@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.Engine.Interfaces;
 using holonsoft.AutoPoco.Extensions;
@@ -27,7 +27,7 @@ public class WhenOverridingDataSourceOnObjectCreation {
    public void OverriddenDataSourceIsUsedForAllUsers() {
       for (var x = 0; x < 5; x++) {
          var user = _results[x];
-         user.EmailAddress.Should().Be("Test" + x);
+         user.EmailAddress.ShouldBe("Test" + x);
       }
    }
 

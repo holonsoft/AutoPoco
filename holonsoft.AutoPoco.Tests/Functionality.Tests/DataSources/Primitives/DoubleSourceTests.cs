@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.DataSources.Primitives;
 using holonsoft.AutoPoco.Tests.Functionality.Tests.DataSources.Base;
@@ -10,7 +10,7 @@ public class DoubleSourceTests : TestBase {
    public void NextReturnsStableDoubleListInTermsOfTestability() {
       var source = new DoubleSource(100, 10000, 4);
       var value = source.Next(null);
-      value.Should().NotBe(0);
+      value.ShouldNotBe(0);
       var value1 = source.Next(null);
       var value2 = source.Next(null);
 
@@ -23,7 +23,7 @@ public class DoubleSourceTests : TestBase {
    public void NextReturnsStableDoubleListInTermsOfTestabilityAndListCanContainNull() {
       var source = new NullableDoubleSource(100, 10000, 4);
       var value = source.Next(null);
-      value.Should().NotBe(0);
+      value.ShouldNotBe(0);
       var value1 = source.Next(null);
       var value2 = source.Next(null);
 

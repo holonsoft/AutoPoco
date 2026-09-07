@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.Configuration;
 using holonsoft.AutoPoco.Configuration.Interfaces;
@@ -14,7 +14,7 @@ public class EngineConventionConfigurationTests {
       config.Register(typeof(SimpleMemberConvention));
 
       var addedType = config.Find<SimpleMemberConvention>().Single();
-      addedType.Should().BeSameAs(typeof(SimpleMemberConvention));
+      addedType.ShouldBeSameAs(typeof(SimpleMemberConvention));
 
       //Assert.AreEqual(typeof(SimpleMemberConvention), addedType);
    }
@@ -25,7 +25,7 @@ public class EngineConventionConfigurationTests {
       config.Register<SimpleMemberConvention>();
 
       var addedType = config.Find<SimpleMemberConvention>().Single();
-      addedType.Should().BeSameAs(typeof(SimpleMemberConvention));
+      addedType.ShouldBeSameAs(typeof(SimpleMemberConvention));
 
       //Assert.AreEqual(typeof(SimpleMemberConvention), addedType);
    }
@@ -36,7 +36,7 @@ public class EngineConventionConfigurationTests {
       config.UseDefaultConventions();
 
       var addedType = config.Find<DefaultDatetimeMemberConvention>().Single();
-      addedType.Should().BeSameAs(typeof(DefaultDatetimeMemberConvention));
+      addedType.ShouldBeSameAs(typeof(DefaultDatetimeMemberConvention));
    }
 
    [Fact]
@@ -45,7 +45,7 @@ public class EngineConventionConfigurationTests {
       config.ScanAssemblyWithType<SimpleMemberConvention>();
 
       var addedType = config.Find<SimpleTypeConvention>().Single();
-      addedType.Should().BeSameAs(typeof(SimpleTypeConvention));
+      addedType.ShouldBeSameAs(typeof(SimpleTypeConvention));
    }
 
    [Fact]
@@ -54,7 +54,7 @@ public class EngineConventionConfigurationTests {
       config.ScanAssembly(typeof(SimpleMemberConvention).Assembly);
 
       var addedType = config.Find<SimpleTypeConvention>().Single();
-      addedType.Should().BeSameAs(typeof(SimpleTypeConvention));
+      addedType.ShouldBeSameAs(typeof(SimpleTypeConvention));
    }
 
    [Fact]
@@ -63,6 +63,6 @@ public class EngineConventionConfigurationTests {
       config.ScanAssembly(typeof(SimpleMemberConvention).Assembly);
 
       var conventionTypes = config.Find<IConvention>().ToArray();
-      conventionTypes.Length.Should().Be(16);
+      conventionTypes.Length.ShouldBe(16);
    }
 }

@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.DataSources.Base;
 
@@ -9,6 +9,6 @@ public class DefaultStringSourceTests {
    public void NextReturnsEmptyString() {
       var source = new DefaultStringSource();
       var value = source.Next(null);
-      value.Should().BeEmpty();
+      value.ShouldBeEmpty();
    }
 }

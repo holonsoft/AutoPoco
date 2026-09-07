@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Moq;
 using System.Reflection;
 using Xunit;
@@ -32,7 +32,7 @@ public class DefaultTypeConventionTests {
 
       _convention.Apply(_typeConventionContext.Object);
 
-      count.Should().Be(1);
+      count.ShouldBe(1);
    }
 
    [Fact]
@@ -44,7 +44,7 @@ public class DefaultTypeConventionTests {
 
       _convention.Apply(_typeConventionContext.Object);
 
-      count.Should().Be(1);
+      count.ShouldBe(1);
    }
 
    [Fact]

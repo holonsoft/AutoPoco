@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.Engine.Interfaces;
 using holonsoft.AutoPoco.Extensions;
@@ -20,19 +20,19 @@ public class WhenUsingFullAssemblyScanningWithDefaultConventions {
    [Fact]
    public void SimpleUserCanBeCreated() {
       var user = _session.Single<SimpleUser>().Get();
-      user.Should().NotBeNull();
+      user.ShouldNotBeNull();
    }
 
    [Fact]
    public void SimpleFieldClassCanBeCreated() {
       var obj = _session.Single<SimpleFieldClass>().Get();
-      obj.Should().NotBeNull();
+      obj.ShouldNotBeNull();
    }
 
    [Fact]
    public void SimplePropertyClassCanBeCreated() {
       var obj = _session.Single<SimplePropertyClass>().Get();
-      obj.Should().NotBeNull();
+      obj.ShouldNotBeNull();
    }
 
    [Fact]
@@ -41,7 +41,7 @@ public class WhenUsingFullAssemblyScanningWithDefaultConventions {
         .Invoke(x => x.SetSomething("Something"))
         .Get();
 
-      target.Value.Should().Be("Something");
+      target.Value.ShouldBe("Something");
    }
 
    [Fact]
@@ -50,7 +50,7 @@ public class WhenUsingFullAssemblyScanningWithDefaultConventions {
         .Invoke(x => x.ReturnSomething())
         .Get();
 
-      target.ReturnSomethingCalled.Should().BeTrue();
+      target.ReturnSomethingCalled.ShouldBeTrue();
    }
 
    [Fact]
@@ -87,7 +87,7 @@ public class WhenUsingFullAssemblyScanningWithDefaultConventions {
         .Invoke(x => x.SetSomething("Something"))
         .Get();
 
-      items.Where(x => x.Value == "Something").Count().Should().Be(100);
+      items.Where(x => x.Value == "Something").Count().ShouldBe(100);
    }
 
    [Fact]
@@ -98,7 +98,7 @@ public class WhenUsingFullAssemblyScanningWithDefaultConventions {
         .All()
         .Get();
 
-      items.Where(x => x.ReturnSomethingCalled).Count().Should().Be(50);
+      items.Where(x => x.ReturnSomethingCalled).Count().ShouldBe(50);
    }
 
    [Fact]
@@ -109,7 +109,7 @@ public class WhenUsingFullAssemblyScanningWithDefaultConventions {
         .All()
         .Get();
 
-      items.Where(x => x.ReturnSomethingCalled).Count().Should().Be(50);
+      items.Where(x => x.ReturnSomethingCalled).Count().ShouldBe(50);
    }
 
    [Fact]
@@ -118,6 +118,6 @@ public class WhenUsingFullAssemblyScanningWithDefaultConventions {
         .Invoke(x => x.ReturnSomething())
         .Get();
 
-      items.Where(x => x.ReturnSomethingCalled).Count().Should().Be(100);
+      items.Where(x => x.ReturnSomethingCalled).Count().ShouldBe(100);
    }
 }

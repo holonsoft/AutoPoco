@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Moq;
 using Xunit;
 using holonsoft.AutoPoco.Configuration;
@@ -28,7 +28,7 @@ public class ObjectBuilderTests {
       var builder = new ObjectBuilder(type.Object);
       var result = builder.CreateObject(CreateDummyContext()) as SimpleCtorClass;
 
-      result!.ReadOnlyProperty.Should().Be("one");
+      result!.ReadOnlyProperty.ShouldBe("one");
    }
 
    [Fact]
@@ -38,7 +38,7 @@ public class ObjectBuilderTests {
 
       var builder = new ObjectBuilder(type.Object);
       var user = builder.CreateObject(CreateDummyContext()) as SimpleUser;
-      user.Should().NotBeNull();
+      user.ShouldNotBeNull();
    }
 
    [Fact]
@@ -55,7 +55,7 @@ public class ObjectBuilderTests {
       builder.AddAction(actionMock.Object);
       var createdObject = builder.CreateObject(CreateDummyContext());
 
-      createdObject.Should().Be(obj);
+      createdObject.ShouldBe(obj);
    }
 
    [Fact]
@@ -66,7 +66,7 @@ public class ObjectBuilderTests {
       var actionMock = new Mock<IObjectAction>();
       builder.AddAction(actionMock.Object);
 
-      builder.Actions.Count(x => x == actionMock.Object).Should().Be(1);
+      builder.Actions.Count(x => x == actionMock.Object).ShouldBe(1);
    }
 
    [Fact]
@@ -79,7 +79,7 @@ public class ObjectBuilderTests {
       builder.AddAction(actionMock.Object);
       builder.RemoveAction(actionMock.Object);
 
-      builder.Actions.Count(x => x == actionMock.Object).Should().Be(0);
+      builder.Actions.Count(x => x == actionMock.Object).ShouldBe(0);
    }
 
    [Fact]
@@ -95,7 +95,7 @@ public class ObjectBuilderTests {
 
       builder.ClearActions();
 
-      builder.Actions.Count().Should().Be(0);
+      builder.Actions.Count().ShouldBe(0);
    }
 
    [Fact]

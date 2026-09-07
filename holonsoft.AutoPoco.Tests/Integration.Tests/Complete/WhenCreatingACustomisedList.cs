@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.Engine.Interfaces;
 using holonsoft.AutoPoco.Extensions;
@@ -44,37 +44,37 @@ public class WhenCreatingACustomisedList {
 
    [Fact]
    public void CorrectNumberOfRobsExist()
-      => _users.Count(x => x.FirstName == "Rob").Should().Be(50);
+      => _users.Count(x => x.FirstName == "Rob").ShouldBe(50);
 
    [Fact]
    public void CorrectNumberOfAshtonsExist()
-      => _users.Count(x => x.LastName == "Ashton").Should().Be(50);
+      => _users.Count(x => x.LastName == "Ashton").ShouldBe(50);
 
    [Fact]
    public void CorrectNumberOfLukesExist()
-      => _users.Count(x => x.FirstName == "Luke").Should().Be(50);
+      => _users.Count(x => x.FirstName == "Luke").ShouldBe(50);
 
    [Fact]
    public void CorrectNumberOfSmithsExist()
-      => _users.Count(x => x.LastName == "Smith").Should().Be(50);
+      => _users.Count(x => x.LastName == "Smith").ShouldBe(50);
 
    [Fact]
    public void AllRobsAreAshtons()
-      => _users.Count(x => x.FirstName == "Rob" && x.LastName == "Ashton").Should().Be(50);
+      => _users.Count(x => x.FirstName == "Rob" && x.LastName == "Ashton").ShouldBe(50);
 
    [Fact]
    public void AllLukesAreSmiths()
-      => _users.Count(x => x.FirstName == "Luke" && x.LastName == "Smith").Should().Be(50);
+      => _users.Count(x => x.FirstName == "Luke" && x.LastName == "Smith").ShouldBe(50);
 
    [Fact]
    public void CorrectNumberOfRoleOnesExist()
-      => _users.Count(x => x.Role.Name == "RoleOne").Should().Be(25);
+      => _users.Count(x => x.Role.Name == "RoleOne").ShouldBe(25);
 
    [Fact]
    public void CorrectNumberOfRoleTwosExist()
-      => _users.Count(x => x.Role.Name == "RoleTwo").Should().Be(25);
+      => _users.Count(x => x.Role.Name == "RoleTwo").ShouldBe(25);
 
    [Fact]
    public void CorrectNumberOfRoleThreesExist()
-      => _users.Count(x => x.Role.Name == "RoleThree").Should().Be(50);
+      => _users.Count(x => x.Role.Name == "RoleThree").ShouldBe(50);
 }

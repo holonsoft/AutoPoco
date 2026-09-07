@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.Configuration;
 using holonsoft.AutoPoco.Configuration.Interfaces;
@@ -20,7 +20,7 @@ public class WhenTypeConventionApplied : ConfigurationBaseTest {
 
    [Fact]
    public void ConfigurationContainsMemberOnRegisteredType()
-      => _type.GetRegisteredMembers().Where(x => x.Member.Name == "Test").Count().Should().Be(1);
+      => _type.GetRegisteredMembers().Where(x => x.Member.Name == "Test").Count().ShouldBe(1);
 
    public class TestTypeClass {
       public string? Test = null!;

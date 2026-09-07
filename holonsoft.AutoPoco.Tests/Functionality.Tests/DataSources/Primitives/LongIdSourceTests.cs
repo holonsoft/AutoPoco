@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.DataSources.Primitives;
 
@@ -11,13 +11,13 @@ public class LongIdSourceTests {
       var value1 = source.Next(null);
       var value2 = source.Next(null);
 
-      value2.Should().BeGreaterThan(value1);
+      value2.ShouldBeGreaterThan(value1);
 
       source = new LongIdSource(10000);
       value1 = source.Next(null);
       value2 = source.Next(null);
 
-      value1.Should().BeGreaterThan(9999);
-      value2.Should().BeGreaterThan(value1);
+      value1.ShouldBeGreaterThan(9999);
+      value2.ShouldBeGreaterThan(value1);
    }
 }

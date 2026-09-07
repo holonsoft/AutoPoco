@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.DataSources.Primitives;
 using holonsoft.AutoPoco.Tests.Functionality.Tests.DataSources.Base;
@@ -10,7 +10,7 @@ public class DecimalSourceTests : TestBase {
    public void NextReturnsNotZero() {
       var source = new DecimalSource();
       var value = source.Next(null);
-      value.Should().NotBe(0);
+      value.ShouldNotBe(0);
    }
 
    [Fact]

@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.Engine.Interfaces;
 using holonsoft.AutoPoco.Tests.Common;
@@ -14,18 +14,18 @@ public class WhenRequestingUnknownType {
    [Fact]
    public void WithBasicTypeValidObjectIsReturned() {
       var user = _generationSession.Single<SimpleUser>().Get();
-      user.Should().NotBeNull();
+      user.ShouldNotBeNull();
    }
 
    [Fact]
    public void WithDerivedTypeBasePropertiesAreFilled() {
       var obj = _generationSession.Single<SimpleDerivedClass>().Get();
-      obj.BaseProperty.Should().NotBeNull();
+      obj.BaseProperty.ShouldNotBeNull();
    }
 
    [Fact]
    public void WithImplementedTypeInterfacePropertiesAreFilled() {
       var obj = _generationSession.Single<SimpleDerivedClass>().Get();
-      obj.InterfaceValue.Should().NotBeNull();
+      obj.InterfaceValue.ShouldNotBeNull();
    }
 }

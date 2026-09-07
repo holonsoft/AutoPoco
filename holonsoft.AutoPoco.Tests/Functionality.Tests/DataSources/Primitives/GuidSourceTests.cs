@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.DataSources.Primitives;
 using holonsoft.AutoPoco.Tests.Functionality.Tests.DataSources.Base;
@@ -10,7 +10,7 @@ public class GuidSourceTests : TestBase {
    public void NextReturnsGuid() {
       var source = new GuidSource();
       var value = source.Next(null);
-      value.Should().NotBe(Guid.Empty);
+      value.ShouldNotBe(Guid.Empty);
    }
 
    [Fact]
@@ -18,7 +18,7 @@ public class GuidSourceTests : TestBase {
       var source = new GuidSource();
       var value1 = source.Next(null);
       var value2 = source.Next(null);
-      value1.Should().NotBe(value2);
+      value1.ShouldNotBe(value2);
    }
 
    [Fact]

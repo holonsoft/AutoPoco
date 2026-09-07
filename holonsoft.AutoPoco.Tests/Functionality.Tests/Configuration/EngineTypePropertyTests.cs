@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using System.Reflection;
 using Xunit;
 using holonsoft.AutoPoco.Configuration;
@@ -10,8 +10,8 @@ public class EngineTypePropertyTests {
    public void SamePropertyRequestedFromBaseAndDerivedTypesIsConsideredEqual() {
       var baseProperty = new EngineTypePropertyMember(typeof(BaseClass).GetProperty("SealedProperty")!);
       var derivedProperty = new EngineTypePropertyMember(typeof(DerivedClass).GetProperty("SealedProperty")!);
-      (baseProperty == derivedProperty).Should().BeTrue();
-      baseProperty.Should().Be(derivedProperty);
+      (baseProperty == derivedProperty).ShouldBeTrue();
+      baseProperty.ShouldBe(derivedProperty);
    }
 
    [Fact]
@@ -19,14 +19,14 @@ public class EngineTypePropertyTests {
       var interfaceProperty = new EngineTypePropertyMember(typeof(IFoo).GetProperty("InterfaceProperty")!);
       var implementedProperty = new EngineTypePropertyMember(typeof(BaseClass).GetProperty("InterfaceProperty")!);
 
-      (interfaceProperty == implementedProperty).Should().BeTrue();
+      (interfaceProperty == implementedProperty).ShouldBeTrue();
    }
 
    [Fact]
    public void SamePropertyRequestedFromInterfaceAndDerivedTypeFromImplementingTypeIsConsideredEqual() {
       var interfaceProperty = new EngineTypePropertyMember(typeof(IFoo).GetProperty("InterfaceProperty")!);
       var derivedProperty = new EngineTypePropertyMember(typeof(DerivedClass).GetProperty("InterfaceProperty")!);
-      interfaceProperty.Should().Be(derivedProperty);
+      interfaceProperty.ShouldBe(derivedProperty);
       //Assert.True(interfaceProperty == deriveddProperty);
    }
 
@@ -34,7 +34,7 @@ public class EngineTypePropertyTests {
    public void OverriddenPropertyRequestedFromBaseAndDerivedTypeIsConsideredEqual() {
       var baseProperty = new EngineTypePropertyMember(typeof(BaseClass).GetProperty("VirtualProperty")!);
       var overriddenProperty = new EngineTypePropertyMember(typeof(DerivedClass).GetProperty("VirtualProperty")!);
-      overriddenProperty.Should().Be(baseProperty);
+      overriddenProperty.ShouldBe(baseProperty);
       //Assert.True(baseProperty == overriddenProperty);
    }
 
@@ -47,7 +47,7 @@ public class EngineTypePropertyTests {
 
       var baseProperty = new EngineTypePropertyMember(typeof(BaseClass).GetProperty("AnotherSealedProperty", flags)!);
       var overriddenProperty = new EngineTypePropertyMember(typeof(DerivedClass).GetProperty("AnotherSealedProperty", flags)!);
-      overriddenProperty.Should().NotBe(baseProperty);
+      overriddenProperty.ShouldNotBe(baseProperty);
 
       //Assert.False(baseProperty == overriddenProperty);
    }
@@ -57,7 +57,7 @@ public class EngineTypePropertyTests {
       var propertyOne = new EngineTypePropertyMember(typeof(BaseClass).GetProperty("SealedProperty")!);
       var propertyTwo = new EngineTypePropertyMember(typeof(BaseClass).GetProperty("AnotherSealedProperty")!);
 
-      propertyOne.Should().NotBe(propertyTwo);
+      propertyOne.ShouldNotBe(propertyTwo);
    }
 
    public interface IFoo {

@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.Configuration;
 using holonsoft.AutoPoco.Configuration.Interfaces;
@@ -23,27 +23,27 @@ public class WhenSimpleUserIsRegisteredWithProperties : ConfigurationBaseTest {
    public void ContainsOnlyTheRegisteredProperties() {
       var type = Configuration.GetRegisteredType(typeof(SimpleUser))!;
       var members = type.GetRegisteredMembers();
-      members.Count().Should().Be(3);
+      members.Count().ShouldBe(3);
    }
 
    [Fact]
    public void ContainsEmailAddress() {
       var type = Configuration.GetRegisteredType(typeof(SimpleUser))!;
       var emailAddressProperty = type.GetRegisteredMember(ReflectionHelper.GetMember<SimpleUser>(x => x.EmailAddress));
-      emailAddressProperty.Should().NotBeNull();
+      emailAddressProperty.ShouldNotBeNull();
    }
 
    [Fact]
    public void ContainsFirstName() {
       var type = Configuration.GetRegisteredType(typeof(SimpleUser))!;
       var firstNameProperty = type.GetRegisteredMember(ReflectionHelper.GetMember<SimpleUser>(x => x.FirstName));
-      firstNameProperty.Should().NotBeNull();
+      firstNameProperty.ShouldNotBeNull();
    }
 
    [Fact]
    public void ContainsLastName() {
       var type = Configuration.GetRegisteredType(typeof(SimpleUser))!;
       var lastNameProperty = type.GetRegisteredMember(ReflectionHelper.GetMember<SimpleUser>(x => x.LastName));
-      lastNameProperty.Should().NotBeNull();
+      lastNameProperty.ShouldNotBeNull();
    }
 }

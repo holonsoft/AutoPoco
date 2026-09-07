@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Moq;
 using Xunit;
 using holonsoft.AutoPoco.Configuration;
@@ -27,7 +27,7 @@ public class EngineConfigurationTypeTests {
       type.RegisterMember(ReflectionHelper.GetMember<SimpleUser>(x => x.FirstName));
 
       var members = type.GetRegisteredMembers();
-      members.Count().Should().Be(2);
+      members.Count().ShouldBe(2);
    }
 
    [Fact]
@@ -36,7 +36,7 @@ public class EngineConfigurationTypeTests {
       var source = new Mock<IEngineConfigurationDataSource>();
       type.SetFactory(source.Object);
       var factory = type.GetFactory();
-      factory.Should().BeSameAs(source.Object);
+      factory.ShouldBeSameAs(source.Object);
       //Assert.AreEqual(source.Object, factory);
    }
 

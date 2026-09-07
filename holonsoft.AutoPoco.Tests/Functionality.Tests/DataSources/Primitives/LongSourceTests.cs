@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.DataSources.Primitives;
 using holonsoft.AutoPoco.Tests.Functionality.Tests.DataSources.Base;
@@ -12,7 +12,7 @@ public class LongSourceTests : TestBase {
       var value1 = source.Next(null);
       var value2 = source.Next(null);
 
-      value2.Should().NotBe(value1);
+      value2.ShouldNotBe(value1);
 
       var expectedValues = new long[] { -2088576094730105571L, -4011664040411344994L, 6355547538257366377L, 8014153468887495314L, -649010795262790965L, -7229896734490018064L, -1110956013845024003L, 6398855854917328672L, 8059659982279395047L, 3798038521325847177L };
       NextReturnsStableElementListInTermsOfTestability(source, expectedValues);

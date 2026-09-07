@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.DataSources.Business;
 using holonsoft.AutoPoco.Tests.Functionality.Tests.DataSources.Base;
@@ -10,12 +10,12 @@ public class EmailAddressSourceTests : TestBase {
    public void NextReturnsDifferentEmailsWhenChangingSeed() {
       var source = new EmailAddressSource();
       var emailOne = source.Next(null);
-      emailOne.Should().NotBeNull();
+      emailOne.ShouldNotBeNull();
 
       source.SetSeedToRandomValue(10212);
       var emailTwo = source.Next(null);
-      emailTwo.Should().NotBeNull();
-      emailOne.Should().NotBe(emailTwo);
+      emailTwo.ShouldNotBeNull();
+      emailOne.ShouldNotBe(emailTwo);
    }
 
    [Fact]

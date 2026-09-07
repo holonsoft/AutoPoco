@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using System.Text.RegularExpressions;
 using Xunit;
 using holonsoft.AutoPoco.DataSources.Business;
@@ -21,15 +21,16 @@ public partial class CreditCardSourceTests : TestBase {
    public void TestSeveralFakeCreditCardNumbers(CreditCardSource.CreditCardType preferredCreditCardType, string startCipher, int expectedLength) {
       var source = new CreditCardSource(preferredCreditCardType);
       var value = source.Next(null);
-      value.Should().HaveLength(expectedLength).And.StartWith(startCipher);
-      value.Replace(" ", "").Should().MatchRegex(_allowedCiphersDependingOnLengthRegex);
+      value.Length.ShouldBe(expectedLength);
+      value.ShouldStartWith(startCipher);
+      _allowedCiphersDependingOnLengthRegex.IsMatch(value.Replace(" ", "")).ShouldBeTrue();
    }
 
    [Fact]
    public void NextReturnsRandomCreditCardNumber() {
       var source = new CreditCardSource();
       var value = source.Next(null).Replace(" ", "");
-      value.Should().MatchRegex(_allowedCiphersDependingOnLengthRegex);
+      _allowedCiphersDependingOnLengthRegex.IsMatch(value).ShouldBeTrue();
    }
 
    [Fact]

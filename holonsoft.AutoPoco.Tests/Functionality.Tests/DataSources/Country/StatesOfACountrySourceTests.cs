@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.DataSources.Base;
 using holonsoft.AutoPoco.DataSources.Country;
@@ -20,13 +20,13 @@ public class StatesOfACountrySourceTests : TestBase {
       var source = new T();
       var value = source.Next(null);
 
-      value.Should().NotBeNullOrWhiteSpace();
-      value.Length.Should().BeGreaterThan(lengthOfAbbreviationCode);
+      value.ShouldNotBeNullOrWhiteSpace();
+      value.Length.ShouldBeGreaterThan(lengthOfAbbreviationCode);
 
       source = (T) Activator.CreateInstance(typeof(T), new object[] { true })!;
       value = source.Next(null);
-      value.Should().NotBeNullOrWhiteSpace();
-      value.Should().HaveLength(lengthOfAbbreviationCode);
+      value.ShouldNotBeNullOrWhiteSpace();
+      value.Length.ShouldBe(lengthOfAbbreviationCode);
    }
 
    [Fact]

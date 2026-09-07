@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.Actions;
 using holonsoft.AutoPoco.Tests.Common;
@@ -12,6 +12,6 @@ public class ObjectMethodInvokeActionActionTests {
       var target = new SimpleMethodClass();
       action.Enact(null, target);
 
-      target.Value.Should().Be("Something");
+      target.Value.ShouldBe("Something");
    }
 }

@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Moq;
 using System.Linq.Expressions;
 using Xunit;
@@ -44,7 +44,7 @@ public class CollectionContextTests {
       var returnContext = context.Impose(expr, "Test");
 
       // Verify
-      returnContext.Should().Be(context);
+      returnContext.ShouldBe(context);
    }
 
    [Fact]
@@ -55,7 +55,7 @@ public class CollectionContextTests {
           new List<IObjectGenerator<SimpleUser>>());
 
       var sequence = context.First(10);
-      sequence.Should().NotBeNull();
+      sequence.ShouldNotBeNull();
    }
 
    [Fact]
@@ -66,7 +66,7 @@ public class CollectionContextTests {
           new List<IObjectGenerator<SimpleUser>>());
 
       var sequence = context.Random(10);
-      sequence.Should().NotBeNull();
+      sequence.ShouldNotBeNull();
    }
 
    [Fact]
@@ -83,7 +83,7 @@ public class CollectionContextTests {
 
       var users = context.Get();
 
-      users.Should().HaveCount(20);
+      users.Count().ShouldBe(20);
    }
 
    [Fact]
@@ -99,6 +99,6 @@ public class CollectionContextTests {
           mocks.Select(x => x.Object));
 
       var users = context.Get();
-      users.Length.Should().Be(20);
+      users.Length.ShouldBe(20);
    }
 }

@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.DataSources.Primitives;
 using holonsoft.AutoPoco.Tests.Functionality.Tests.DataSources.Base;
@@ -14,7 +14,7 @@ public class DateTimeSourceTests : TestBase {
       var source = new DateTimeSource(_minDate, _maxDate);
       var value = source.Next(null);
 
-      value.Should().BeOnOrAfter(_minDate).And.BeOnOrBefore(_maxDate);
+      value.ShouldBeInRange(_minDate, _maxDate);
    }
 
    [Fact]

@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Moq;
 using Xunit;
 using holonsoft.AutoPoco.Configuration;
@@ -31,7 +31,7 @@ public class TypeMemberConventionContextTests {
       _context.SetValue(10);
       var dataSource = source.Build()!;
 
-      dataSource.InternalNext(null!).Should().Be(10);
+      dataSource.InternalNext(null!).ShouldBe(10);
    }
 
    [Fact]
@@ -47,14 +47,14 @@ public class TypeMemberConventionContextTests {
         .Callback((IEngineConfigurationDataSource configSource) => { source = configSource; });
       _context.SetSource<TestSource>();
       var dataSource = source.Build()!;
-      dataSource.GetType().Should().Be(typeof(TestSource));
+      dataSource.GetType().ShouldBe(typeof(TestSource));
    }
 
    [Fact]
    public void MemberReturnsConfigurationMember() {
       var field = ReflectionHelper.GetMember<TestClass>(x => x.Field!);
       _memberMock.SetupGet(x => x.Member).Returns(field);
-      _context.Member.Should().Be(field);
+      _context.Member.ShouldBe(field);
    }
 
    public class TestClass {

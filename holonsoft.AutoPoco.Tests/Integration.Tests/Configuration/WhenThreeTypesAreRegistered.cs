@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.Configuration;
 using holonsoft.AutoPoco.Configuration.Interfaces;
@@ -20,7 +20,7 @@ public class WhenThreeTypesAreRegistered : ConfigurationBaseTest {
    [Fact]
    public void ConfigurationContainsFourTypes() {
       var types = Configuration.GetRegisteredTypes();
-      types.Count().Should().Be(4);
+      types.Count().ShouldBe(4);
    }
 
    [Fact]
@@ -30,9 +30,9 @@ public class WhenThreeTypesAreRegistered : ConfigurationBaseTest {
       var simpleFieldType = Configuration.GetRegisteredType(typeof(SimpleFieldClass));
       var objectType = Configuration.GetRegisteredType(typeof(object));
 
-      simpleUserType.Should().NotBeNull();
-      simplePropertyType.Should().NotBeNull();
-      simpleFieldType.Should().NotBeNull();
-      objectType.Should().NotBeNull();
+      simpleUserType.ShouldNotBeNull();
+      simplePropertyType.ShouldNotBeNull();
+      simpleFieldType.ShouldNotBeNull();
+      objectType.ShouldNotBeNull();
    }
 }

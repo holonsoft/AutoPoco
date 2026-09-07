@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.DataSources.Primitives;
 using holonsoft.AutoPoco.Tests.Functionality.Tests.DataSources.Base;
@@ -11,7 +11,7 @@ public class DateOfBirthSourceTests : TestBase {
       var source = new DateOfBirthSource(2015, 2018);
       var value = source.Next(null);
 
-      value.Year.Should().BeInRange(2015, 2018);
+      value.Year.ShouldBeInRange(2015, 2018);
    }
 
    

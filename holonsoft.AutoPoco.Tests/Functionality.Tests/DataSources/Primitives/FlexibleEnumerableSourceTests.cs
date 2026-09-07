@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.DataSources.Primitives;
 
@@ -10,6 +10,6 @@ public class FlexibleEnumerableSourceTests {
       var source = new FlexibleEnumerableSource<RandomStringSource, List<string>, string>(100, 100, new object[] { 4, 20 });
       var value = source.Next(null).ToArray();
 
-      value.Should().HaveCount(100);
+      value.Count().ShouldBe(100);
    }
 }

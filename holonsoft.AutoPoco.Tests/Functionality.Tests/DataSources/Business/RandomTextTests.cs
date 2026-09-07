@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.DataSources.Business;
 using holonsoft.AutoPoco.Tests.Functionality.Tests.DataSources.Base;
@@ -11,7 +11,7 @@ public class RandomTextTests : TestBase {
       var source = new RandomTextSource();
       var value = source.Next(null);
 
-      value.Should().NotBeNullOrWhiteSpace();
+      value.ShouldNotBeNullOrWhiteSpace();
    }
 
    [Fact]
@@ -22,7 +22,7 @@ public class RandomTextTests : TestBase {
       var value = source.Next(null);
       var value2 = source2.Next(null);
 
-      value2.Length.Should().BeGreaterThan(value.Length);
+      value2.Length.ShouldBeGreaterThan(value.Length);
    }
 
    [Fact]
@@ -30,7 +30,7 @@ public class RandomTextTests : TestBase {
       var source = new NullableRandomTextSource();
 
       // this works for default nullCreationThreshold!
-      source.Next(null).Should().NotBeNull();
+      source.Next(null).ShouldNotBeNull();
 
       var loopProtectionCounter = 0;
 

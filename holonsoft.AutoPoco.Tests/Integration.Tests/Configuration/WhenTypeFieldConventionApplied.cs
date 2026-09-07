@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.Configuration;
 using holonsoft.AutoPoco.Configuration.Interfaces;
@@ -29,13 +29,13 @@ public class WhenTypeFieldConventionApplied : ConfigurationBaseTest {
    [Fact]
    public void FieldSourceIsSetFromConvention() {
       var source = _testField.GetDataSources().First().Build()!;
-      source.GetType().Should().Be(typeof(TestDataSource));
+      source.GetType().ShouldBe(typeof(TestDataSource));
    }
 
    [Fact]
    public void IgnoredFieldSourceIsNotSetFromConvention() {
       var source = _testIgnoreField.GetDataSources().SingleOrDefault();
-      source.Should().BeNull();
+      source.ShouldBeNull();
    }
 
    public class TestFieldClass {

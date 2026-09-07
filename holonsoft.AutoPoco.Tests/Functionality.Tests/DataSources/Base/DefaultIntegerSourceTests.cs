@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.DataSources.Base;
 
@@ -9,6 +9,6 @@ public class DefaultIntegerSourceTests {
    public void NextReturnsZero() {
       var source = new DefaultIntegerSource();
       var value = source.Next(null);
-      value.Should().Be(0);
+      value.ShouldBe(0);
    }
 }

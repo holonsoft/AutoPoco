@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using holonsoft.AutoPoco.Configuration;
 using holonsoft.AutoPoco.DataSources.Business;
 using holonsoft.AutoPoco.DataSources.Primitives;
@@ -82,7 +82,7 @@ public class DemoAutoPoco
                     .Get()
                     .ToArray();
 
-        users.Should().HaveCount(100);
+        users.Count().ShouldBe(100);
 
         // Get a collection of users, but set their role manually
         var sharedRole = session1.Single<SimpleUserRole>()
@@ -101,12 +101,13 @@ public class DemoAutoPoco
                  .Single<SimpleUser>()
                  .Get();
 
-        user.FirstName.Should().Be("Olivia");
-        user.LastName.Should().Be("Turner");
-        user.RevealedPassword.Should().Be("GRvqwwLW");
-        user.ExternalId.Should().NotBe(0);
-        user.Id.Should().NotBe(0);
-        user.City.Should().NotBeNullOrWhiteSpace().And.NotBe("no-city");
+        user.FirstName.ShouldBe("Olivia");
+        user.LastName.ShouldBe("Turner");
+        user.RevealedPassword.ShouldBe("GRvqwwLW");
+        user.ExternalId.ShouldNotBe(0);
+        user.Id.ShouldNotBe(0);
+        user.City.ShouldNotBeNullOrWhiteSpace();
+        user.City.ShouldNotBe("no-city");
 
         // Create three roles
         // Create 100 users
@@ -148,7 +149,7 @@ public class DemoAutoPoco
                          .Get()
                          .ToArray();
 
-        someUsers.Should().HaveCount(100);
+        someUsers.Count().ShouldBe(100);
     }
 
     [Fact]
@@ -160,9 +161,9 @@ public class DemoAutoPoco
                  .Single<SimpleUserRecord>() // Works as long as recordtype has an additional paramless ctor!!!
                  .Get();
 
-        user.FirstName.Should().Be("Olivia");
-        user.LastName.Should().Be("Turner");
-        user.RevealedPassword.Should().Be("GRvqwwLW");
+        user.FirstName.ShouldBe("Olivia");
+        user.LastName.ShouldBe("Turner");
+        user.RevealedPassword.ShouldBe("GRvqwwLW");
 
         // Create three roles
         // Create 100 users
@@ -184,9 +185,9 @@ public class DemoAutoPoco
                        .Single<SimpleUserRoleRecord>()
                        .Impose(x => x.Name, "RoleThree").Get();
 
-        roleOne.Name.Should().Be("RoleOne");
-        roleTwo.Name.Should().Be("RoleTwo");
-        roleThree.Name.Should().Be("RoleThree");
+        roleOne.Name.ShouldBe("RoleOne");
+        roleTwo.Name.ShouldBe("RoleTwo");
+        roleThree.Name.ShouldBe("RoleThree");
 
         var someUsers = session
                        .List<SimpleUserRecord>(100)
@@ -208,6 +209,6 @@ public class DemoAutoPoco
                          .Get()
                          .ToArray();
 
-        someUsers.Should().HaveCount(100);
+        someUsers.Count().ShouldBe(100);
     }
 }

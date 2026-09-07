@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Moq;
 using System.Linq.Expressions;
 using Xunit;
@@ -63,7 +63,7 @@ public class CollectionSequenceSelectionContextTests {
           mocks.Select(x => x.Object),
           10);
 
-      context.Remaining.Should().Be(10);
+      context.Remaining.ShouldBe(10);
    }
 
    [Fact]
@@ -82,7 +82,7 @@ public class CollectionSequenceSelectionContextTests {
 
       // Forward ho
       context.Next(5);
-      context.Remaining.Should().Be(5);
+      context.Remaining.ShouldBe(5);
    }
 
    [Fact]
@@ -96,7 +96,7 @@ public class CollectionSequenceSelectionContextTests {
 
       var parent = context.All();
 
-      parent.Should().Be(_parentContextMock.Object);
+      parent.ShouldBe(_parentContextMock.Object);
    }
 
    [Fact]
@@ -113,6 +113,6 @@ public class CollectionSequenceSelectionContextTests {
       var returnContext = context.Impose(expr, "Test");
 
       // Verify
-      returnContext.Should().Be(context);
+      returnContext.ShouldBe(context);
    }
 }

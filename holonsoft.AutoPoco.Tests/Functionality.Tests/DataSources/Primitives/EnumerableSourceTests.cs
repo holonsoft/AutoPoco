@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.DataSources.Primitives;
 
@@ -10,6 +10,6 @@ public class EnumerableSourceTests {
       var source = new EnumerableSource<RandomStringSource, string>(100, new object[] { 4, 20 });
       var value = source.Next(null);
 
-      value.Should().HaveCount(100);
+      value.Count().ShouldBe(100);
    }
 }

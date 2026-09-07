@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.Configuration;
 using holonsoft.AutoPoco.Tests.Common;
@@ -14,7 +14,7 @@ public class EngineConfigurationTypeMemberBuilderTests {
 
       var returnedConfiguration = propertyConfiguration.Use(typeof(SimpleDataSource));
 
-      returnedConfiguration.Should().Be(configuration);
+      returnedConfiguration.ShouldBe(configuration);
    }
 
    [Fact]
@@ -32,7 +32,7 @@ public class EngineConfigurationTypeMemberBuilderTests {
 
       var returnedConfiguration = propertyConfiguration.Use(typeof(SimpleDataSource), 0, 1, 10);
 
-      returnedConfiguration.Should().Be(configuration);
+      returnedConfiguration.ShouldBe(configuration);
    }
 
    [Fact]
@@ -50,7 +50,7 @@ public class EngineConfigurationTypeMemberBuilderTests {
 
       var returnedConfiguration = propertyConfiguration.Default();
 
-      returnedConfiguration.Should().Be(configuration);
+      returnedConfiguration.ShouldBe(configuration);
    }
 
    [Fact]
@@ -61,7 +61,7 @@ public class EngineConfigurationTypeMemberBuilderTests {
       propertyConfiguration.Use(typeof(SimpleDataSource));
       propertyConfiguration.Default();
 
-      propertyConfiguration.GetDataSources().Should().HaveCount(0);
+      propertyConfiguration.GetDataSources().Count().ShouldBe(0);
    }
 
    [Fact]
@@ -71,7 +71,7 @@ public class EngineConfigurationTypeMemberBuilderTests {
 
       var returnedConfiguration = propertyConfiguration.Use<SimpleDataSource>();
 
-      returnedConfiguration.Should().Be(configuration);
+      returnedConfiguration.ShouldBe(configuration);
    }
 
    [Fact]
@@ -81,7 +81,7 @@ public class EngineConfigurationTypeMemberBuilderTests {
 
       var returnedConfiguration = propertyConfiguration.Use<SimpleDataSource>(0, 1, 10);
 
-      returnedConfiguration.Should().Be(configuration);
+      returnedConfiguration.ShouldBe(configuration);
    }
 
    [Fact]
@@ -91,7 +91,7 @@ public class EngineConfigurationTypeMemberBuilderTests {
 
       var returnedConfiguration = propertyConfiguration.Default();
 
-      returnedConfiguration.Should().Be(configuration);
+      returnedConfiguration.ShouldBe(configuration);
    }
 
    [Fact]
@@ -102,7 +102,7 @@ public class EngineConfigurationTypeMemberBuilderTests {
       propertyConfiguration.Use<SimpleDataSource>();
       propertyConfiguration.Default();
 
-      propertyConfiguration.GetDataSources().Should().HaveCount(0);
+      propertyConfiguration.GetDataSources().Count().ShouldBe(0);
    }
 
    [Fact]
@@ -113,7 +113,7 @@ public class EngineConfigurationTypeMemberBuilderTests {
       var propertyConfiguration = new EngineConfigurationTypeMemberBuilder<SimpleUser, string>(member, configuration);
 
       var returnMember = propertyConfiguration.GetConfigurationMember();
-      returnMember.Should().Be(member);
+      returnMember.ShouldBe(member);
    }
 
    [Fact]
@@ -124,7 +124,7 @@ public class EngineConfigurationTypeMemberBuilderTests {
       var propertyConfiguration = new EngineConfigurationTypeMemberBuilder<SimpleUser, string>(member, configuration);
 
       var returnAction = propertyConfiguration.GetDataSources().FirstOrDefault();
-      returnAction.Should().BeNull();
+      returnAction.ShouldBeNull();
    }
 
    [Fact]
@@ -136,6 +136,6 @@ public class EngineConfigurationTypeMemberBuilderTests {
       propertyConfiguration.Use<SimpleDataSource>();
 
       var returnAction = propertyConfiguration.GetDataSources().FirstOrDefault();
-      returnAction.Should().NotBeNull();
+      returnAction.ShouldNotBeNull();
    }
 }

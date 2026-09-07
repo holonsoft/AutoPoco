@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 using holonsoft.AutoPoco.Configuration;
 using holonsoft.AutoPoco.Configuration.Interfaces;
@@ -28,13 +28,13 @@ public class WhenTypePropertyConventionApplied : ConfigurationBaseTest {
    [Fact]
    public void TestPropertySourceIsSetFromConvention() {
       var source = _testProperty.GetDataSources().First().Build()!;
-      source.GetType().Should().Be(typeof(TestDataSource));
+      source.GetType().ShouldBe(typeof(TestDataSource));
    }
 
    [Fact]
    public void IgnoredPropertySourceIsNotSetFromConvention() {
       var source = _testIgnoreProperty.GetDataSources().SingleOrDefault();
-      source.Should().BeNull();
+      source.ShouldBeNull();
    }
 
    public class TestPropertyClass {

@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Moq;
 using Xunit;
 using holonsoft.AutoPoco.Configuration;
@@ -24,25 +24,25 @@ public class GenerationContextTests {
    [Fact]
    public void SingleValidTypeReturnsObject() {
       var userGenerator = _generationSession.Single<SimpleUser>();
-      userGenerator.Should().NotBeNull();
+      userGenerator.ShouldNotBeNull();
    }
 
    [Fact]
    public void SingleUnknownTypeReturnsObject() {
       var userGenerator = _generationSession.Single<SimpleUser>();
-      userGenerator.Should().NotBeNull();
+      userGenerator.ShouldNotBeNull();
    }
 
    [Fact]
    public void ListValidTypeReturnsCollectionContext() {
       var userGenerator = _generationSession.List<SimpleUser>(10);
-      userGenerator.Should().NotBeNull();
+      userGenerator.ShouldNotBeNull();
    }
 
    [Fact]
    public void ListUnknownTypeReturnsObjectGenerator() {
       var userGenerator = _generationSession.List<SimpleUser>(10);
-      userGenerator.Should().NotBeNull();
+      userGenerator.ShouldNotBeNull();
    }
 
    [Fact]
