@@ -156,7 +156,7 @@ public class CapitalSource : CapitalSourceBase {
 ///   Result can be NULL, too 
 /// </summary>
 public class NullableCapitalSource : CapitalSourceBase {
-   public NullableCapitalSource() : base(AutoPocoGlobalSettings.NullCreationThreshold) { }
+   public NullableCapitalSource() : base(AutoPocoDefaults.NullCreationThreshold) { }
 
    public NullableCapitalSource(int nullCreationThreshold) : base(nullCreationThreshold) { }
 }

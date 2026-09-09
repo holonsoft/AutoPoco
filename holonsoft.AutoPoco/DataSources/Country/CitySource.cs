@@ -110,7 +110,7 @@ public class CitySource : CitySourceBase {
 ///  Result can be NULL, too 
 /// </summary>
 public class NullableCitySource : CitySourceBase {
-   public NullableCitySource() : base(AutoPocoGlobalSettings.NullCreationThreshold) { }
+   public NullableCitySource() : base(AutoPocoDefaults.NullCreationThreshold) { }
 
    public NullableCitySource(int nullCreationThreshold) : base(nullCreationThreshold) { }
 }

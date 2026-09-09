@@ -98,7 +98,7 @@ public class PostalZipCodeGermanySource : PostalZipCodeGermanySourceBase {
 }
 
 public class NullablePostalZipCodeGermanySource : PostalZipCodeGermanySourceBase {
-   public NullablePostalZipCodeGermanySource() : base(AutoPocoGlobalSettings.NullCreationThreshold) { }
+   public NullablePostalZipCodeGermanySource() : base(AutoPocoDefaults.NullCreationThreshold) { }
 
    public NullablePostalZipCodeGermanySource(int nullCreationThreshold) : base(nullCreationThreshold) { }
 }

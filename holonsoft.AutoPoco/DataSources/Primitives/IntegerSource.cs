@@ -33,7 +33,7 @@ public class IntegerSource(int min, int max) : IntegerSourceBase<int>(min, max) 
 /// </summary>
 /// <param name="min">Minimum value</param>
 /// <param name="max">Maximum value</param>
-/// <seealso cref="AutoPocoGlobalSettings"/>
+/// <seealso cref="AutoPocoDefaults"/>
 public class NullableIntegerSource(int min, int max) : IntegerSourceBase<int?>(min, max) {
    public NullableIntegerSource()
       : this(int.MinValue, int.MaxValue) { }

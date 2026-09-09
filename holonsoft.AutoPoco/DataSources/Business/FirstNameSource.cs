@@ -27,7 +27,7 @@ public abstract class FirstNameSourceBase(int? nullCreationThreshold = null) : F
 public class FirstNameSource : FirstNameSourceBase { }
 
 public class NullableFirstNameSource : FirstNameSourceBase {
-   public NullableFirstNameSource() : base(AutoPocoGlobalSettings.NullCreationThreshold) { }
+   public NullableFirstNameSource() : base(AutoPocoDefaults.NullCreationThreshold) { }
 
    public NullableFirstNameSource(int nullCreationThreshold) : base(nullCreationThreshold) { }
 }

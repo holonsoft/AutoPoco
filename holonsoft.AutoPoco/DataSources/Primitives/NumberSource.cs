@@ -153,7 +153,7 @@ public class NumberSource<T>(T min, T max) : NumberSourceBase<T, T>(min, max)
 /// <param name="min">Minimum value, inclusive</param>
 /// <param name="max">Maximum value, inclusive for integer types</param>
 /// <param name="nullCreationThreshold">
-///   Probability of null in percent, or null for the default, see <see cref="AutoPocoGlobalSettings.NullCreationThreshold" />
+///   Probability of null in percent, or null for the default, see <see cref="AutoPocoDefaults.NullCreationThreshold" />
 /// </param>
 public class NullableNumberSource<T>(T min, T max, int? nullCreationThreshold) : NumberSourceBase<T?, T>(min, max, nullCreationThreshold)
    where T : struct, INumber<T>, IMinMaxValue<T> {

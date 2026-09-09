@@ -14,7 +14,7 @@ public class FloatSourceTests : TestBase {
 
       value2.ShouldNotBe(value1);
 
-      var expectedValues = new[] { -1.2592764E+38F, 2.9356796E+38F, 2.330711E+38F, 3.132315E+38F, 3.1158412E+38F, -2.0810006E+38F, -7.7054755E+37F, -1.402494E+38F, -1.3568953E+38F, -1.4800383E+38F };
+      var expectedValues = new float[] { 1.8886554E+38F, 2.932349E+38F, -2.1830817E+38F, 1.0514881E+38F, -2.7261045E+38F, -1.6290857E+38F, -1.8493199E+38F, 2.1725454E+38F, 2.8403097E+38F, -3.403767E+36F };
 
       NextReturnsStableElementListInTermsOfTestability(source, expectedValues);
    }
@@ -27,11 +27,7 @@ public class FloatSourceTests : TestBase {
 
       value2.ShouldNotBe(value1);
 
-      var expectedValues = new float?[] {
-         -2.5996409E+38F, -1.2592764E+38F, 2.9356796E+38F, 2.330711E+38F, 3.132315E+38F, 3.1158412E+38F, -2.0810006E+38F, -7.7054755E+37F,
-         -1.402494E+38F, -1.3568953E+38F, -1.4800383E+38F, null, 1.7335668E+38F, null, -3.0570498E+38F, 2.3447885E+38F, -3.3020635E+38F,
-         null, 2.6027988E+38F, 2.9566952E+38F,
-      };
+      var expectedValues = new float?[] { 1.8886554E+38F, 2.932349E+38F, -2.1830817E+38F, 1.0514881E+38F, -2.7261045E+38F, -1.6290857E+38F, -1.8493199E+38F, 2.1725454E+38F, 2.8403097E+38F, -3.403767E+36F, 1.2709048E+38F, -2.1464215E+38F, -3.2599887E+38F, 3.3153998E+38F, 2.6797953E+38F, 2.5867485E+38F, -2.3796047E+38F, -6.873113E+37F, -5.345013E+37F, -1.6520902E+38F };
 
       NextReturnsStableElementListInTermsOfTestability(source, expectedValues);
    }

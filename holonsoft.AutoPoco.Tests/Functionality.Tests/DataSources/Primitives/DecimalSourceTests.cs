@@ -16,12 +16,12 @@ public class DecimalSourceTests : TestBase {
    [Fact]
    public void NextReturnsStableBooleanListInTermsOfTestability() {
       var source = new DecimalSource(-1000, 1000, 3);
-      NextReturnsStableElementListInTermsOfTestability(source, new decimal[] { -582.223M, -763.966M, -370.068M, 862.719M, 684.934M, 920.505M, 915.663M, -611.551M, -226.444M, -412.156M });
+      NextReturnsStableElementListInTermsOfTestability(source, new decimal[] { 351.887M, 628.947M, 555.026M, 861.740M, -641.550M, 309.005M, -801.130M, -478.745M, -543.466M, 638.454M });
    }
 
    [Fact]
    public void NextReturnsStableBooleanListInTermsOfTestabilityAndListCanContainNull() {
       var source = new NullableDecimalSource(-1000, 1000, 3);
-      NextReturnsStableElementListInTermsOfTestability(source, new decimal?[] { -582.223M, null, -763.966M, -370.068M, 862.719M, 684.934M, 920.505M, 915.663M, -611.551M, -226.444M });
+      NextReturnsStableElementListInTermsOfTestability(source, new decimal?[] { 351.887M, 628.947M, 555.026M, 861.740M, -641.550M, 309.005M, -801.130M, -478.745M, -543.466M, 638.454M });
    }
 }

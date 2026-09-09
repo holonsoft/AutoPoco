@@ -31,17 +31,21 @@ public sealed class NullableMemberDataSource : IDataSource {
    ///   Wraps the source when the settings are enabled and the member allows null. Returns the source
    ///   unchanged otherwise. Method members are never wrapped.
    /// </summary>
-   public static IDataSource ForMember(IDataSource source, EngineTypeMember member, NullableAnnotationSettings? settings) {
+   /// <param name="source">the source producing the values</param>
+   /// <param name="member">the member the source feeds</param>
+   /// <param name="settings">the nullable annotation settings of the session</param>
+   /// <param name="seed">the session seed, every member gets its own null pattern derived from it</param>
+   public static IDataSource ForMember(IDataSource source, EngineTypeMember member, NullableAnnotationSettings? settings, int seed = AutoPocoDefaults.Seed) {
       ArgumentNullException.ThrowIfNull(source);
       ArgumentNullException.ThrowIfNull(member);
 
       if (settings is not { RespectNullableAnnotations: true })
          return source;
 
-      var (allowsNull, memberKey) = member switch {
-         EngineTypePropertyMember p => (NullabilityHelper.AllowsNull(p.PropertyInfo), MemberKey(p.PropertyInfo.DeclaringType, p.Name)),
-         EngineTypeFieldMember f => (NullabilityHelper.AllowsNull(f.FieldInfo), MemberKey(f.FieldInfo.DeclaringType, f.Name)),
-         _ => (false, string.Empty)
+      var (allowsNull, declaringType) = member switch {
+         EngineTypePropertyMember p => (NullabilityHelper.AllowsNull(p.PropertyInfo), p.PropertyInfo.DeclaringType),
+         EngineTypeFieldMember f => (NullabilityHelper.AllowsNull(f.FieldInfo), f.FieldInfo.DeclaringType),
+         _ => (false, null)
       };
 
       if (!allowsNull)
@@ -50,26 +54,8 @@ public sealed class NullableMemberDataSource : IDataSource {
       var evaluator = new DefaultRandomNullEvaluator(settings.NullCreationThreshold);
       // Every member gets its own deterministic seed, otherwise all nullable members of an object
       // would become null at the same time.
-      evaluator.SetSeedToRandomValue(AutoPocoGlobalSettings.StandardSeed ^ StableHash(memberKey));
+      evaluator.SetSeedToRandomValue(SeedDerivation.ForNullEvaluator(seed, declaringType, member.Name));
 
       return new NullableMemberDataSource(source, evaluator);
-   }
-
-   private static string MemberKey(Type? declaringType, string name)
-      => $"{declaringType?.FullName}.{name}";
-
-   /// <summary>
-   ///   FNV-1a. string.GetHashCode is randomized per process and would break repeatable test data.
-   /// </summary>
-   private static int StableHash(string value) {
-      unchecked {
-         var hash = 2166136261u;
-         foreach (var c in value) {
-            hash ^= c;
-            hash *= 16777619u;
-         }
-
-         return (int) hash;
-      }
    }
 }

@@ -120,9 +120,9 @@ public class CreditCardSource(CreditCardType creditCardType) : CreditCardSourceB
 }
 
 public class NullableCreditCardSource(CreditCardType creditCardType, int nullCreationThreshold) : CreditCardSourceBase(creditCardType, nullCreationThreshold) {
-   public NullableCreditCardSource() : this(CreditCardType.Random, AutoPocoGlobalSettings.NullCreationThreshold) { }
+   public NullableCreditCardSource() : this(CreditCardType.Random, AutoPocoDefaults.NullCreationThreshold) { }
 
-   public NullableCreditCardSource(CreditCardType creditCardType) : this(creditCardType, AutoPocoGlobalSettings.NullCreationThreshold) { }
+   public NullableCreditCardSource(CreditCardType creditCardType) : this(creditCardType, AutoPocoDefaults.NullCreationThreshold) { }
 
    public NullableCreditCardSource(int nullCreationThreshold) : this(CreditCardType.Random, nullCreationThreshold) { }
 }

@@ -59,7 +59,7 @@ public class RandomUtfTextSource(int maxLengthOfText, int minParagraphCount, int
 public class NullableRandomUtfTextSource(int? nullCreationThreshold, int maxLengthOfText, int minParagraphCount, int maxParagraphCount, int minSentenceCount, int maxSentenceCount, IReadOnlySet<UnicodeCategory>? mayExcludeCategories = null)
    : RandomUtfTextSourceBase(nullCreationThreshold, maxLengthOfText, minParagraphCount, maxParagraphCount, minSentenceCount, maxSentenceCount, mayExcludeCategories) {
 
-   public NullableRandomUtfTextSource() : this(AutoPocoGlobalSettings.NullCreationThreshold, 500, 3, 6, 3, 7) { }
+   public NullableRandomUtfTextSource() : this(AutoPocoDefaults.NullCreationThreshold, 500, 3, 6, 3, 7) { }
 }
 
 public record UnicodeBlock(int Start, int End, int CharCount, int ExistingChars) {

@@ -32,5 +32,5 @@ public abstract class UrlSourceBase(int? nullCreationThreshold = null) : FixedAr
 public class UrlSource : UrlSourceBase { }
 
 public class NullableUrlSource(int nullCreationThreshold) : UrlSourceBase(nullCreationThreshold) {
-   public NullableUrlSource() : this(AutoPocoGlobalSettings.NullCreationThreshold) { }
+   public NullableUrlSource() : this(AutoPocoDefaults.NullCreationThreshold) { }
 }

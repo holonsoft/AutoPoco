@@ -34,5 +34,5 @@ public class GermanStatesSource(bool useAbbreviations) : GermanStatesSourceBase(
 }
 
 public class NullableGermanStatesSource(bool useAbbreviations, int nullCreationThreshold) : GermanStatesSourceBase(useAbbreviations, nullCreationThreshold) {
-   public NullableGermanStatesSource() : this(false, AutoPocoGlobalSettings.NullCreationThreshold) { }
+   public NullableGermanStatesSource() : this(false, AutoPocoDefaults.NullCreationThreshold) { }
 }

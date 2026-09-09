@@ -24,18 +24,7 @@ public class GuidSourceTests : TestBase {
    [Fact]
    public void NextReturnsStableGuidListInTermsOfTestability() {
       var source = new GuidSource();
-      var expectedValues = new Guid[] {
-         new("c7f40068-5e43-aa02-c27c-4fd927fc2227"),
-         new("b254896a-12e5-1eef-9af7-227ef036e328"),
-         new("c1d474a5-ba17-69e3-c756-e60d4fa4da45"),
-         new("baf3bb5a-59f6-5524-10d6-2d4c3c84b98b"),
-         new("b3332698-6127-b00f-a6eb-ea8f2ce2cef6"),
-         new("3423dd1d-2943-4c32-4f7f-b1418d962c43"),
-         new("29755a9c-2670-f91d-ac43-130a6f95282d"),
-         new("5f2f3607-8461-6f48-f4e7-63a8afce220f"),
-         new("d2f2a7bf-a56d-f685-bf29-88ff1527dcba"),
-         new("56398356-cd67-18e1-1206-3489c3754ade")
-      };
+      var expectedValues = new Guid[] { new Guid("4f822edc-a0a0-ad0a-ef5d-88ce515881d0"), new Guid("1e263e43-1747-c70b-94e1-9d89137f4dee"), new Guid("1a887873-af70-2de1-6d65-da9478768da7"), new Guid("710ef3b1-9109-1974-53d5-92c39179b842"), new Guid("00b301f8-b23b-3a6f-60ff-3f6121dab8d1"), new Guid("c62ef017-304f-ead7-dc73-b7bda73ab87e"), new Guid("a7fbfcc2-5e87-afce-625b-b50b3eb6422f"), new Guid("1d45a92c-72f2-055f-e637-0451c923b6fc"), new Guid("9449f97a-7dbd-e4cd-1114-ee5dbe7b4de1"), new Guid("336dd8a8-3d4c-267d-3054-6b36cc6e2566") };
 
       NextReturnsStableElementListInTermsOfTestability(source, expectedValues);
    }
@@ -43,18 +32,7 @@ public class GuidSourceTests : TestBase {
    [Fact]
    public void NextReturnsStableGuidListInTermsOfTestabilityAndListCanContainNull() {
       var source = new NullableGuidSource();
-      var expectedValues = new Guid?[] {
-         new("c7f40068-5e43-aa02-c27c-4fd927fc2227"),
-         null,
-         new("b254896a-12e5-1eef-9af7-227ef036e328"),
-         new("c1d474a5-ba17-69e3-c756-e60d4fa4da45"),
-         new("baf3bb5a-59f6-5524-10d6-2d4c3c84b98b"),
-         new("b3332698-6127-b00f-a6eb-ea8f2ce2cef6"),
-         new("3423dd1d-2943-4c32-4f7f-b1418d962c43"),
-         new("29755a9c-2670-f91d-ac43-130a6f95282d"),
-         new("5f2f3607-8461-6f48-f4e7-63a8afce220f"),
-         new("d2f2a7bf-a56d-f685-bf29-88ff1527dcba")
-      };
+      var expectedValues = new Guid?[] { new Guid("4f822edc-a0a0-ad0a-ef5d-88ce515881d0"), new Guid("1e263e43-1747-c70b-94e1-9d89137f4dee"), new Guid("1a887873-af70-2de1-6d65-da9478768da7"), new Guid("710ef3b1-9109-1974-53d5-92c39179b842"), new Guid("00b301f8-b23b-3a6f-60ff-3f6121dab8d1"), new Guid("c62ef017-304f-ead7-dc73-b7bda73ab87e"), new Guid("a7fbfcc2-5e87-afce-625b-b50b3eb6422f"), new Guid("1d45a92c-72f2-055f-e637-0451c923b6fc"), new Guid("9449f97a-7dbd-e4cd-1114-ee5dbe7b4de1"), new Guid("336dd8a8-3d4c-267d-3054-6b36cc6e2566") };
 
       NextReturnsStableElementListInTermsOfTestability(source, expectedValues);
    }

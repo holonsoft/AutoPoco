@@ -30,5 +30,5 @@ public class DutchStatesSource(bool useAbbreviations) : DutchStatesSourceBase(us
 }
 
 public class NullableDutchStatesSource(bool useAbbreviations, int nullCreationThreshold) : DutchStatesSourceBase(useAbbreviations, nullCreationThreshold) {
-   public NullableDutchStatesSource() : this(false, AutoPocoGlobalSettings.NullCreationThreshold) { }
+   public NullableDutchStatesSource() : this(false, AutoPocoDefaults.NullCreationThreshold) { }
 }

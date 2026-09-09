@@ -8,16 +8,11 @@ public class FirstNameSourceTests : TestBase {
    [Fact]
    public void NextReturnsStableFirstNameListInTermsOfTestability()
       => NextReturnsStableElementListInTermsOfTestability(
-         new FirstNameSource(),
-         "Olivia", "Christopher", "Tyler", "Jason", "Zoe", "Eric", "Eric", "Sophia", "Abigail", "Ethan");
+         new FirstNameSource(), new string[] { "Daniel", "Zoey", "Sophia", "Victoria", "Aubrey", "George", "Ava", "Daniel", "Nora", "Scott" });
 
    [Fact]
    public void NextReturnsStableFirstNameListInTermsOfTestabilityAndListCanContainNull()
       => NextReturnsStableElementListInTermsOfTestability(
-         new NullableFirstNameSource()!,
-         "Olivia", null, "Christopher", "Tyler", "Jason", "Zoe", "Eric", "Eric", "Sophia", "Abigail",
-         "Ethan", "Nicholas", "Evelyn", null, "James", null, "Aria", "Zoe", "Claire", null,
-         "Daniel", "Scott", "David", null, "Alexa", "Scarlett", "Joseph", null, "Kenneth", "David"
-         );
+         new NullableFirstNameSource()!, new string?[] { "Daniel", "Zoey", "Sophia", "Victoria", "Aubrey", "George", "Ava", "Daniel", "Nora", "Scott", "Ella", "Steven", "Anthony", "Abigail", "Scarlett", "Charles", "Zoey", "Amelia", "Sophia", "Alexander", "Joseph", "Charlotte", "Nathan", "Joseph", null, "Robert", "Sophie", null, "Owen", "Ethan" });
 
 }

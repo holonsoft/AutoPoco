@@ -14,7 +14,7 @@ public class DoubleSourceTests : TestBase {
       var value1 = source.Next(null);
       var value2 = source.Next(null);
 
-      var expectedValues = new[] { 9320.4579, 8440.4255, 9606.4981, 9582.5342, 2022.8219, 3929.1042, 3009.8279, 3076.1592, 2897.0263, 7571.7751 };
+      var expectedValues = new double[] { 9315.613D, 1874.3269D, 6579.5728D, 1084.4057D, 2680.2109D, 2359.8418D, 8210.346D, 9181.7256D, 5000.4863D, 6898.7527D };
 
       NextReturnsStableElementListInTermsOfTestability(source, expectedValues);
    }
@@ -27,11 +27,7 @@ public class DoubleSourceTests : TestBase {
       var value1 = source.Next(null);
       var value2 = source.Next(null);
 
-      var expectedValues = new double?[] {
-         3218.163, 9320.4579, 8440.4255, 9606.4981, 9582.5342, 2022.8219, 3929.1042, 3009.8279,
-         3076.1592, 2897.0263, null, 7571.7751, null, 602.9881, 8460.9037, 246.5728, null,
-         8836.2247, 9351.0288, 8715.8482
-      };
+      var expectedValues = new double?[] { 9315.613D, 1874.3269D, 6579.5728D, 1084.4057D, 2680.2109D, 2359.8418D, 8210.346D, 9181.7256D, 5000.4863D, 6898.7527D, 1927.6558D, 307.7781D, 9872.8269D, 8948.2294D, 8812.8767D, 1588.4502D, 4050.1859D, 4272.4747D, 2646.7468D, 8460.8539D };
 
       NextReturnsStableElementListInTermsOfTestability(source, expectedValues);
    }

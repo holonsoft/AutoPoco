@@ -131,7 +131,7 @@ public abstract class LastNameSourceBase(int? nullCreationThreshold = null) : Fi
 public class LastNameSource : LastNameSourceBase { }
 
 public class NullableLastNameSource : LastNameSourceBase {
-   public NullableLastNameSource() : base(AutoPocoGlobalSettings.NullCreationThreshold) { }
+   public NullableLastNameSource() : base(AutoPocoDefaults.NullCreationThreshold) { }
 
    public NullableLastNameSource(int nullCreationThreshold) : base(nullCreationThreshold) { }
 }

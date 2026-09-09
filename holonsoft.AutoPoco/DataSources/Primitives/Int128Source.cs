@@ -48,7 +48,7 @@ public class Int128Source(Int128 min, Int128 max) : Int128SourceBase<Int128>(min
 /// </summary>
 /// <param name="min">Minimum value</param>
 /// <param name="max">Maximum value</param>
-/// <seealso cref="AutoPocoGlobalSettings"/>
+/// <seealso cref="AutoPocoDefaults"/>
 public class NullableInt128Source(Int128 min, Int128 max) : Int128SourceBase<Int128?>(min, max) {
    public NullableInt128Source()
       : this(Int128.MinValue, Int128.MaxValue) { }

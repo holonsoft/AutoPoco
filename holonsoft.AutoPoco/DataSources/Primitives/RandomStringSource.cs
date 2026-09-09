@@ -77,7 +77,7 @@ public class RandomStringSource : RandomStringSourceBase<string> {
 /// Create a nullable random string source. 
 /// Default: char set between 65 and 123, min length 5 and max length 10
 /// </summary>
-/// <seealso cref="AutoPocoGlobalSettings"/>
+/// <seealso cref="AutoPocoDefaults"/>
 public class NullableRandomStringSource : RandomStringSourceBase<string?> {
    public NullableRandomStringSource()
       : this(5, 10, 'A', 'z') { }
@@ -86,13 +86,13 @@ public class NullableRandomStringSource : RandomStringSourceBase<string?> {
      : this(minLength, maxLength, (char) 65, (char) 123) { }
 
    public NullableRandomStringSource(int minLength, int maxLength, char minChar, char maxChar)
-      : base(minLength, maxLength, minChar, maxChar, AutoPocoGlobalSettings.NullCreationThreshold) { }
+      : base(minLength, maxLength, minChar, maxChar, AutoPocoDefaults.NullCreationThreshold) { }
 
    public NullableRandomStringSource(int minLength, int maxLength, char minChar, char maxChar, int? nullCreationThreshold)
       : base(minLength, maxLength, minChar, maxChar, nullCreationThreshold) { }
 
    public NullableRandomStringSource(int minLength, int maxLength, char[] allowedChars)
-      : base(minLength, maxLength, AutoPocoGlobalSettings.NullCreationThreshold, allowedChars) { }
+      : base(minLength, maxLength, AutoPocoDefaults.NullCreationThreshold, allowedChars) { }
 
    public NullableRandomStringSource(int minLength, int maxLength, char[] allowedChars, int? nullCreationThreshold)
       : base(minLength, maxLength, nullCreationThreshold, allowedChars) { }

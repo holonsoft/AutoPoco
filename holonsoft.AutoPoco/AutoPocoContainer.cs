@@ -33,7 +33,8 @@ public static class AutoPocoContainer {
       return new GenerationSessionFactory(
         configFactory.Create(config, config.ConventionProvider),
         config.ConventionProvider,
-        config.NullableAnnotations);
+        config.NullableAnnotations,
+        config.Seed);
    }
 
    /// <summary>

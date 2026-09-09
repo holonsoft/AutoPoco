@@ -8,16 +8,9 @@ public class ExtendedEmailAddressSourceTests : TestBase {
    [Fact]
    public void NextReturnsStableEmailListInTermsOfTestability()
       => NextReturnsStableElementListInTermsOfTestability(
-         new ExtendedEmailAddressSource(),
-         "Olivia.Turner@holonsoft.invalid", "Christopher.Martin@hotmail.invalid", "Tyler.Murphy@golem.invalid", "Jason.Pierce@microsoft.example",
-         "Zoe.Wells@yahoo.example", "Eric.Scott@heise.example", "Eric.Scott@heise.example", "Sophia.Baker@yahoo.invalid", "Abigail.Perez@msn.test",
-         "Ethan.Evans@heise.invalid"
-         );
+         new ExtendedEmailAddressSource(), new string[] { "Daniel.Knight@heise.example", "Zoey.Harrison@yahoo.test", "Sophia.Baker@hotmail.invalid", "Victoria.Diaz@google.example", "Aubrey.Harper@golem.test", "George.Dean@hotmail.test", "Ava.Thomas@microsoft.test", "Daniel.Knight@golem.test", "Nora.Long@aol.example", "Scott.Gordon@google.invalid" });
 
    [Fact]
    public void NextReturnsStableEmailListInTermsOfTestabilityAndListCanContainNull() => NextReturnsStableElementListInTermsOfTestability(
-         new NullableExtendedEmailAddressSource()!,
-         "Olivia.Turner@holonsoft.invalid", null, "Christopher.Martin@hotmail.invalid", "Tyler.Murphy@golem.invalid", "Jason.Pierce@microsoft.example",
-         "Zoe.Wells@yahoo.example", "Eric.Scott@heise.example", "Eric.Scott@heise.example", "Sophia.Baker@yahoo.invalid", "Abigail.Perez@msn.test"
-         );
+         new NullableExtendedEmailAddressSource()!, new string[] { "Daniel.Knight@heise.example", "Zoey.Harrison@yahoo.test", "Sophia.Baker@hotmail.invalid", "Victoria.Diaz@google.example", "Aubrey.Harper@golem.test", "George.Dean@hotmail.test", "Ava.Thomas@microsoft.test", "Daniel.Knight@golem.test", "Nora.Long@aol.example", "Scott.Gordon@google.invalid" });
 }

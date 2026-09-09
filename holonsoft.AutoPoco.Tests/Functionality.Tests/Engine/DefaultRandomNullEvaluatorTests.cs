@@ -11,7 +11,7 @@ public class DefaultRandomNullEvaluatorTests {
 
    [Fact]
    public void DefaultThresholdComesFromGlobalSettings()
-      => new DefaultRandomNullEvaluator().ThresholdPercentage.ShouldBe(AutoPocoGlobalSettings.NullCreationThreshold);
+      => new DefaultRandomNullEvaluator().ThresholdPercentage.ShouldBe(AutoPocoDefaults.NullCreationThreshold);
 
    [Fact]
    public void ExplicitThresholdIsKept()

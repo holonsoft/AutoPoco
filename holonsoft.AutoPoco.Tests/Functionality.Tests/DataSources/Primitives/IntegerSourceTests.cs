@@ -14,14 +14,14 @@ public class IntegerSourceTests : TestBase {
 
       value2.ShouldNotBe(value1);
 
-      var expectedValues = new[] { -1809184581, -2056928004, -830599876, 645581134, -1620759081, 1813626657, 1895040361, -1868928598, -998188007, -2043547633 };
+      var expectedValues = new int[] { -1641660861, 161341844, -1702332301, 349857133, -250678351, 1133696339, -2135752200, -515899552, 1177481239, 1035432924 };
       NextReturnsStableElementListInTermsOfTestability(source, expectedValues);
    }
 
    [Fact]
    public void NextReturnsStableIntegerListInTermsOfTestabilityAndListCanContainNull() {
       var source = new NullableIntegerSource();
-      var expectedValues = new int?[] { -448584298, null, 676384243, -1809184581, -2056928004, -830599876, 645581134, -1620759081, 1813626657, 1895040361 };
+      var expectedValues = new int?[] { -813551908, 1317559791, -1641660861, 161341844, -1702332301, 349857133, -250678351, 1133696339, -2135752200, -515899552 };
       NextReturnsStableElementListInTermsOfTestability(source, expectedValues);
    }
 }

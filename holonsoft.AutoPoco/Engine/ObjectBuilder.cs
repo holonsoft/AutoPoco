@@ -15,12 +15,15 @@ public class ObjectBuilder : IObjectBuilder {
    /// </summary>
    /// <param name="type">the registered type this builder creates</param>
    /// <param name="nullableAnnotations">optional, when enabled the sources of nullable members are wrapped in a <see cref="NullableMemberDataSource" /></param>
-   public ObjectBuilder(IEngineConfigurationType type, NullableAnnotationSettings? nullableAnnotations = null) {
+   /// <param name="seed">session seed, every source of this type gets its own stream derived from it</param>
+   public ObjectBuilder(IEngineConfigurationType type, NullableAnnotationSettings? nullableAnnotations = null, int seed = AutoPocoDefaults.Seed) {
       ArgumentNullException.ThrowIfNull(type);
       InnerType = type.RegisteredType;
 
-      if (type.GetFactory() != null)
+      if (type.GetFactory() != null) {
          _factory = type.GetFactory()?.Build() ?? throw new InvalidOperationException();
+         (_factory as ISessionSeedable)?.ApplySessionSeed(SeedDerivation.ForType(seed, InnerType));
+      }
 
       // build every source once, in registration order; the factory may take some of the members over
       var entries = new List<(EngineTypeMember Member, List<IDataSource?> Sources)>();
@@ -28,11 +31,16 @@ public class ObjectBuilder : IObjectBuilder {
 
       foreach (var registered in type.GetRegisteredMembers()) {
          var sources = registered.GetDataSources().Select(s => s.Build()).ToList();
-         if (!registered.Member.IsMethod) {
+         if (registered.Member.IsMethod) {
+            for (var i = 0; i < sources.Count; i++)
+               (sources[i] as ISessionSeedable)?.ApplySessionSeed(SeedDerivation.ForMethodArgument(seed, InnerType, registered.Member.Name, i));
+         } else {
             if (sources.Count == 0)
                continue;
 
-            var source = NullableMemberDataSource.ForMember(sources[0] ?? throw new InvalidOperationException(), registered.Member, nullableAnnotations);
+            var inner = sources[0] ?? throw new InvalidOperationException();
+            (inner as ISessionSeedable)?.ApplySessionSeed(SeedDerivation.ForMember(seed, InnerType, registered.Member.Name));
+            var source = NullableMemberDataSource.ForMember(inner, registered.Member, nullableAnnotations, seed);
             sources[0] = source;
             memberSources.Add(new MemberSource(registered.Member, source));
          }

@@ -12,6 +12,11 @@ public interface IGenerationConfiguration {
    NullableAnnotationSettings NullableAnnotations { get; }
 
    /// <summary>
+   ///   Gets the seed of this session. Every data source gets its own stream derived from it.
+   /// </summary>
+   int Seed { get; }
+
+   /// <summary>
    ///   Gets the object builder for a certain type
    /// </summary>
    /// <param name="searchType"></param>

@@ -24,15 +24,13 @@ public class EnumSourceTests : TestBase {
       var source = new EnumSource<MyTestEnum>();
       var value = source.Next(null);
 
-      value.ShouldBe(MyTestEnum.three);
+      value.ShouldBe(MyTestEnum.four);
    }
 
    [Fact]
    public void NextReturnsStableDateTimeListInTermsOfTestability() {
       var source = new EnumSource<MyTestEnum>();
-      NextReturnsStableElementListInTermsOfTestability(source, new MyTestEnum[] {
-         MyTestEnum.three, MyTestEnum.two, MyTestEnum.four, MyTestEnum.ten,
-      });
+      NextReturnsStableElementListInTermsOfTestability(source, new MyTestEnum[] { MyTestEnum.four, MyTestEnum.five, MyTestEnum.four, MyTestEnum.two });
    }
 
    //[Fact]

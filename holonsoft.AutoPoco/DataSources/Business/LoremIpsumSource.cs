@@ -34,5 +34,5 @@ public class LoremIpsumSource(int count) : LoremIpsumSourceBase(count) {
 }
 
 public class NullableLoremIpsumSource(int count, int nullCreationThreshold) : LoremIpsumSourceBase(count, nullCreationThreshold) {
-   public NullableLoremIpsumSource() : this(1, AutoPocoGlobalSettings.NullCreationThreshold) { }
+   public NullableLoremIpsumSource() : this(1, AutoPocoDefaults.NullCreationThreshold) { }
 }

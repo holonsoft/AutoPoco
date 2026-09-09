@@ -23,11 +23,11 @@ public sealed class NullableAnnotationSettings {
    }
 
    /// <summary>
-   ///   Creates enabled settings. A null threshold uses <see cref="AutoPocoGlobalSettings.NullCreationThreshold" />.
+   ///   Creates enabled settings. A null threshold uses <see cref="AutoPocoDefaults.NullCreationThreshold" />.
    /// </summary>
    /// <param name="nullCreationThreshold">probability in percent (0 to 100) that a nullable member becomes null</param>
    public static NullableAnnotationSettings Enabled(int? nullCreationThreshold = null)
-      => new(true, nullCreationThreshold ?? AutoPocoGlobalSettings.NullCreationThreshold);
+      => new(true, nullCreationThreshold ?? AutoPocoDefaults.NullCreationThreshold);
 
    /// <summary>
    ///   True when nullable annotations drive null generation.

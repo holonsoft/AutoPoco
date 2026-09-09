@@ -218,7 +218,7 @@ public class CountrySource(bool useAbbreviations) : CountrySourceBase(useAbbrevi
 ///   Result can be NULL, too 
 /// </summary>
 public class NullableCountrySource(bool useAbbreviations, int nullCreationThreshold) : CountrySourceBase(useAbbreviations, nullCreationThreshold) {
-   public NullableCountrySource() : this(false, AutoPocoGlobalSettings.NullCreationThreshold) { }
+   public NullableCountrySource() : this(false, AutoPocoDefaults.NullCreationThreshold) { }
 
-   public NullableCountrySource(bool useAbbreviations) : this(useAbbreviations, AutoPocoGlobalSettings.NullCreationThreshold) { }
+   public NullableCountrySource(bool useAbbreviations) : this(useAbbreviations, AutoPocoDefaults.NullCreationThreshold) { }
 }

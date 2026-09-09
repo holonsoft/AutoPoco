@@ -114,7 +114,7 @@ public class PostalZipCodeUSASource : PostalZipCodeUSASourceBase {
 }
 
 public class NullablePostalZipCodeUSASource : PostalZipCodeUSASourceBase {
-   public NullablePostalZipCodeUSASource() : base(AutoPocoGlobalSettings.NullCreationThreshold) { }
+   public NullablePostalZipCodeUSASource() : base(AutoPocoDefaults.NullCreationThreshold) { }
 
    public NullablePostalZipCodeUSASource(int nullCreationThreshold) : base(nullCreationThreshold) { }
 }

@@ -210,18 +210,18 @@ public class NumberSourceTests : TestBase {
    [Fact]
    public void NextReturnsStableNumberListInTermsOfTestability() {
       var source = new NumberSource<int>(1, 100);
-      NextReturnsStableElementListInTermsOfTestability(source, 41, 50, 37, 60, 14, 57, 91, 40, 22, 52);
+      NextReturnsStableElementListInTermsOfTestability(source, new int[] { 93, 68, 21, 50, 84, 97, 24, 93, 67, 99 });
    }
 
    [Fact]
    public void NextReturnsStableDecimalListInTermsOfTestability() {
       var source = new NumberSource<decimal>(0m, 10m);
-      NextReturnsStableElementListInTermsOfTestability(source, 2.088883408386670m, 1.18017077500940m, 3.14965957922380m, 9.313593841769540m, 8.424672204267550m);
+      NextReturnsStableElementListInTermsOfTestability(source, new decimal[] { 6.759434119590040M, 8.144736480449250M, 7.775129841449140M, 9.308700010966430M, 1.792249344530620M });
    }
 
    [Fact]
    public void NextReturnsStableNumberListInTermsOfTestabilityAndListCanContainNull() {
       var source = new NullableNumberSource<int>(1, 100);
-      NextReturnsStableElementListInTermsOfTestability(source, new int?[] { 41, null, 50, 37, 60, 14, 57, 91, 40, 22 });
+      NextReturnsStableElementListInTermsOfTestability(source, new int?[] { 93, 68, 21, 50, 84, 97, 24, 93, 67, 99 });
    }
 }

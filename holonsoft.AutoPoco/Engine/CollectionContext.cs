@@ -1,12 +1,15 @@
 ﻿using System.Linq.Expressions;
 using holonsoft.AutoPoco.Configuration;
 using holonsoft.AutoPoco.Engine.Interfaces;
+using holonsoft.AutoPoco.Util;
 
 namespace holonsoft.AutoPoco.Engine;
 
-public class CollectionContext<TPoco, TCollection>(IEnumerable<IObjectGenerator<TPoco>> generators)
+/// <param name="generators">one generator per element</param>
+/// <param name="seed">seed of the shuffle behind <see cref="Random(int)" />, the session seed when created by a session</param>
+public class CollectionContext<TPoco, TCollection>(IEnumerable<IObjectGenerator<TPoco>> generators, int seed = AutoPocoDefaults.Seed)
   : ICollectionContext<TPoco, TCollection> where TCollection : ICollection<TPoco> {
-   private readonly Random _random = new(AutoPocoGlobalSettings.StandardSeed);
+   private readonly Random _random = new StableRandom(seed);
 
    public ICollectionContext<TPoco, TCollection> Impose<TMember>(Expression<Func<TPoco, TMember>> propertyExpr,
     TMember value) {

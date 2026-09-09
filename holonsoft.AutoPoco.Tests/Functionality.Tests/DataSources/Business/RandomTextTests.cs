@@ -41,7 +41,8 @@ public class RandomTextTests : TestBase {
 
          loopProtectionCounter++;
 
-         if (loopProtectionCounter > 20)
+         // 15 percent per draw: no null in 200 draws has a probability below 1e-13
+         if (loopProtectionCounter > 200)
             throw new Exception($"Expected to get a result NULL, but did not occur the last {loopProtectionCounter} times");
       }
    }

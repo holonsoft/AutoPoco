@@ -82,24 +82,12 @@ public class DateOnlySourceTests : TestBase {
    [Fact]
    public void NextReturnsStableDateTimeListInTermsOfTestability() {
       var source = new DateOnlySource(_minDate, _maxDate);
-      NextReturnsStableElementListInTermsOfTestability(source, new DateOnly[] {
-         new DateOnly(2006, 6, 23),
-         new DateOnly(2003, 8, 29),
-         new DateOnly(2009, 10, 6),
-         new DateOnly(2028, 11, 14),
-         new DateOnly(2026, 2, 12)
-      });
+      NextReturnsStableElementListInTermsOfTestability(source, new DateOnly[] { new DateOnly(2020, 12, 24), new DateOnly(2023, 7, 15), new DateOnly(2026, 3, 26), new DateOnly(2014, 12, 12), new DateOnly(2001, 5, 19) });
    }
 
    [Fact]
    public void NextReturnsStableDateTimeListInTermsOfTestabilityAndListCanContainNull() {
       var source = new NullableDateOnlySource(_minDate, _maxDate);
-      NextReturnsStableElementListInTermsOfTestability(source, new DateOnly?[] {
-         new DateOnly(2006, 6, 23),
-         null,
-         new DateOnly(2003, 8, 29),
-         new DateOnly(2009, 10, 6),
-         new DateOnly(2028, 11, 14)
-      });
+      NextReturnsStableElementListInTermsOfTestability(source, new DateOnly?[] { new DateOnly(2020, 12, 24), new DateOnly(2023, 7, 15), new DateOnly(2026, 3, 26), new DateOnly(2014, 12, 12), new DateOnly(2001, 5, 19) });
    }
 }

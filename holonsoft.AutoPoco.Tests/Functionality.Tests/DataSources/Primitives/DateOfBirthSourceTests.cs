@@ -64,34 +64,12 @@ public class DateOfBirthSourceTests : TestBase {
    [Fact]
    public void NextReturnsStableDateTimeListInTermsOfTestability() {
       var source = new DateOfBirthSource();
-      NextReturnsStableElementListInTermsOfTestability(source, new DateTime[] {
-         new (1941, 12, 27, 0, 0, 0, DateTimeKind.Utc),
-         new (1923, 9, 22, 0, 0, 0, DateTimeKind.Utc),
-         new (1963, 4, 23, 0, 0, 0, DateTimeKind.Utc),
-         new (2087, 3, 15, 0, 0, 0, DateTimeKind.Utc),
-         new (2069, 5, 2, 0, 0, 0, DateTimeKind.Utc),
-         new (2093, 1, 3, 0, 0, 0, DateTimeKind.Utc),
-         new (2092, 7, 10, 0, 0, 0, DateTimeKind.Utc),
-         new (1939, 1, 15, 0, 0, 0, DateTimeKind.Utc),
-         new (1977, 9, 28, 0, 0, 0, DateTimeKind.Utc),
-         new (1959, 1, 29, 0, 0, 0, DateTimeKind.Utc)
-      });
+      NextReturnsStableElementListInTermsOfTestability(source, new DateTime[] { new DateTime(609630624000000000, DateTimeKind.Utc), new DateTime(620042688000000000, DateTimeKind.Utc), new DateTime(613037376000000000, DateTimeKind.Utc), new DateTime(625907520000000000, DateTimeKind.Utc), new DateTime(621699840000000000, DateTimeKind.Utc), new DateTime(653166720000000000, DateTimeKind.Utc), new DateTime(646449984000000000, DateTimeKind.Utc), new DateTime(656324640000000000, DateTimeKind.Utc), new DateTime(652370112000000000, DateTimeKind.Utc), new DateTime(611629920000000000, DateTimeKind.Utc) });
    }
 
    [Fact]
    public void NextReturnsStableDateTimeListInTermsOfTestabilityAndListCanContainNull() {
       var source = new NullableDateOfBirthSource();
-      NextReturnsStableElementListInTermsOfTestability(source, new DateTime?[] {
-         new (1941, 12, 27, 0, 0, 0, DateTimeKind.Utc),
-         null,
-         new (1923, 9, 22, 0, 0, 0, DateTimeKind.Utc),
-         new (1963, 4, 23, 0, 0, 0, DateTimeKind.Utc),
-         new (2087, 3, 15, 0, 0, 0, DateTimeKind.Utc),
-         new (2069, 5, 2, 0, 0, 0, DateTimeKind.Utc),
-         new (2093, 1, 3, 0, 0, 0, DateTimeKind.Utc),
-         new (2092, 7, 10, 0, 0, 0, DateTimeKind.Utc),
-         new (1939, 1, 15, 0, 0, 0, DateTimeKind.Utc),
-         new (1977, 9, 28, 0, 0, 0, DateTimeKind.Utc)
-      });
+      NextReturnsStableElementListInTermsOfTestability(source, new DateTime?[] { new DateTime(609630624000000000, DateTimeKind.Utc), new DateTime(620042688000000000, DateTimeKind.Utc), new DateTime(613037376000000000, DateTimeKind.Utc), new DateTime(625907520000000000, DateTimeKind.Utc), new DateTime(621699840000000000, DateTimeKind.Utc), new DateTime(653166720000000000, DateTimeKind.Utc), new DateTime(646449984000000000, DateTimeKind.Utc), new DateTime(656324640000000000, DateTimeKind.Utc), new DateTime(652370112000000000, DateTimeKind.Utc), new DateTime(611629920000000000, DateTimeKind.Utc) });
    }
 }

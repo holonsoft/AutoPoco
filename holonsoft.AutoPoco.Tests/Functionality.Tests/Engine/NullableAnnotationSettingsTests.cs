@@ -19,7 +19,7 @@ public class NullableAnnotationSettingsTests {
       var settings = NullableAnnotationSettings.Enabled();
 
       settings.RespectNullableAnnotations.ShouldBeTrue();
-      settings.NullCreationThreshold.ShouldBe(AutoPocoGlobalSettings.NullCreationThreshold);
+      settings.NullCreationThreshold.ShouldBe(AutoPocoDefaults.NullCreationThreshold);
    }
 
    [Fact]
@@ -62,7 +62,7 @@ public class NullableAnnotationSettingsTests {
 
       builder.RespectNullableAnnotations();
 
-      builder.NullableAnnotations.NullCreationThreshold.ShouldBe(AutoPocoGlobalSettings.NullCreationThreshold);
+      builder.NullableAnnotations.NullCreationThreshold.ShouldBe(AutoPocoDefaults.NullCreationThreshold);
    }
 
    [Fact]

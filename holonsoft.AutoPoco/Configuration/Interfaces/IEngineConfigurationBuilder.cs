@@ -29,6 +29,13 @@ public interface IEngineConfigurationBuilder {
    ///   (<c>string?</c>, <c>int?</c>, ...) becomes null with the given probability, whatever its data source.
    ///   Off by default. Members without a nullable annotation and values set by <c>Impose</c> are never touched.
    /// </summary>
-   /// <param name="nullCreationThreshold">probability in percent (0 to 100), default is <see cref="AutoPocoGlobalSettings.NullCreationThreshold" /></param>
+   /// <param name="nullCreationThreshold">probability in percent (0 to 100), default is <see cref="AutoPocoDefaults.NullCreationThreshold" /></param>
    void RespectNullableAnnotations(int? nullCreationThreshold = null);
+
+   /// <summary>
+   ///   Sets the seed of the factory. Every session created from it, and every data source in those sessions,
+   ///   derives its random stream from this seed, so the same seed produces the same data in every run.
+   ///   Default is <see cref="AutoPocoDefaults.Seed" />.
+   /// </summary>
+   void UseSeed(int seed);
 }

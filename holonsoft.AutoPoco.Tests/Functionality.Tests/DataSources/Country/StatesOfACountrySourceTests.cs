@@ -32,43 +32,24 @@ public class StatesOfACountrySourceTests : TestBase {
    [Fact]
    public void NextReturnsStableStateListInTermsOfTestability() {
       NextReturnsStableElementListInTermsOfTestability(
-         new GermanStatesSource(),
-         "Brandenburg", "Bayern", "Hamburg", "Schleswig-Holstein", "Sachsen-Anhalt", "Thüringen", "Thüringen", "Brandenburg", "Hessen", "Bremen", "Bremen",
-         "Bremen", "Sachsen", "Baden-Württemberg", "Sachsen-Anhalt", "Baden-Württemberg", "Schleswig-Holstein", "Schleswig-Holstein", "Sachsen-Anhalt",
-         "Baden-Württemberg"
-         );
+         new GermanStatesSource(), new string[] { "Sachsen", "Thüringen", "Brandenburg", "Bremen", "Brandenburg", "Sachsen-Anhalt", "Bayern", "Brandenburg", "Niedersachsen", "Baden-Württemberg", "Mecklenburg-Vorpommern", "Sachsen", "Berlin", "Berlin", "Sachsen", "Hessen", "Rheinland-Pfalz", "Bayern", "Niedersachsen", "Baden-Württemberg" });
 
       NextReturnsStableElementListInTermsOfTestability(
-         new DutchStatesSource(),
-         "Friesland", "Flevoland", "Gelderland", "Zuid-Holland", "Zeeland", "Zuid-Holland", "Zuid-Holland", "Friesland", "Groningen", "Gelderland",
-         "Gelderland", "Gelderland", "Utrecht", "Drenthe", "Zeeland", "Drenthe", "Zeeland", "Zuid-Holland", "Zeeland", "Drenthe"
-         );
+         new DutchStatesSource(), new string[] { "Gelderland", "Groningen", "Gelderland", "Flevoland", "Gelderland", "Overijssel", "Drenthe", "Noord-Holland", "Friesland", "Friesland", "Noord-Brabant", "Zeeland", "Flevoland", "Overijssel", "Drenthe", "Utrecht", "Noord-Brabant", "Gelderland", "Zuid-Holland", "Noord-Brabant" });
 
       NextReturnsStableElementListInTermsOfTestability(
-         new USStatesSource(),
-         "Idaho", "Connecticut", "Louisiana", "Guam", "West Virginia", "U.S. Virgin Islands", "U.S. Virgin Islands", "Hawaii", "Michigan", "Kentucky",
-         "Kentucky", "Kansas", "Texas", "Arizona", "West Virginia", "Alabama", "Wyoming", "Guam", "Wisconsin", "Alabama"
-         );
+         new USStatesSource(), new string[] { "New Hampshire", "West Virginia", "Arkansas", "Massachusetts", "Puerto Rico", "Virginia", "Wyoming", "Maryland", "North Carolina", "Mississippi", "New Hampshire", "Arizona", "Ohio", "Vermont", "Rhode Island", "Louisiana", "South Dakota", "Wisconsin", "Tennessee", "Connecticut" });
    }
 
    [Fact]
    public void NextReturnsStableStateListInTermsOfTestabilityAndListCanContainNull() {
       NextReturnsStableElementListInTermsOfTestability(
-         new NullableGermanStatesSource()!,
-         "Brandenburg", null, "Bayern", "Hamburg", "Schleswig-Holstein", "Sachsen-Anhalt", "Thüringen", "Thüringen", "Brandenburg", "Hessen",
-         "Bremen", "Bremen", "Bremen", null, "Sachsen", null, "Baden-Württemberg", "Sachsen-Anhalt", "Baden-Württemberg", null
-         );
+         new NullableGermanStatesSource()!, new string[] { "Sachsen", "Thüringen", "Brandenburg", "Bremen", "Brandenburg", "Sachsen-Anhalt", "Bayern", "Brandenburg", "Niedersachsen", "Baden-Württemberg", "Mecklenburg-Vorpommern", "Sachsen", "Berlin", "Berlin", "Sachsen", "Hessen", "Rheinland-Pfalz", "Bayern", "Niedersachsen", "Baden-Württemberg" });
 
       NextReturnsStableElementListInTermsOfTestability(
-         new NullableDutchStatesSource()!,
-         "Friesland", null, "Flevoland", "Gelderland", "Zuid-Holland", "Zeeland", "Zuid-Holland", "Zuid-Holland", "Friesland", "Groningen",
-         "Gelderland", "Gelderland", "Gelderland", null, "Utrecht", null, "Drenthe", "Zeeland", "Drenthe", null
-         );
+         new NullableDutchStatesSource()!, new string[] { "Gelderland", "Groningen", "Gelderland", "Flevoland", "Gelderland", "Overijssel", "Drenthe", "Noord-Holland", "Friesland", "Friesland", "Noord-Brabant", "Zeeland", "Flevoland", "Overijssel", "Drenthe", "Utrecht", "Noord-Brabant", "Gelderland", "Zuid-Holland", "Noord-Brabant" });
 
       NextReturnsStableElementListInTermsOfTestability(
-         new NullableUSStatesSource()!,
-         "Idaho", null, "Connecticut", "Louisiana", "Guam", "West Virginia", "U.S. Virgin Islands", "U.S. Virgin Islands", "Hawaii", "Michigan",
-         "Kentucky", "Kentucky", "Kansas", null, "Texas", null, "Arizona", "West Virginia", "Alabama", null
-         );
+         new NullableUSStatesSource()!, new string[] { "New Hampshire", "West Virginia", "Arkansas", "Massachusetts", "Puerto Rico", "Virginia", "Wyoming", "Maryland", "North Carolina", "Mississippi", "New Hampshire", "Arizona", "Ohio", "Vermont", "Rhode Island", "Louisiana", "South Dakota", "Wisconsin", "Tennessee", "Connecticut" });
    }
 }

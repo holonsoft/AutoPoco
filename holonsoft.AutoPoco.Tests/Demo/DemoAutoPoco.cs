@@ -101,9 +101,9 @@ public class DemoAutoPoco
                  .Single<SimpleUser>()
                  .Get();
 
-        user.FirstName.ShouldBe("Olivia");
-        user.LastName.ShouldBe("Turner");
-        user.RevealedPassword.ShouldBe("GRvqwwLW");
+        user.FirstName.ShouldBe("Alexa");
+        user.LastName.ShouldBe("Wilson");
+        user.RevealedPassword.ShouldBe("DPj`I`FMBd");
         user.ExternalId.ShouldNotBe(0);
         user.Id.ShouldNotBe(0);
         user.City.ShouldNotBeNullOrWhiteSpace();
@@ -161,9 +161,9 @@ public class DemoAutoPoco
                  .Single<SimpleUserRecord>()
                  .Get();
 
-        user.FirstName.ShouldBe("Olivia");
-        user.LastName.ShouldBe("Turner");
-        user.RevealedPassword.ShouldBe("GRvqwwLW");
+        user.FirstName.ShouldBe("Arthur");
+        user.LastName.ShouldBe("Walker");
+        user.RevealedPassword.ShouldBe("_AqPqoJvdRvaHXmjJK");
 
         // Create three roles
         // Create 100 users

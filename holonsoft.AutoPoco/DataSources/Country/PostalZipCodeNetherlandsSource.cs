@@ -114,7 +114,7 @@ public class PostalZipCodeNetherlandsSource : PostalZipCodeNetherlandsSourceBase
 }
 
 public class NullablePostalZipCodeNetherlandsSource : PostalZipCodeNetherlandsSourceBase {
-   public NullablePostalZipCodeNetherlandsSource() : base(AutoPocoGlobalSettings.NullCreationThreshold) { }
+   public NullablePostalZipCodeNetherlandsSource() : base(AutoPocoDefaults.NullCreationThreshold) { }
 
    public NullablePostalZipCodeNetherlandsSource(int nullCreationThreshold) : base(nullCreationThreshold) { }
 }

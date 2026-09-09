@@ -32,7 +32,7 @@ public class LongSource(long min, long max) : LongSourceBase<long>(min, max) {
 /// </summary>
 /// <param name="min">Minimum value</param>
 /// <param name="max">Maximum value</param>
-/// <seealso cref="AutoPocoGlobalSettings"/>
+/// <seealso cref="AutoPocoDefaults"/>
 public class NullableLongSource(long min, long max) : LongSourceBase<long?>(min, max) {
    public NullableLongSource()
       : this(long.MinValue, long.MaxValue) { }

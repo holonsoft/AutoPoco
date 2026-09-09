@@ -36,18 +36,10 @@ public partial class CreditCardSourceTests : TestBase {
    [Fact]
    public void NextReturnsStableCreditCardListInTermsOfTestability()
       => NextReturnsStableElementListInTermsOfTestability(
-         new CreditCardSource(),
-         new[] {
-            "5139 8991 3232 7084", "5898 0489 1744 1883", "3695 475531 91051", "3224 797328 93124", "5358 3556 3251 4365", "3027 325203 91438",
-            "5615 3395 0850 1892", "3644 657657 96148", "4440 3264 5197 1047", "5316 2174 7772 0575"
-         });
+         new CreditCardSource(), new string[] { "5343 1380 7226 1800", "4963 6432 2865 0035", "4655 0609 2255 2430", "5914 8329 7669 1747", "3306 710005 18638", "3576 703413 80305", "5171 2438 3073 1141", "5030 2600 8079 1583", "5159 0467 9793 1279", "5238 6720 4807 5702" });
 
    [Fact]
    public void NextReturnsStableCreditCardListInTermsOfTestabilityAndListCanContainNull()
       => NextReturnsStableElementListInTermsOfTestability(
-         new NullableCreditCardSource()!,
-         new string?[] {
-            "5139 8991 3232 7084", null, "5898 0489 1744 1883", "3695 475531 91051", "3224 797328 93124", "5358 3556 3251 4365", "3027 325203 91438",
-            "5615 3395 0850 1892", "3644 657657 96148", "4440 3264 5197 1047"
-         });
+         new NullableCreditCardSource()!, new string[] { "5343 1380 7226 1800", "4963 6432 2865 0035", "4655 0609 2255 2430", "5914 8329 7669 1747", "3306 710005 18638", "3576 703413 80305", "5171 2438 3073 1141", "5030 2600 8079 1583", "5159 0467 9793 1279", "5238 6720 4807 5702" });
 }

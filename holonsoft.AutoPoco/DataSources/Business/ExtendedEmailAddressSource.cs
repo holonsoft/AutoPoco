@@ -78,7 +78,7 @@ public abstract class ExtendedEmailAddressSourceBase(int? nullCreationThreshold 
 public class ExtendedEmailAddressSource(params string[] domains) : ExtendedEmailAddressSourceBase(null, domains) { }
 
 public class NullableExtendedEmailAddressSource(int nullCreationThreshold, params string[] domains) : ExtendedEmailAddressSourceBase(nullCreationThreshold, domains) {
-   public NullableExtendedEmailAddressSource() : this(AutoPocoGlobalSettings.NullCreationThreshold) { }
+   public NullableExtendedEmailAddressSource() : this(AutoPocoDefaults.NullCreationThreshold) { }
 
-   public NullableExtendedEmailAddressSource(params string[] domains) : this(AutoPocoGlobalSettings.NullCreationThreshold, domains) { }
+   public NullableExtendedEmailAddressSource(params string[] domains) : this(AutoPocoDefaults.NullCreationThreshold, domains) { }
 }

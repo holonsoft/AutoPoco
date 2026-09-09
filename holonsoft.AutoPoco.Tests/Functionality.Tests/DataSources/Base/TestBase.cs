@@ -10,8 +10,13 @@ public class TestBase() {
       for (var i = 0; i < expectedValues.Length; i++)
          generated.Add(source.Next(null));
 
-      // same count and same order as the expected values
-      generated.ShouldBe(expectedValues);
+      // same count and same order as the expected values; on failure the message carries the actual
+      // values as a C# literal, ready to paste into the test after an intended sequence change
+      try {
+         generated.ShouldBe(expectedValues);
+      } catch (ShouldAssertException e) {
+         throw new ShouldAssertException($"{e.Message}\nREGENERATE: {CSharpLiteral.Array(generated)}");
+      }
 
       if (typeof(T) == typeof(bool) || (typeof(T) == typeof(bool?)))
          return;

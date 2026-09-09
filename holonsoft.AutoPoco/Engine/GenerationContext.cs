@@ -1,4 +1,5 @@
-﻿using holonsoft.AutoPoco.Engine.Enums;
+﻿using holonsoft.AutoPoco.Configuration;
+using holonsoft.AutoPoco.Engine.Enums;
 using holonsoft.AutoPoco.Engine.Interfaces;
 
 namespace holonsoft.AutoPoco.Engine;
@@ -29,7 +30,8 @@ public class GenerationContext : IGenerationContext {
    public ICollectionContext<TPoco, IList<TPoco>> List<TPoco>(int count) => new CollectionContext<TPoco, IList<TPoco>>(
         Enumerable.Range(0, count)
           .Select(x => Single<TPoco>()).ToArray()
-          .AsEnumerable());
+          .AsEnumerable(),
+        Builders?.Seed ?? AutoPocoDefaults.Seed);
 
    public TPoco Next<TPoco>() => Single<TPoco>().Get();
 

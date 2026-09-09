@@ -62,5 +62,5 @@ public class RandomTextSource(int maxLengthOfText, int minParagraphCount, int ma
 public class NullableRandomTextSource(int? nullCreationThreshold, int maxLengthOfText, int minParagraphCount, int maxParagraphCount, int minSentenceCount, int maxSentenceCount, params char[] allowedCharacters)
    : RandomTextSourceBase(nullCreationThreshold, maxLengthOfText, minParagraphCount, maxParagraphCount, minSentenceCount, maxSentenceCount, allowedCharacters) {
 
-   public NullableRandomTextSource() : this(AutoPocoGlobalSettings.NullCreationThreshold, 500, 3, 6, 3, 7, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".ToCharArray()) { }
+   public NullableRandomTextSource() : this(AutoPocoDefaults.NullCreationThreshold, 500, 3, 6, 3, 7, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".ToCharArray()) { }
 }

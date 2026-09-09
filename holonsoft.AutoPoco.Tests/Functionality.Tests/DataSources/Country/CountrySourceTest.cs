@@ -8,33 +8,21 @@ public class CountrySourceTest : TestBase {
    [Fact]
    public void NextReturnsStableCountryListInTermsOfTestability()
       => NextReturnsStableElementListInTermsOfTestability(
-         new CountrySource(),
-         "Croatia", "Brazil", "Gambia", "Uganda", "Sri Lanka", "Uzbekistan", "Uruguay", "Comoros", "India", "Fiji"
-      );
+         new CountrySource(), new string[] { "Guatemala", "Samoa", "Monaco", "Marshall Islands", "Tunisia", "Jamaica", "Lebanon", "Brazil", "Zimbabwe", "Liberia" });
 
    [Fact]
    public void NextReturnsStableCountryListInTermsOfTestabilityAndListCanContainNull()
       => NextReturnsStableElementListInTermsOfTestability(
-         new NullableCountrySource()!,
-         "Croatia", null, "Brazil", "Gambia", "Uganda", "Sri Lanka", "Uzbekistan", "Uruguay", "Comoros", "India",
-         "Fiji", "Finland", "Eswatini", null, "Saint Vincent and the Grenadines", null, "Austria", "Sri Lanka", "Algeria", null,
-         "Tanzania", "Ukraine"
-      );
+         new NullableCountrySource()!, new string[] { "Guatemala", "Samoa", "Monaco", "Marshall Islands", "Tunisia", "Jamaica", "Lebanon", "Brazil", "Zimbabwe", "Liberia", "Denmark", "Nauru", "Belize", "Switzerland", "East Timor", "New Zealand", "Guyana", "Guatemala", "Mauritania", "Burundi", "Samoa", "Spain" });
 
    [Fact]
    public void NextReturnsStableCountryAbbreviationListInTermsOfTestability()
       => NextReturnsStableElementListInTermsOfTestability(
-         new CountrySource(true),
-         "HRV", "BRA", "GMB", "UGA", "LKA", "UZB", "URY", "COM", "IND", "FJI"
-      );
+         new CountrySource(true), new string[] { "GTM", "WSM", "MCO", "MHL", "TUN", "JAM", "LBN", "BRA", "ZWE", "LBR" });
 
    [Fact]
    public void NextReturnsStableCountryAbbreviationListInTermsOfTestabilityAndListCanContainNull()
       => NextReturnsStableElementListInTermsOfTestability(
-         new NullableCountrySource(true)!,
-         "HRV", null, "BRA", "GMB", "UGA", "LKA", "UZB", "URY", "COM", "IND",
-         "FJI", "FIN", "SWZ", null, "VCT", null, "AUT", "LKA", "DZA", null,
-         "TZA", "UKR"
-      );
+         new NullableCountrySource(true)!, new string[] { "GTM", "WSM", "MCO", "MHL", "TUN", "JAM", "LBN", "BRA", "ZWE", "LBR", "DNK", "NRU", "BLZ", "CHE", "TLS", "NZL", "GUY", "GTM", "MRT", "BDI", "WSM", "ESP" });
 
 }

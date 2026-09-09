@@ -96,24 +96,12 @@ public class DateTimeSourceTests : TestBase {
    [Fact]
    public void NextReturnsStableDateTimeListInTermsOfTestability() {
       var source = new DateTimeSource(_minDate, _maxDate);
-      NextReturnsStableElementListInTermsOfTestability(source, new DateTime[] {
-         new DateTime(636496727523570519, DateTimeKind.Utc),
-         new DateTime(637790390162231123, DateTimeKind.Utc),
-         new DateTime(635912374590276787, DateTimeKind.Utc),
-         new DateTime(639196215649992172, DateTimeKind.Utc),
-         new DateTime(632769569224965583, DateTimeKind.Utc)
-      });
+      NextReturnsStableElementListInTermsOfTestability(source, new DateTime[] { new DateTime(633814176156249820, DateTimeKind.Utc), new DateTime(631201399357349359, DateTimeKind.Utc), new DateTime(633944634959756867, DateTimeKind.Utc), new DateTime(634621712587170196, DateTimeKind.Utc), new DateTime(640304386247800947, DateTimeKind.Utc) });
    }
 
    [Fact]
    public void NextReturnsStableDateTimeListInTermsOfTestabilityAndListCanContainNull() {
       var source = new NullableDateTimeSource(_minDate, _maxDate);
-      NextReturnsStableElementListInTermsOfTestability<DateTime?>(source, new DateTime?[] {
-         new DateTime(636496727523570519, DateTimeKind.Utc),
-         null,
-         new DateTime(637790390162231123, DateTimeKind.Utc),
-         new DateTime(635912374590276787, DateTimeKind.Utc),
-         new DateTime(639196215649992172, DateTimeKind.Utc)
-      });
+      NextReturnsStableElementListInTermsOfTestability<DateTime?>(source, new DateTime?[] { new DateTime(633814176156249820, DateTimeKind.Utc), new DateTime(631201399357349359, DateTimeKind.Utc), new DateTime(633944634959756867, DateTimeKind.Utc), new DateTime(634621712587170196, DateTimeKind.Utc), new DateTime(640304386247800947, DateTimeKind.Utc) });
    }
 }

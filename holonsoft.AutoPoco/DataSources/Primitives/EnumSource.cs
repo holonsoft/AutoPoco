@@ -21,5 +21,5 @@ public class EnumSource<T> : EnumSourceBase<T>
 //public class NullableEnumSource<T> : EnumSourceBase<T>
 //   where T : Enum {
 
-//   public NullableEnumSource() : base(AutoPocoGlobalSettings.NullCreationThreshold) { }
+//   public NullableEnumSource() : base(AutoPocoDefaults.NullCreationThreshold) { }
 //}

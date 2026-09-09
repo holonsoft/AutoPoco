@@ -36,7 +36,9 @@ public class ObjectGenerator<T>(IGenerationContext session, IObjectBuilder type)
    public IObjectGenerator<T> Source<TMember>(Expression<Func<T, TMember>> propertyExpr, IDataSource dataSource) {
       ArgumentNullException.ThrowIfNull(dataSource);
       var member = ReflectionHelper.GetMember(propertyExpr);
-      dataSource = NullableMemberDataSource.ForMember(dataSource, member, session.Builders?.NullableAnnotations);
+      var seed = session.Builders?.Seed ?? AutoPocoDefaults.Seed;
+      (dataSource as ISessionSeedable)?.ApplySessionSeed(SeedDerivation.ForMember(seed, typeof(T), member.Name));
+      dataSource = NullableMemberDataSource.ForMember(dataSource, member, session.Builders?.NullableAnnotations, seed);
       if (member.IsField)
          AddAction(new ObjectFieldSetFromSourceAction((EngineTypeFieldMember) member, dataSource));
       else if (member.IsProperty)

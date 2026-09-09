@@ -73,5 +73,5 @@ public class USStatesSource(bool useAbbreviations) : USStatesSourceBase(useAbbre
 }
 
 public class NullableUSStatesSource(bool useAbbreviations, int nullCreationThreshold) : USStatesSourceBase(useAbbreviations, nullCreationThreshold) {
-   public NullableUSStatesSource() : this(false, AutoPocoGlobalSettings.NullCreationThreshold) { }
+   public NullableUSStatesSource() : this(false, AutoPocoDefaults.NullCreationThreshold) { }
 }

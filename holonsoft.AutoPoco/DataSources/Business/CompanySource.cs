@@ -141,7 +141,7 @@ public class CompanySource : CompanySourceBase {
 }
 
 public class NullableCompanySource : CompanySourceBase {
-   public NullableCompanySource() : base(AutoPocoGlobalSettings.NullCreationThreshold) { }
+   public NullableCompanySource() : base(AutoPocoDefaults.NullCreationThreshold) { }
 
    public NullableCompanySource(int nullCreationThreshold) : base(nullCreationThreshold) { }
 }

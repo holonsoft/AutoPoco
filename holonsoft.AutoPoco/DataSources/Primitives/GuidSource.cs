@@ -21,5 +21,5 @@ public class GuidSource : GuidSourceBase<Guid> { }
 /// <summary>
 /// Create a nullable GUID source
 /// </summary>
-/// <seealso cref="AutoPocoGlobalSettings"/>
+/// <seealso cref="AutoPocoDefaults"/>
 public class NullableGuidSource : GuidSourceBase<Guid?> { }

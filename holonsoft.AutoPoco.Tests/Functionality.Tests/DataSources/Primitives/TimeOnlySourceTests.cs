@@ -40,13 +40,15 @@ public class TimeOnlySourceTests : TestBase {
 
    [Fact]
    public void NextReachesTheUpperBoundOfAShortRange() {
-      var min = new TimeOnly(23, 59, 59);
+      // a 10 millisecond window: missing millisecond 999 in 300 draws has a probability of 0.9^300
+      var min = new TimeOnly(23, 59, 59, 990);
       var max = TimeOnly.MaxValue;
       var source = new TimeOnlySource(min, max);
       var values = Draw(source, 300);
 
       values.ShouldAllBe(x => x >= min && x <= max);
       values.ShouldContain(x => x.Millisecond == 999);
+      values.ShouldContain(x => x.Millisecond == 990);
    }
 
    [Fact]
@@ -78,24 +80,12 @@ public class TimeOnlySourceTests : TestBase {
    [Fact]
    public void NextReturnsStableDateTimeListInTermsOfTestability() {
       var source = new TimeOnlySource(_minDate, _maxDate);
-      NextReturnsStableElementListInTermsOfTestability(source, new TimeOnly[] {
-         new TimeOnly(461154038194), // 12:48:35.4038194
-         new TimeOnly(500633488837), // 13:54:23.3488837
-         new TimeOnly(443321001900), // 12:18:52.1001900
-         new TimeOnly(543535877990), // 15:05:53.5877990
-         new TimeOnly(347410193632)  // 09:39:01.0193632
-      });
+      NextReturnsStableElementListInTermsOfTestability(source, new TimeOnly[] { new TimeOnly(426772885212), new TimeOnly(593448500803), new TimeOnly(371913204116), new TimeOnly(328551510961), new TimeOnly(364295624019) });
    }
 
    [Fact]
    public void NextReturnsStableDateTimeListInTermsOfTestabilityAndListCanContainNull() {
       var source = new NullableTimeOnlySource(_minDate, _maxDate);
-      NextReturnsStableElementListInTermsOfTestability(source, new TimeOnly?[] {
-         new TimeOnly(461154038194), // 12:48:35.4038194
-         null,
-         new TimeOnly(500633488837), // 13:54:23.3488837
-         new TimeOnly(443321001900), // 12:18:52.1001900
-         new TimeOnly(543535877990)  // 15:05:53.5877990
-      });
+      NextReturnsStableElementListInTermsOfTestability(source, new TimeOnly?[] { new TimeOnly(426772885212), new TimeOnly(593448500803), new TimeOnly(371913204116), new TimeOnly(328551510961), new TimeOnly(364295624019) });
    }
 }

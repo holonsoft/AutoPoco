@@ -51,7 +51,7 @@ public class ColorSource(byte rangeStart, byte rangeEnd) : ColorSourceBase<Color
 /// </summary>
 /// <param name="rangeStart"></param>
 /// <param name="rangeEnd"></param>
-/// <seealso cref="AutoPocoGlobalSettings"/>
+/// <seealso cref="AutoPocoDefaults"/>
 public class NullableColorSource(byte rangeStart, byte rangeEnd) : ColorSourceBase<Color?>(255, rangeStart, rangeEnd, rangeStart, rangeEnd, rangeStart, rangeEnd) {
    public NullableColorSource()
       : this(0, 255) { }

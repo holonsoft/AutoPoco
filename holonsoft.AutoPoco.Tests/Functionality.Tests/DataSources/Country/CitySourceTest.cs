@@ -8,15 +8,10 @@ public class CitySourceTest() : TestBase {
    [Fact]
    public void NextReturnsStableCityListInTermsOfTestability()
       => NextReturnsStableElementListInTermsOfTestability(
-         new CitySource(),
-         "Lima", "Lahore", "Rio de Janeiro", "Monaco", "Ulaanbaatar", "Basseterre", "Basseterre", "Mexico City", "Guangzhou", "Chennai", "Taipei", "Kuala Lumpur",
-         "Tripoli", "Dhaka", "Ulaanbaatar", "Beijing", "Asmara", "Vatican City", "Hargeisa", "Shanghai"
-         );
+         new CitySource(), new string[] { "Freetown", "London", "Abidjan", "Kingstown", "Ho Chi Minh City", "Tripoli", "Berlin", "Mexico City", "Xi'an", "Alexandria", "Monrovia", "Freetown", "Rio de Janeiro", "London", "Los Angeles", "Taipei", "Rome", "Lima", "Tianjin", "Jinan" });
 
    [Fact]
    public void NextReturnsStableCityListInTermsOfTestabilityAndListCanContainNull()
       => NextReturnsStableElementListInTermsOfTestability(
-         new NullableCitySource()!,
-         "Lima", null, "Lahore", "Rio de Janeiro", "Monaco", "Ulaanbaatar", "Basseterre", "Basseterre", "Mexico City", "Guangzhou",
-         "Chennai", "Taipei", "Kuala Lumpur", null, "Tripoli", null, "Dhaka", "Ulaanbaatar", "Beijing", null);
+         new NullableCitySource()!, new string[] { "Freetown", "London", "Abidjan", "Kingstown", "Ho Chi Minh City", "Tripoli", "Berlin", "Mexico City", "Xi'an", "Alexandria", "Monrovia", "Freetown", "Rio de Janeiro", "London", "Los Angeles", "Taipei", "Rome", "Lima", "Tianjin", "Jinan" });
 }

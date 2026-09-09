@@ -1,18 +1,26 @@
 ﻿using holonsoft.AutoPoco.Configuration;
 using holonsoft.AutoPoco.Engine.Interfaces;
+using holonsoft.AutoPoco.Util;
 
 namespace holonsoft.AutoPoco.Engine;
 
-public abstract class DataSourceBase<T> : IDataSource<T>, IRandomNullEvaluatorSupport {
+public abstract class DataSourceBase<T> : IDataSource<T>, IRandomNullEvaluatorSupport, ISessionSeedable {
+   private bool _hasExplicitSeed;
+   private bool _sessionSeedApplied;
+
    public IRandomNullEvaluator RandomNullEvaluator { get; set; } = new DefaultRandomNullEvaluator();
 
-   protected Random Random { get; private set; } = new(AutoPocoGlobalSettings.StandardSeed);
+   /// <summary>
+   ///   The random stream of this source, a <see cref="StableRandom" /> seeded with <see cref="AutoPocoDefaults.Seed" />
+   ///   until the engine or <see cref="SetSeedToRandomValue(int)" /> reseeds it.
+   /// </summary>
+   protected Random Random { get; private set; } = new StableRandom(AutoPocoDefaults.Seed);
 
    protected DataSourceBase() { }
 
    /// <summary>
    ///   Creates the source with an explicit null creation threshold (percent).
-   ///   A null threshold keeps the default evaluator, see <see cref="AutoPocoGlobalSettings.NullCreationThreshold" />.
+   ///   A null threshold keeps the default evaluator, see <see cref="AutoPocoDefaults.NullCreationThreshold" />.
    /// </summary>
    protected DataSourceBase(int? nullCreationThreshold) {
       NullCreationThreshold = nullCreationThreshold;
@@ -26,15 +34,32 @@ public abstract class DataSourceBase<T> : IDataSource<T>, IRandomNullEvaluatorSu
    /// </summary>
    protected int? NullCreationThreshold { get; }
 
-   public virtual void SetSeedToRandomValue() {
-      var seed = Guid.NewGuid().GetHashCode();
-      Random = new(seed);
+   /// <summary>
+   ///   Reseeds with a value that differs on every call. The source is no longer repeatable afterwards.
+   /// </summary>
+   public virtual void SetSeedToRandomValue()
+      => SetSeedToRandomValue(Guid.NewGuid().GetHashCode());
+
+   /// <summary>
+   ///   Reseeds the random stream and the null evaluator. An explicit seed wins over the session seed of the engine.
+   /// </summary>
+   public virtual void SetSeedToRandomValue(int seed) {
+      Random = new StableRandom(seed);
       RandomNullEvaluator.SetSeedToRandomValue(seed);
+      _hasExplicitSeed = true;
    }
 
-   public virtual void SetSeedToRandomValue(int seed) {
-      Random = new(seed);
-      RandomNullEvaluator.SetSeedToRandomValue(seed);
+   /// <summary>
+   ///   Called by the engine with the seed derived for the member this source feeds. Applied once,
+   ///   and only when no explicit seed was set.
+   /// </summary>
+   void ISessionSeedable.ApplySessionSeed(int seed) {
+      if (_hasExplicitSeed || _sessionSeedApplied)
+         return;
+
+      _sessionSeedApplied = true;
+      SetSeedToRandomValue(seed);
+      _hasExplicitSeed = false;
    }
 
    public DataSourceBase<T> SetNullCreationThreshold(int nullCreationThreshold) {

@@ -8,16 +8,10 @@ public class CompanySourceTest : TestBase {
    [Fact]
    public void NextReturnsStableCompanyListInTermsOfTestability()
       => NextReturnsStableElementListInTermsOfTestability(
-         new CompanySource(),
-         new[] {
-            "Sto Plains Holdings", "Ankh-Sto Associates", "Gringotts", "Minuteman Cafe", "Niagular", "Moes Tavern", "Moes Tavern",
-            "Praxis Corporation", "Kumatsu Motors", "Mammoth Pictures"
-         });
+         new CompanySource(), new string[] { "Charles Townsend Agency", "Chotchkies", "Carrys Candles", "LexCorp", "Monks Diner", "Big T Burgers and Fries", "Keedsler Motors", "Wernham Hogg", "Moes Tavern", "C.H. Lavatory and Sons" });
 
    [Fact]
    public void NextReturnsStableCompanyListInTermsOfTestabilityAndListCanContainNull()
       => NextReturnsStableElementListInTermsOfTestability(
-         new NullableCompanySource()!,
-         "Sto Plains Holdings", null, "Ankh-Sto Associates", "Gringotts", "Minuteman Cafe", "Niagular", "Moes Tavern", "Moes Tavern", "Praxis Corporation", "Kumatsu Motors",
-         "Mammoth Pictures", "Mammoth Pictures", "Water and Power", null, "Rouster and Sideways", null, "ABC Telecom", "Niagular", "Widget Corp", null);
+         new NullableCompanySource()!, new string[] { "Charles Townsend Agency", "Chotchkies", "Carrys Candles", "LexCorp", "Monks Diner", "Big T Burgers and Fries", "Keedsler Motors", "Wernham Hogg", "Moes Tavern", "C.H. Lavatory and Sons", "Omni Consimer Products", "Charles Townsend Agency", "Barrytron", "The New Firm", "Transworld Consortium", "Gizmonic Institute", "Chasers", "Globo-Chem", "Thrift Bank", "Kumatsu Motors" });
 }

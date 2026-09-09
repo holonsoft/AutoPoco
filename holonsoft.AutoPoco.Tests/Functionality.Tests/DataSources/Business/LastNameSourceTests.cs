@@ -8,13 +8,11 @@ public class LastNameSourceTests : TestBase {
    [Fact]
    public void NextReturnsStableLastNamesListInTermsOfTestability()
       => NextReturnsStableElementListInTermsOfTestability(
-         new LastNameSource(),
-         "Turner", "Martin", "Murphy", "Pierce", "Wells", "Scott", "Scott", "Baker", "Perez", "Evans");
+         new LastNameSource(), new string[] { "Knight", "Harrison", "Baker", "Diaz", "Harper", "Dean", "Thomas", "Knight", "Long", "Gordon" });
 
    [Fact]
    public void NextReturnsStableLastNamesListInTermsOfTestabilityAndListCanContainNull()
       => NextReturnsStableElementListInTermsOfTestability(
-         new NullableLastNameSource()!,
-         "Turner", null, "Martin", "Murphy", "Pierce", "Wells", "Scott", "Scott", "Baker", "Perez");
+         new NullableLastNameSource()!, new string[] { "Knight", "Harrison", "Baker", "Diaz", "Harper", "Dean", "Thomas", "Knight", "Long", "Gordon" });
 
 }

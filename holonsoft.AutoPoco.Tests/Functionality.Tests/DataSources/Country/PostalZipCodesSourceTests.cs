@@ -8,39 +8,24 @@ public class PostalZipCodeGermanySourceTest : TestBase {
    [Fact]
    public void NextReturnsStableZipCodeListsInTermsOfTestability() {
       NextReturnsStableElementListInTermsOfTestability(
-         new PostalZipCodeGermanySource(),
-         "13627", "01156", "19399", "99988", "99894", "99994", "99994", "06279", "20099", "14059");
+         new PostalZipCodeGermanySource(), new string[] { "40227", "14052", "30161", "99999", "14057", "40225", "29683", "13627", "20255", "30159" });
 
       NextReturnsStableElementListInTermsOfTestability(
-         new PostalZipCodeNetherlandsSource(),
-         "9413XG", "8728KV", "0459TW", "5101VF", "0190XX", "0141KD", "5724ZJ", "1742ZV", "1266DP", "6152SB");
+         new PostalZipCodeNetherlandsSource(), new string[] { "1277VM", "0486FL", "9413XG", "7335MY", "8179PD", "0141KD", "4295YK", "1277VM", "6613WL", "6529IB" });
 
       NextReturnsStableElementListInTermsOfTestability(
-         new PostalZipCodeUSASource(),
-         "63396", "38605", "77071", "67146", "63914", "68048", "62480", "47160", "91747", "42485");
+         new PostalZipCodeUSASource(), new string[] { "66070", "05685", "63396", "58810", "29100", "68048", "09501", "66070", "12922", "88893" });
    }
 
    [Fact]
    public void NextReturnsStableZipCodeListsInTermsOfTestabilityAndListCanContainNull() {
       NextReturnsStableElementListInTermsOfTestability(
-         new NullablePostalZipCodeGermanySource()!,
-         "13627", null, "01156", "19399", "99988", "99894", "99994", "99994", "06279", "20099",
-         "14059", "19395", "14057", null, "40219", null, "01108", "99894", "01069", null,
-         "99958", "99988", "99955", null, "01067", "20253", "99947", null, "99991", "01156"
-         );
+         new NullablePostalZipCodeGermanySource()!, new string?[] { "40227", "14052", "30161", "99999", "14057", "40225", "29683", "13627", "20255", "30159", "99894", "40227", "19406", "14052", "20148", "19399", "30163", "13629", "01139", "39638", "20095", "01109", "20099", "99994", null, "40227", "29693", null, "99894", "99891" });
 
       NextReturnsStableElementListInTermsOfTestability(
-         new NullablePostalZipCodeNetherlandsSource()!,
-         "9413XG", null, "8728KV", "0459TW", "5101VF", "0190XX", "0141KD", "5724ZJ", "1742ZV", "1266DP",
-         "6152SB", "0997UB", "4673YW", null, "2062NU", null, "3769LI", "0190XX", "6771ZY", null,
-         "6576SS", "5101VF", "7865AL", null, "4603NG", "3080FO", "0344XA", null, "5724ZJ", "7541VY"
-         );
+         new NullablePostalZipCodeNetherlandsSource()!, new string?[] { "1277VM", "0486FL", "9413XG", "7335MY", "8179PD", "0141KD", "4295YK", "1277VM", "6613WL", "6529IB", "9239RI", "4656VN", "9491BV", "3863CA", "1488DB", "0486FL", "8232MH", "9413XG", "6917LS", "7678AF", "7819HL", "3216HZ", "7678AF", "6056WK", null, "8070FC", "2505TE", null, "0997UB", "3769LI" });
 
       NextReturnsStableElementListInTermsOfTestability(
-         new NullablePostalZipCodeUSASource()!,
-         "63396", null, "38605", "77071", "67146", "63914", "68048", "62480", "47160", "91747",
-         "42485", "45429", "10770", null, "95933", null, "59426", "63914", "47418", null,
-         "71881", "67146", "26048", null, "60764", "42964", "61265", null, "62480", "93946"
-         );
+         new NullablePostalZipCodeUSASource()!, new string?[] { "66070", "05685", "63396", "58810", "29100", "68048", "09501", "66070", "12922", "88893", "90617", "28937", "02380", "27809", "00377", "05685", "58249", "63396", "37880", "32279", "78946", "57428", "32279", "38011", null, "26395", "96788", null, "45429", "59426" });
    }
 }

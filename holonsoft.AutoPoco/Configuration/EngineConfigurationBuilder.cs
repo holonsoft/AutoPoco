@@ -11,6 +11,8 @@ public class EngineConfigurationBuilder : IEngineConfigurationBuilder, IEngineCo
 
    public NullableAnnotationSettings NullableAnnotations { get; private set; } = NullableAnnotationSettings.Disabled;
 
+   public int Seed { get; private set; } = AutoPocoDefaults.Seed;
+
    public IEngineConfigurationTypeBuilder<T> Include<T>() {
       // Create the configuration
       var configuration = new EngineConfigurationTypeBuilder<T>();
@@ -44,4 +46,7 @@ public class EngineConfigurationBuilder : IEngineConfigurationBuilder, IEngineCo
 
    public void RespectNullableAnnotations(int? nullCreationThreshold = null)
       => NullableAnnotations = NullableAnnotationSettings.Enabled(nullCreationThreshold);
+
+   public void UseSeed(int seed)
+      => Seed = seed;
 }

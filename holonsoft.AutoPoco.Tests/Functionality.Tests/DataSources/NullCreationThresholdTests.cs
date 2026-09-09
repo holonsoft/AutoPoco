@@ -85,7 +85,7 @@ public class NullCreationThresholdTests {
    [MemberData(nameof(DefaultSourceNames))]
    public void DefaultConstructorUsesTheGlobalThreshold(string name)
       => _defaultFactories[name]().RandomNullEvaluator.ShouldBeOfType<DefaultRandomNullEvaluator>()
-         .ThresholdPercentage.ShouldBe(AutoPocoGlobalSettings.NullCreationThreshold);
+         .ThresholdPercentage.ShouldBe(AutoPocoDefaults.NullCreationThreshold);
 
    [Fact]
    public void ThresholdDoesNotChangeTheDataSequence() {

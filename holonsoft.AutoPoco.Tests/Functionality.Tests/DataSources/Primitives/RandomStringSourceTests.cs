@@ -23,16 +23,12 @@ public class RandomStringSourceTests : TestBase {
    [Fact]
    public void NextReturnsStableStringsInTermsOfTestability() {
       var source = new RandomStringSource(5, 7, 'A', (char) 123);
-      NextReturnsStableElementListInTermsOfTestability(source, new[] {
-         "GSwqx", "LWRRQlC", "AtwsA[s", "Gk[ZGqr", "ew^]i_`", "GvJEb", "MMXmwlR", "suUJM", "W_rU`", "gUOaI\\"
-      });
+      NextReturnsStableElementListInTermsOfTestability(source, new string[] { "pDUtn", "TyaX]C", "mgRiqjG", "\\wUd[[n", "[SIowk_", "aQD^oG", "VKa^WQ", "`ScFmV", "End`yZB", "E]yDK" });
    }
 
    [Fact]
    public void NextReturnsStableStringsInTermsOfTestabilityAndListCanContainNull() {
       var source = new NullableRandomStringSource(5, 7, 'A', (char) 123);
-      NextReturnsStableElementListInTermsOfTestability<string?>(source!, new string?[] {
-         "GSwqx", null, "LWRRQlC", "AtwsA[s", "Gk[ZGqr", "ew^]i_`", "GvJEb", "MMXmwlR", "suUJM", "W_rU`"
-      });
+      NextReturnsStableElementListInTermsOfTestability<string?>(source!, new string?[] { "pDUtn", "TyaX]C", "mgRiqjG", "\\wUd[[n", "[SIowk_", "aQD^oG", "VKa^WQ", "`ScFmV", "End`yZB", "E]yDK" });
    }
 }

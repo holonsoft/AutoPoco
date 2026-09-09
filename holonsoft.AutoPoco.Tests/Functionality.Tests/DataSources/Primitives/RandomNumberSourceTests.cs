@@ -15,8 +15,6 @@ public class RandomNumberSourceTests : TestBase {
       value2.ShouldNotBe(value1);
 
       NextReturnsStableElementListInTermsOfTestability(
-         source,
-         -1809184581, -2056928004, -830599876, 645581134, -1620759081, 1813626657, 1895040361, -1868928598, -998188007, -2043547633
-         );
+         source, new int[] { -1641660861, 161341844, -1702332301, 349857133, -250678351, 1133696339, -2135752200, -515899552, 1177481239, 1035432924 });
    }
 }

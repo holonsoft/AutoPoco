@@ -27,9 +27,9 @@ public class EmailAddressSource(string namePartPrefix, string domain) : EmailAdd
 }
 
 public class NullableEmailAddressSource(string namePartPrefix, string domain, int nullCreationThreshold) : EmailAddressSourceBase(namePartPrefix, domain, nullCreationThreshold) {
-   public NullableEmailAddressSource() : this("eg", "example.test", AutoPocoGlobalSettings.NullCreationThreshold) { }
+   public NullableEmailAddressSource() : this("eg", "example.test", AutoPocoDefaults.NullCreationThreshold) { }
 
-   public NullableEmailAddressSource(string namePartPrefix, string domain) : this(namePartPrefix, domain, AutoPocoGlobalSettings.NullCreationThreshold) { }
+   public NullableEmailAddressSource(string namePartPrefix, string domain) : this(namePartPrefix, domain, AutoPocoDefaults.NullCreationThreshold) { }
 
    public NullableEmailAddressSource(int nullCreationThreshold) : this("eg", "example.test", nullCreationThreshold) { }
 }

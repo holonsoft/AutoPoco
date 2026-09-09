@@ -45,7 +45,7 @@ public class CountryFromCultureListSource : CountryFromCultureListSourceBase {
 ///   Result can be NULL, too 
 /// </summary>
 public class NullableCountryFromCultureListSource : CountryFromCultureListSourceBase {
-   public NullableCountryFromCultureListSource() : base(AutoPocoGlobalSettings.NullCreationThreshold) { }
+   public NullableCountryFromCultureListSource() : base(AutoPocoDefaults.NullCreationThreshold) { }
 
    public NullableCountryFromCultureListSource(int nullCreationThreshold) : base(nullCreationThreshold) { }
 }

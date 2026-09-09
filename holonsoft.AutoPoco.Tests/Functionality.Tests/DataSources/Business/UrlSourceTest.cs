@@ -8,20 +8,11 @@ public class UrlSourceTest() : TestBase {
    [Fact]
    public void NextReturnsStableUrlListInTermsOfTestability()
       => NextReturnsStableElementListInTermsOfTestability(
-         new UrlSource(),
-            "http://www.chxv.se", "http://www.xejhhhsbva.fr", "http://www.xvalvxcslk.pt", "http://www.vvt.in", "http://www.xmmrnnhc.su",
-            "http://www.ebouffktxs.iq", "http://www.hvwie.iq", "http://www.ejnv.nl", "http://www.nmqig.me", "http://www.dmiptch.hu",
-            "http://www.jhngaiwcl.hu", "http://www.bpdni.gr", "http://www.xobun.kg", "http://www.dvy.mil", "http://www.plkqntpot.su",
-            "http://www.qdmmkkbigq.org", "http://www.odyrea.mv", "http://www.gidqhe.in", "http://www.lrtthaos.mm", "http://www.qtcnjc.com"
-         );
+         new UrlSource(), new string[] { "http://www.pdutnrt.ua", "http://www.axc.iq", "http://www.mgriq.pe", "http://www.jgdowudn.in", "http://www.siowk.om", "http://www.faqdogfvk.tr", "http://www.wqj.nz", "http://www.scfmvsendy.by", "http://www.bmey.ee", "http://www.ksxgwj.pl", "http://www.nxud.ua", "http://www.qgoxobql.ke", "http://www.aqfbywdw.vn", "http://www.vxwhakt.me", "http://www.ebdiqmt.mv", "http://www.oqmorhrsed.ru", "http://www.idqhtrremq.si", "http://www.qswnqa.al", "http://www.aop.pk", "http://www.hbvimbnfj.mx" });
 
    [Fact]
    public void NextReturnsStableUrlListInTermsOfTestabilityAndListCanContainNull()
       => NextReturnsStableElementListInTermsOfTestability(
-         new NullableUrlSource()!,
-            "http://www.chxv.se", null, "http://www.xejhhhsbva.fr", "http://www.xvalvxcslk.pt", "http://www.vvt.in", "http://www.xmmrnnhc.su", "http://www.ebouffktxs.iq", "http://www.hvwie.iq", "http://www.ejnv.nl", "http://www.nmqig.me",
-         "http://www.dmiptch.hu", "http://www.jhngaiwcl.hu", "http://www.bpdni.gr", null, "http://www.xobun.kg", null, "http://www.dvy.mil", "http://www.plkqntpot.su", "http://www.qdmmkkbigq.org", null,
-         "http://www.odyrea.mv", "http://www.gidqhe.in"
-         );
+         new NullableUrlSource()!, new string[] { "http://www.pdutnrt.ua", "http://www.axc.iq", "http://www.mgriq.pe", "http://www.jgdowudn.in", "http://www.siowk.om", "http://www.faqdogfvk.tr", "http://www.wqj.nz", "http://www.scfmvsendy.by", "http://www.bmey.ee", "http://www.ksxgwj.pl", "http://www.nxud.ua", "http://www.qgoxobql.ke", "http://www.aqfbywdw.vn", "http://www.vxwhakt.me", "http://www.ebdiqmt.mv", "http://www.oqmorhrsed.ru", "http://www.idqhtrremq.si", "http://www.qswnqa.al", "http://www.aop.pk", "http://www.hbvimbnfj.mx", "http://www.elp.pe", "http://www.hjxmtllbs.ir" });
 }
 

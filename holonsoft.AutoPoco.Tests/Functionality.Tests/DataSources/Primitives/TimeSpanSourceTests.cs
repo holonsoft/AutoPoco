@@ -14,35 +14,13 @@ public class TimeSpanSourceTests : TestBase {
 
       value2.ShouldNotBe(value1);
 
-      NextReturnsStableElementListInTermsOfTestability(source, new TimeSpan[] {
-         new(-3700680841),
-         new(8627187683),
-         new(6849344408),
-         new(9205046584),
-         new(9156634835),
-         new(-6115511262),
-         new(-2264435865),
-         new(-4121559892),
-         new(-3987557149),
-         new(-4349441888),
-      });
+      NextReturnsStableElementListInTermsOfTestability(source, new TimeSpan[] { new TimeSpan(5550259682), new TimeSpan(8617400021), new TimeSpan(-6415501310), new TimeSpan(3090046013), new TimeSpan(-8011301711), new TimeSpan(-4787452734), new TimeSpan(-5434663020), new TimeSpan(6384537375), new TimeSpan(8346920384), new TimeSpan(-100027733) });
    }
 
    [Fact]
    public void NextReturnsStableTimeSpanListInTermsOfTestabilityAndListCanContainNull() {
       var source = new NullableTimeSpanSource(new TimeSpan(-10000000000), new TimeSpan(10000000000));
 
-      NextReturnsStableElementListInTermsOfTestability(source, new TimeSpan?[] {
-         new(-5822233183),
-         null,
-         new(-7639658449),
-         new(-3700680841),
-         new(8627187683),
-         new(6849344408),
-         new(9205046584),
-         new(9156634835),
-         new(-6115511262),
-         new(-2264435865),
-      });
+      NextReturnsStableElementListInTermsOfTestability(source, new TimeSpan?[] { new TimeSpan(3518868239), new TimeSpan(6289472960), new TimeSpan(5550259682), new TimeSpan(8617400021), new TimeSpan(-6415501310), new TimeSpan(3090046013), new TimeSpan(-8011301711), new TimeSpan(-4787452734), new TimeSpan(-5434663020), new TimeSpan(6384537375) });
    }
 }

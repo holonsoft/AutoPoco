@@ -17,5 +17,5 @@ public class BooleanSource : BooleanSourceBase<bool> { }
 /// <summary>
 /// Create a source for nullable boolean values. 
 /// </summary>
-/// <seealso cref="AutoPocoGlobalSettings"/>
+/// <seealso cref="AutoPocoDefaults"/>
 public class NullableBooleanSource : BooleanSourceBase<bool?> { }

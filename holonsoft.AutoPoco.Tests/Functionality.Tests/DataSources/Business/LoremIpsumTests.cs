@@ -41,8 +41,9 @@ public class LoremIpsumTests : TestBase {
 
          loopProtectionCounter++;
 
-         if (loopProtectionCounter > 20)
-            throw new Exception($"Expceted to get a result NULL, but did not occure the last {loopProtectionCounter} times");
+         // 15 percent per draw: no null in 200 draws has a probability below 1e-13
+         if (loopProtectionCounter > 200)
+            throw new Exception($"Expected to get a result NULL, but did not occur the last {loopProtectionCounter} times");
       }
    }
 }

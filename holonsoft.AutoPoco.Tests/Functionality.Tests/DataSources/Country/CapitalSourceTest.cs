@@ -8,14 +8,10 @@ public class CapitalSourceTest() : TestBase {
    [Fact]
    public void NextReturnsStableCapitalListInTermsOfTestability()
       => NextReturnsStableElementListInTermsOfTestability(
-         new CapitalSource(),
-         "Ankara", "Stockholm", "Kuwait City", "Algiers", "Amman", "Nouakchott", "Nouakchott", "Athens", "Damascus", "Nairobi", "Riyadh", "Accra", "Hanoi",
-         "Amsterdam", "Jerusalem", "Paris", "Abu Dhabi", "Rabat", "Manama", "Paris");
+         new CapitalSource(), new string[] { "Pyongyang", "Kuwait City", "Manila", "Thimphu", "Shanghai", "Lisbon", "Seoul", "Muscat", "Tripoli", "Reykjavik", "Jerusalem", "Rabat", "Bangkok", "Pyongyang", "Beirut", "Ankara", "Ashgabat", "Manila", "Beirut", "Kuala Lumpur" });
 
    [Fact]
    public void NextReturnsStableCapitalListInTermsOfTestabilityAndListCanContainNull()
       => NextReturnsStableElementListInTermsOfTestability(
-         new NullableCapitalSource()!,
-         "Ankara", null, "Stockholm", "Kuwait City", "Algiers", "Amman", "Nouakchott", "Nouakchott", "Athens", "Damascus",
-         "Nairobi", "Riyadh", "Accra", null, "Hanoi", null, "Amsterdam", "Jerusalem", "Paris", null);
+         new NullableCapitalSource()!, new string[] { "Pyongyang", "Kuwait City", "Manila", "Thimphu", "Shanghai", "Lisbon", "Seoul", "Muscat", "Tripoli", "Reykjavik", "Jerusalem", "Rabat", "Bangkok", "Pyongyang", "Beirut", "Ankara", "Ashgabat", "Manila", "Beirut", "Kuala Lumpur" });
 }

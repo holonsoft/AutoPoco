@@ -112,6 +112,56 @@ public class DataSourceBaseTests {
    }
 
    [Fact]
+   public void SessionSeedChangesTheSequenceAndIsAppliedOnce() {
+      var reference = new RandomSource();
+      reference.SetSeedToRandomValue(42);
+      var source = new RandomSource();
+
+      ((ISessionSeedable) source).ApplySessionSeed(42);
+      var first = Take(source, 5);
+      ((ISessionSeedable) source).ApplySessionSeed(42);
+      var second = Take(source, 5);
+
+      first.ShouldBe(Take(reference, 5));
+      second.ShouldBe(Take(reference, 5), "the second application must not restart the stream");
+   }
+
+   [Fact]
+   public void SessionSeedIsForwardedToTheNullEvaluator() {
+      var source = new NullableCountingSource();
+      var evaluator = new AlwaysNullEvaluator();
+      source.SetRandomNullEvaluator(evaluator);
+
+      ((ISessionSeedable) source).ApplySessionSeed(4711);
+
+      evaluator.SeedSeen.ShouldBe(4711);
+   }
+
+   [Fact]
+   public void AnExplicitSeedWinsOverTheSessionSeed() {
+      var reference = new RandomSource();
+      reference.SetSeedToRandomValue(7);
+      var source = new RandomSource();
+      source.SetSeedToRandomValue(7);
+
+      ((ISessionSeedable) source).ApplySessionSeed(42);
+
+      Take(source, 5).ShouldBe(Take(reference, 5));
+   }
+
+   [Fact]
+   public void AnExplicitSeedAfterTheSessionSeedStillApplies() {
+      var reference = new RandomSource();
+      reference.SetSeedToRandomValue(7);
+      var source = new RandomSource();
+      ((ISessionSeedable) source).ApplySessionSeed(42);
+
+      source.SetSeedToRandomValue(7);
+
+      Take(source, 5).ShouldBe(Take(reference, 5));
+   }
+
+   [Fact]
    public void InternalNextReturnsTheSameValuesAsNext() {
       IDataSource asInterface = new ConstantSource();
       asInterface.InternalNext(null).ShouldBe(7);
