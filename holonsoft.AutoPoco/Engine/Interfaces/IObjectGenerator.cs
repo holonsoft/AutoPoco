@@ -19,6 +19,12 @@ public interface IObjectGenerator<TPoco> {
    IObjectGenerator<TPoco> Impose<TMember>(Expression<Func<TPoco, TMember>> propertyExpr, TMember value);
 
    /// <summary>
+   ///   Imposes a value computed from the object as generated so far: every member configured or imposed
+   ///   before is already set when the lambda runs.
+   /// </summary>
+   IObjectGenerator<TPoco> Impose<TMember>(Expression<Func<TPoco, TMember>> propertyExpr, Func<TPoco, TMember> valueFactory);
+
+   /// <summary>
    ///   Invokes a method on all the items in the current selection
    /// </summary>
    /// <param name="methodExpr"></param>

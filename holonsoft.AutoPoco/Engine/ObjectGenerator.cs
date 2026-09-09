@@ -33,6 +33,13 @@ public class ObjectGenerator<T>(IGenerationContext session, IObjectBuilder type)
       return this;
    }
 
+   public IObjectGenerator<T> Impose<TMember>(Expression<Func<T, TMember>> propertyExpr, Func<T, TMember> valueFactory) {
+      ArgumentNullException.ThrowIfNull(valueFactory);
+      var member = ReflectionHelper.GetMember(propertyExpr);
+      AddAction(new ObjectMemberSetFromFuncAction<T, TMember>(member, valueFactory));
+      return this;
+   }
+
    public IObjectGenerator<T> Source<TMember>(Expression<Func<T, TMember>> propertyExpr, IDataSource dataSource) {
       ArgumentNullException.ThrowIfNull(dataSource);
       var member = ReflectionHelper.GetMember(propertyExpr);

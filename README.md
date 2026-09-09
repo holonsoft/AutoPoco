@@ -91,6 +91,23 @@ var other = factory.CreateSession(5, 4711);      // seed 4711, same configuratio
 * Own random number generator: every source draws from `StableRandom` (xoshiro256** seeded through SplitMix64), a `Random` subclass owned by AutoPoco, instead of `System.Random`. The sequence for a seed is defined by AutoPoco's code alone, so test data stays the same across .NET versions; Microsoft explicitly does not promise that for a seeded `System.Random`. The generator is pinned by tests. Rule from now on: catalogs (names, cities, zip codes, ...) and source algorithms are frozen within a major version, a change to either is a major version bump.
 * Breaking: `AutoPocoGlobalSettings` is gone, it was mutable process-wide state that leaked between test fixtures. The defaults are read-only constants in `AutoPocoDefaults` (`Seed`, `NullCreationThreshold`, `RecursionLimit`). Set a seed with `UseSeed`, null thresholds per source or with `RespectNullableAnnotations(threshold)`.
 * Breaking: because of the own generator and the per-member seeds, every generated sequence changed once with 6.0. Tests that pin generated values need new expectations, this is the last time.
+* Index-aware `Impose`: on a list or a selection the imposed value can depend on the position of the item (0 based), and on the item as generated so far. The position is the one in the whole list, also inside `First`/`Next` and after `Random`. A single generator gets `Impose(member, item => value)` for values that depend on other members.
+
+```CSHARP
+var users = session.List<SimpleUser>(100)
+   .Impose(u => u.Id, i => i + 1)                                            // 1..100
+   .Impose(u => u.EmailAddress, (i, u) => $"{u.FirstName}.{u.LastName}{i}@example.test")
+   .First(10).Impose(u => u.City, i => $"Branch {i}")
+   .All()
+   .Get();
+
+var admin = session.Single<SimpleUser>()
+   .Impose(u => u.LastName, "Ashton")
+   .Impose(u => u.EmailAddress, u => $"{u.FirstName}.{u.LastName}@example.test")
+   .Get();
+```
+
+  The item lambda runs after the configured sources and after every `Impose` registered before it, so it sees those values.
 * `IDataSource<T>` is covariant now, so a source of `string` (e.g. `CitySource`) can be used for a `string?` member without a nullability warning.
 * Bug fix: every `Nullable*` source ignored an explicit null creation threshold. The fixed array and dictionary based sources (names, companies, cities, capitals, countries, states, zip codes, urls) even used the threshold as their random seed. The threshold is honored now. As a consequence the null positions in the stable sequences of these sources changed, the data itself comes in the same order as before.
 * Bug fix: `DateTimeSource`, `DateOnlySource`, `TimeOnlySource` and `DateOfBirthSource` never produced the upper end of their ranges: no December, no 31st, no 23:00, no minute or second 59, and the maximum year of a date of birth was never reached. Ranges within a single year could produce values outside the range. All four sources now pick uniformly from the whole range, both bounds inclusive, and throw an `ArgumentOutOfRangeException` when the maximum lies before the minimum. `TimeOnlySource` supports ranges that wrap around midnight (22:00 to 02:00). `DateTimeSource` keeps the `DateTimeKind` of the minimum date. The generated sequences for a given seed changed.

@@ -9,6 +9,17 @@ public interface ICollectionContext<TPoco, TCollection> where TCollection : ICol
    ICollectionContext<TPoco, TCollection> Impose<TMember>(Expression<Func<TPoco, TMember>> propertyExpr, TMember value);
 
    /// <summary>
+   ///   Imposes a value computed from the position of the item in the collection (0 based).
+   /// </summary>
+   ICollectionContext<TPoco, TCollection> Impose<TMember>(Expression<Func<TPoco, TMember>> propertyExpr, Func<int, TMember> valueFactory);
+
+   /// <summary>
+   ///   Imposes a value computed from the position of the item in the collection (0 based) and the item
+   ///   as generated so far, so the value can depend on other members.
+   /// </summary>
+   ICollectionContext<TPoco, TCollection> Impose<TMember>(Expression<Func<TPoco, TMember>> propertyExpr, Func<int, TPoco, TMember> valueFactory);
+
+   /// <summary>
    ///   Overrides the data source for this particular generation scope
    /// </summary>
    /// <returns></returns>

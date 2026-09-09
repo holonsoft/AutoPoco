@@ -15,6 +15,20 @@ public interface ICollectionSequenceSelectionContext<TPoco, TCollection> where T
      TMember value);
 
    /// <summary>
+   ///   Imposes a value computed from the position of the item in the whole collection (0 based),
+   ///   also after <c>Random</c>.
+   /// </summary>
+   ICollectionSequenceSelectionContext<TPoco, TCollection> Impose<TMember>(Expression<Func<TPoco, TMember>> propertyExpr,
+     Func<int, TMember> valueFactory);
+
+   /// <summary>
+   ///   Imposes a value computed from the position of the item in the whole collection (0 based) and the item
+   ///   as generated so far.
+   /// </summary>
+   ICollectionSequenceSelectionContext<TPoco, TCollection> Impose<TMember>(Expression<Func<TPoco, TMember>> propertyExpr,
+     Func<int, TPoco, TMember> valueFactory);
+
+   /// <summary>
    ///   Invokes a method on all the items in the current selection
    /// </summary>
    /// <param name="methodExpr"></param>
