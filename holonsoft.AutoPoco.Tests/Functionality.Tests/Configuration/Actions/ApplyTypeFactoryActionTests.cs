@@ -28,7 +28,7 @@ public class ApplyTypeFactoryActionTests {
    }
 
    [Fact]
-   public void WhenActionIsAppliedFactoryWithNoConfigurationOrConventionAvailableDefaultFactoryIsApplied() {
+   public void WhenActionIsAppliedFactoryWithNoConfigurationOrConventionAvailableClassesGetACtorSource() {
       var provider = new Mock<IEngineConfigurationProvider>();
       var targetType = new Mock<IEngineConfigurationType>();
       targetType.SetupGet(x => x.RegisteredType).Returns(typeof(SimpleUser));
@@ -38,7 +38,41 @@ public class ApplyTypeFactoryActionTests {
       action.Apply(targetType.Object);
 
       targetType.Verify(x => x.SetFactory(
-          It.Is<IEngineConfigurationDataSource>(y => y.Build() is DefaultSource<SimpleUser>)),
+          It.Is<IEngineConfigurationDataSource>(y => y.Build() is CtorSource<SimpleUser>)),
         Times.Once());
+   }
+
+   [Theory]
+   [InlineData(typeof(ISimpleInterface))]
+   [InlineData(typeof(Stream))]
+   [InlineData(typeof(DateOnly))]
+   [InlineData(typeof(string))]
+   public void WhenActionIsAppliedFactoryWithNoConfigurationOrConventionAvailableOtherTypesGetTheDefaultSource(Type type) {
+      var provider = new Mock<IEngineConfigurationProvider>();
+      var targetType = new Mock<IEngineConfigurationType>();
+      targetType.SetupGet(x => x.RegisteredType).Returns(type);
+      provider.Setup(x => x.GetConfigurationTypes()).Returns(Array.Empty<IEngineConfigurationTypeProvider>());
+
+      var action = new ApplyTypeFactoryAction(provider.Object);
+      action.Apply(targetType.Object);
+
+      targetType.Verify(x => x.SetFactory(
+          It.Is<IEngineConfigurationDataSource>(y => y.Build()!.GetType().GetGenericTypeDefinition() == typeof(DefaultSource<>))),
+        Times.Once());
+   }
+
+   [Fact]
+   public void WhenActionIsAppliedAnExistingConventionFactoryIsKept() {
+      var provider = new Mock<IEngineConfigurationProvider>();
+      var targetType = new Mock<IEngineConfigurationType>();
+      var factory = new Mock<IEngineConfigurationDataSource>();
+      targetType.SetupGet(x => x.RegisteredType).Returns(typeof(SimpleUser));
+      targetType.Setup(x => x.GetFactory()).Returns(factory.Object);
+      provider.Setup(x => x.GetConfigurationTypes()).Returns(Array.Empty<IEngineConfigurationTypeProvider>());
+
+      var action = new ApplyTypeFactoryAction(provider.Object);
+      action.Apply(targetType.Object);
+
+      targetType.Verify(x => x.SetFactory(It.IsAny<IEngineConfigurationDataSource>()), Times.Never());
    }
 }

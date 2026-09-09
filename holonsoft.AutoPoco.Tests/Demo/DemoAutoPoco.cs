@@ -52,7 +52,7 @@ public class DemoAutoPoco
 
         _factoryWithComplexRuleForRecords = AutoPocoContainer.Configure(x =>
         {
-            x.Include<SimpleUserRecord>() // make sure that recordtype has a paramless ctor!
+            x.Include<SimpleUserRecord>() // since 6.0 a record needs no parameterless ctor, the configured members go through the primary ctor
                .Setup(c => c.FirstName).Use<FirstNameSource>()
                .Setup(c => c.LastName).Use<LastNameSource>()
                .Setup(c => c.EmailAddress).Use<EmailAddressSource>()
@@ -158,7 +158,7 @@ public class DemoAutoPoco
         var session = _factoryWithComplexRuleForRecords.CreateSession();
 
         var user = session
-                 .Single<SimpleUserRecord>() // Works as long as recordtype has an additional paramless ctor!!!
+                 .Single<SimpleUserRecord>()
                  .Get();
 
         user.FirstName.ShouldBe("Olivia");

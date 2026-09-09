@@ -1,15 +1,16 @@
 ﻿using System.Reflection;
 using holonsoft.AutoPoco.Configuration.Interfaces;
+using holonsoft.AutoPoco.Util;
 
 namespace holonsoft.AutoPoco.Conventions;
 
 public class DefaultTypeConvention : ITypeConvention {
    public void Apply(ITypeConventionContext context) {
-      // Register every public property on this type
+      // Register every public property on this type that can be set, or that a public constructor takes as parameter
       foreach (var property in context.Target
                  .GetProperties(BindingFlags.Public | BindingFlags.Instance)
                  .Where(x => !x.PropertyType.ContainsGenericParameters && IsDefinedOnType(x, context.Target)))
-         if (PropertyHasPublicSetter(property))
+         if (PropertyHasPublicSetter(property) || ConstructorResolver.HasMatchingParameter(context.Target, property.Name, property.PropertyType))
             context.RegisterProperty(property);
 
       // Register every public field on this type

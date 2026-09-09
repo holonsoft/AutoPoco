@@ -3,32 +3,38 @@ using Xunit;
 using holonsoft.AutoPoco.Configuration.Interfaces;
 using holonsoft.AutoPoco.Conventions;
 using holonsoft.AutoPoco.DataSources.Base;
+using holonsoft.AutoPoco.Tests.Common;
 
 namespace holonsoft.AutoPoco.Tests.Functionality.Tests.Conventions;
 
 public class DefaultTypeCtorConventionTests {
-   [Fact]
-   public void DefaultTypeCtorSeeksLeastGreedyCtor() {
-      var convention = new DefaultComplexTypeCtorConvention();
+   private static Mock<ITypeConventionContext> Apply(Type target) {
       var context = new Mock<ITypeConventionContext>();
-      context.SetupGet(x => x.Target).Returns(typeof(SampleCtorType));
-      convention.Apply(context.Object);
-
-      context.Verify(x => x.SetFactory(
-        It.Is<Type>(type => type == typeof(CtorSource<SampleCtorType>)),
-        typeof(SampleCtorType).GetConstructor(new[] { typeof(int) })!), Times.Once());
+      context.SetupGet(x => x.Target).Returns(target);
+      new DefaultComplexTypeCtorConvention().Apply(context.Object);
+      return context;
    }
 
    [Fact]
-   public void DefaultTypeCtorUsesDefaultCtorIfAvailable() {
-      var convention = new DefaultComplexTypeCtorConvention();
-      var context = new Mock<ITypeConventionContext>();
-      context.SetupGet(x => x.Target).Returns(typeof(SampleDefaultCtorType));
-      convention.Apply(context.Object);
+   public void TypesWithConstructorsGetAResolvingCtorSource() {
+      Apply(typeof(SampleCtorType)).Verify(x => x.SetFactory(typeof(CtorSource<SampleCtorType>)), Times.Once());
+      Apply(typeof(SampleDefaultCtorType)).Verify(x => x.SetFactory(typeof(CtorSource<SampleDefaultCtorType>)), Times.Once());
+      Apply(typeof(ImmutableUserRecord)).Verify(x => x.SetFactory(typeof(CtorSource<ImmutableUserRecord>)), Times.Once());
+   }
 
-      context.Verify(x => x.SetFactory(
-        It.Is<Type>(type => type == typeof(CtorSource<SampleDefaultCtorType>)),
-        typeof(SampleDefaultCtorType).GetConstructor(Type.EmptyTypes)!), Times.Once());
+   [Fact]
+   public void TheConstructorIsNotPinnedByTheConvention() {
+      Apply(typeof(SampleCtorType)).Verify(x => x.SetFactory(It.IsAny<Type>(), It.IsAny<object[]>()), Times.Never());
+   }
+
+   [Theory]
+   [InlineData(typeof(int))]
+   [InlineData(typeof(decimal))]
+   [InlineData(typeof(string))]
+   [InlineData(typeof(ISimpleInterface))]
+   [InlineData(typeof(Stream))]
+   public void PrimitivesStringsAndTypesWithoutPublicConstructorGetNoFactory(Type target) {
+      Apply(target).Verify(x => x.SetFactory(It.IsAny<Type>()), Times.Never());
    }
 }
 

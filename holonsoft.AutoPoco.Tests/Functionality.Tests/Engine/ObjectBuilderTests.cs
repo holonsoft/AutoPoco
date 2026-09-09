@@ -3,6 +3,7 @@ using Moq;
 using Xunit;
 using holonsoft.AutoPoco.Configuration;
 using holonsoft.AutoPoco.Configuration.Interfaces;
+using holonsoft.AutoPoco.DataSources.Base;
 using holonsoft.AutoPoco.Engine;
 using holonsoft.AutoPoco.Engine.Interfaces;
 using holonsoft.AutoPoco.Tests.Common;
@@ -113,6 +114,72 @@ public class ObjectBuilderTests {
       actionMock.Verify(
         x => x.Enact(It.Is<IGenerationContext>(y => y.Node is TypeGenerationContextNode), It.IsAny<SimpleUser>()),
         Times.Once());
+   }
+
+   private static EngineConfigurationType TypeWithSources(Type registeredType, params string[] propertyNames) {
+      var type = new EngineConfigurationType(registeredType);
+      foreach (var name in propertyNames) {
+         var member = new EngineTypePropertyMember(registeredType.GetProperty(name)!);
+         type.RegisterMember(member);
+         type.GetRegisteredMember(member).SetDataSource(FuncFactory(() => name.ToLowerInvariant()));
+      }
+
+      return type;
+   }
+
+   private static AutoPocoDataSourceFactory FuncFactory<T>(Func<T> func) {
+      var factory = new AutoPocoDataSourceFactory(typeof(FuncSource<T>));
+      factory.SetParams(func);
+      return factory;
+   }
+
+   [Fact]
+   public void MembersConsumedByAMemberBoundFactoryGetNoAction() {
+      var type = TypeWithSources(typeof(ImmutableMoney), nameof(ImmutableMoney.Currency));
+      type.SetFactory(new AutoPocoDataSourceFactory(typeof(CtorSource<ImmutableMoney>)));
+
+      var builder = new ObjectBuilder(type);
+      var result = (ImmutableMoney) builder.CreateObject(CreateDummyContext());
+
+      builder.Actions.ShouldBeEmpty();
+      result.Currency.ShouldBe("currency");
+   }
+
+   [Fact]
+   public void SettableMembersNotConsumedByTheFactoryKeepTheirAction() {
+      var type = TypeWithSources(typeof(SimpleUser), nameof(SimpleUser.FirstName));
+      type.SetFactory(new AutoPocoDataSourceFactory(typeof(CtorSource<SimpleUser>)));
+
+      var builder = new ObjectBuilder(type);
+      var result = (SimpleUser) builder.CreateObject(CreateDummyContext());
+
+      builder.Actions.Count().ShouldBe(1);
+      result.FirstName.ShouldBe("firstname");
+   }
+
+   [Fact]
+   public void GetOnlyMembersWithoutAConstructorParameterThrowAClearMessage() {
+      var type = TypeWithSources(typeof(ClassWithUnmatchedReadOnlyProperty), nameof(ClassWithUnmatchedReadOnlyProperty.Total));
+      type.GetRegisteredMember(new EngineTypePropertyMember(typeof(ClassWithUnmatchedReadOnlyProperty).GetProperty("Total")!))
+         .SetDataSource(FuncFactory(() => 1m));
+      type.SetFactory(new AutoPocoDataSourceFactory(typeof(CtorSource<ClassWithUnmatchedReadOnlyProperty>)));
+
+      var exception = Should.Throw<InvalidOperationException>(() => new ObjectBuilder(type));
+
+      exception.Message.ShouldContain("Total");
+      exception.Message.ShouldContain(nameof(ClassWithUnmatchedReadOnlyProperty));
+   }
+
+   [Fact]
+   public void GetOnlyMembersAreSkippedWhenACustomFactoryIsInCharge() {
+      var type = TypeWithSources(typeof(SimpleCtorClass), nameof(SimpleCtorClass.ReadOnlyProperty));
+      type.SetFactory(new AutoPocoDataSourceFactory(typeof(TestFactory)));
+
+      var builder = new ObjectBuilder(type);
+      var result = (SimpleCtorClass) builder.CreateObject(CreateDummyContext());
+
+      builder.Actions.ShouldBeEmpty();
+      result.ReadOnlyProperty.ShouldBe("one");
    }
 
    public class TestFactory : IDataSource<SimpleCtorClass> {

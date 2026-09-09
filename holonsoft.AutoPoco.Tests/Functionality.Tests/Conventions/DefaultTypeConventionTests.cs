@@ -4,6 +4,7 @@ using System.Reflection;
 using Xunit;
 using holonsoft.AutoPoco.Configuration.Interfaces;
 using holonsoft.AutoPoco.Conventions;
+using holonsoft.AutoPoco.Tests.Common;
 
 namespace holonsoft.AutoPoco.Tests.Functionality.Tests.Conventions;
 
@@ -45,6 +46,39 @@ public class DefaultTypeConventionTests {
       _convention.Apply(_typeConventionContext.Object);
 
       count.ShouldBe(1);
+   }
+
+   [Fact]
+   public void ApplyRegistersGetOnlyPropertiesThatMatchAConstructorParameter() {
+      var registered = new List<string>();
+      _typeConventionContext.SetupGet(x => x.Target).Returns(typeof(ImmutableMoney));
+      _typeConventionContext.Setup(x => x.RegisterProperty(It.IsAny<PropertyInfo>()))
+        .Callback((PropertyInfo p) => registered.Add(p.Name));
+
+      _convention.Apply(_typeConventionContext.Object);
+
+      registered.ShouldBe([nameof(ImmutableMoney.Amount), nameof(ImmutableMoney.Currency)], ignoreOrder: true);
+   }
+
+   [Fact]
+   public void ApplyRegistersPositionalRecordProperties() {
+      var registered = new List<string>();
+      _typeConventionContext.SetupGet(x => x.Target).Returns(typeof(ImmutableUserRecord));
+      _typeConventionContext.Setup(x => x.RegisterProperty(It.IsAny<PropertyInfo>()))
+        .Callback((PropertyInfo p) => registered.Add(p.Name));
+
+      _convention.Apply(_typeConventionContext.Object);
+
+      registered.Count.ShouldBe(5);
+   }
+
+   [Fact]
+   public void ApplyIgnoresGetOnlyPropertiesWithoutAMatchingConstructorParameter() {
+      _typeConventionContext.SetupGet(x => x.Target).Returns(typeof(ClassWithUnmatchedReadOnlyProperty));
+
+      _convention.Apply(_typeConventionContext.Object);
+
+      _typeConventionContext.Verify(x => x.RegisterProperty(It.IsAny<PropertyInfo>()), Times.Never());
    }
 
    [Fact]
