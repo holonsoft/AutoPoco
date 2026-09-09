@@ -40,6 +40,16 @@ var factory = AutoPocoContainer.Configure(x => {
 ```
 
   Every nullable member gets its own deterministic null pattern, so the nullable members of one object do not all become null at once, and two sessions of the same factory produce the same pattern. Sources that produce nulls on their own (the `Nullable*` sources) keep doing so on top of it. Generation time overrides via `Source(...)` are covered as well.
+* `NumberSource<T>` and `NullableNumberSource<T>`: one generic source for every built-in numeric type (`byte`, `short`, `int`, `long`, `Int128`, their unsigned variants, `nint`, `float`, `double`, `Half`, `decimal`, even `char`), with `min` and `max`. Integer types are drawn uniformly from the inclusive range, both bounds can be produced, the whole range of the type is the default. Floating point types and `decimal` are interpolated between the bounds without overflowing, even for the whole range of the type. A maximum below the minimum, `NaN` or an infinite bound throws an `ArgumentOutOfRangeException`. The existing `IntegerSource`, `DecimalSource` and friends stay as they are.
+
+```CSHARP
+x.Include<Order>()
+   .Setup(c => c.Rating).Use<NumberSource<byte>>((byte) 1, (byte) 5)
+   .Setup(c => c.Amount).Use<NumberSource<decimal>>(1m, 100m)
+   .Setup(c => c.ExternalId).Use<NumberSource<UInt128>>(s => s.SetMin(1UL))
+   .Setup(c => c.Discount).Use<NullableNumberSource<decimal>>(0m, 30m, 50);   // null in 50 percent of the cases
+```
+
 * `IDataSource<T>` is covariant now, so a source of `string` (e.g. `CitySource`) can be used for a `string?` member without a nullability warning.
 * Bug fix: every `Nullable*` source ignored an explicit null creation threshold. The fixed array and dictionary based sources (names, companies, cities, capitals, countries, states, zip codes, urls) even used the threshold as their random seed. The threshold is honored now. As a consequence the null positions in the stable sequences of these sources changed, the data itself comes in the same order as before.
 * Bug fix: `DateTimeSource`, `DateOnlySource`, `TimeOnlySource` and `DateOfBirthSource` never produced the upper end of their ranges: no December, no 31st, no 23:00, no minute or second 59, and the maximum year of a date of birth was never reached. Ranges within a single year could produce values outside the range. All four sources now pick uniformly from the whole range, both bounds inclusive, and throw an `ArgumentOutOfRangeException` when the maximum lies before the minimum. `TimeOnlySource` supports ranges that wrap around midnight (22:00 to 02:00). `DateTimeSource` keeps the `DateTimeKind` of the minimum date. The generated sequences for a given seed changed.
