@@ -52,7 +52,7 @@ public class StandardExtensionsTests {
       var session = AutoPocoContainer.Configure(x => {
          x.Conventions(c => c.UseDefaultConventions());
          x.Include<Child>();
-         x.Include<Poco>().Setup(c => c.Kid).From(ctx => ctx!.Single<Child>().Impose(k => k.Name, "kid").Get());
+         x.Include<Poco>().Setup(c => c.Kid).From(ctx => ctx.Single<Child>().Impose(k => k.Name, "kid").Get());
       }).CreateSession();
 
       var poco = session.Single<Poco>().Get();
@@ -73,6 +73,7 @@ public class StandardExtensionsTests {
       var items = session.List<Poco>(5).Get();
 
       items.Count().ShouldBe(5);
+      items.ShouldNotBeEmpty();
       items.ShouldAllBe(p => p.Name == "fixed" && p.Number == 42);
    }
 
@@ -85,6 +86,7 @@ public class StandardExtensionsTests {
 
       var names = session.Collection<Poco>(50).Select(p => p.Name).ToList();
 
+      names.ShouldNotBeEmpty();
       names.ShouldAllBe(n => n != null && n.Length >= 3 && n.Length <= 6);
       names.Distinct().Count().ShouldBeGreaterThan(1);
    }
@@ -98,7 +100,9 @@ public class StandardExtensionsTests {
 
       var items = session.Collection<Poco>(20).ToList();
 
+      items.ShouldNotBeEmpty();
       items.ShouldAllBe(p => p.Children != null && p.Children.Count >= 2 && p.Children.Count <= 4);
+      items.SelectMany(p => p.Children!).ShouldNotBeEmpty();
       items.SelectMany(p => p.Children!).ShouldAllBe(c => c != null);
    }
 

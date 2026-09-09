@@ -67,8 +67,10 @@ public abstract class DataSourceBase<T> : IDataSource<T>, IRandomNullEvaluatorSu
       return this;
    }
 
-   public void SetRandomNullEvaluator(IRandomNullEvaluator randomNullEvaluator)
-      => RandomNullEvaluator = randomNullEvaluator;
+   public void SetRandomNullEvaluator(IRandomNullEvaluator randomNullEvaluator) {
+      ArgumentNullException.ThrowIfNull(randomNullEvaluator);
+      RandomNullEvaluator = randomNullEvaluator;
+   }
 
    object? IDataSource.InternalNext(IGenerationContext? context) =>
       Next(context)!;

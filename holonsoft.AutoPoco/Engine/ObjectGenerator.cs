@@ -24,6 +24,7 @@ public class ObjectGenerator<T>(IGenerationContext session, IObjectBuilder type)
    }
 
    public IObjectGenerator<T> Impose<TMember>(Expression<Func<T, TMember>> propertyExpr, TMember value) {
+      ArgumentNullException.ThrowIfNull(propertyExpr);
       var member = ReflectionHelper.GetMember(propertyExpr);
       if (member.IsField)
          AddAction(new ObjectFieldSetFromValueAction((EngineTypeFieldMember) member, value!));
@@ -34,6 +35,7 @@ public class ObjectGenerator<T>(IGenerationContext session, IObjectBuilder type)
    }
 
    public IObjectGenerator<T> Impose<TMember>(Expression<Func<T, TMember>> propertyExpr, Func<T, TMember> valueFactory) {
+      ArgumentNullException.ThrowIfNull(propertyExpr);
       ArgumentNullException.ThrowIfNull(valueFactory);
       var member = ReflectionHelper.GetMember(propertyExpr);
       AddAction(new ObjectMemberSetFromFuncAction<T, TMember>(member, valueFactory));
@@ -41,6 +43,7 @@ public class ObjectGenerator<T>(IGenerationContext session, IObjectBuilder type)
    }
 
    public IObjectGenerator<T> Source<TMember>(Expression<Func<T, TMember>> propertyExpr, IDataSource dataSource) {
+      ArgumentNullException.ThrowIfNull(propertyExpr);
       ArgumentNullException.ThrowIfNull(dataSource);
       var member = ReflectionHelper.GetMember(propertyExpr);
       var seed = session.Builders?.Seed ?? AutoPocoDefaults.Seed;
@@ -55,17 +58,21 @@ public class ObjectGenerator<T>(IGenerationContext session, IObjectBuilder type)
    }
 
    public IObjectGenerator<T> Invoke(Expression<Action<T>> methodExpr) {
+      ArgumentNullException.ThrowIfNull(methodExpr);
       var invoker = new ObjectMethodInvokeActionAction<T>(methodExpr.Compile());
       _overrides.Add(invoker);
       return this;
    }
 
    public IObjectGenerator<T> Invoke<TMember>(Expression<Func<T, TMember>> methodExpr) {
+      ArgumentNullException.ThrowIfNull(methodExpr);
       var invoker = new ObjectMethodInvokeFuncAction<T, TMember>(methodExpr.Compile());
       _overrides.Add(invoker);
       return this;
    }
 
-   public void AddAction(IObjectAction action)
-      => _overrides.Add(action);
+   public void AddAction(IObjectAction action) {
+      ArgumentNullException.ThrowIfNull(action);
+      _overrides.Add(action);
+   }
 }

@@ -33,12 +33,4 @@ public interface IEngineConfigurationTypeBuilder<TPoco> {
    /// <typeparam name="T"></typeparam>
    /// <returns></returns>
    IEngineConfigurationTypeBuilder<TPoco> ConstructWith<T>(params object[] args) where T : IDataSource<TPoco>;
-
-   /*
-   /// <summary>
-   /// Allows manual configuration of a constructor's arguments
-   /// </summary>
-   /// <param name="creationExpr"></param>
-   /// <returns></returns>
-   IEngineConfigurationTypeBuilder<TPoco> Ctor(Expression<Func<TPoco>> creationExpr); */
 }

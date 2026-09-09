@@ -3,13 +3,11 @@ using holonsoft.AutoPoco.Engine.Interfaces;
 namespace holonsoft.AutoPoco.DataSources.Base;
 
 /// <summary>
-///   A data source backed by a lambda. Use it when a value is easier to express inline than as a dedicated
-///   <see cref="IDataSource{T}" /> class. The lambda is invoked once per generated value and is fully in charge
-///   of the result, including null. No random null injection happens here.
+///   A data source backed by a lambda. The lambda is in charge of the value, including null.
 /// </summary>
-/// <typeparam name="T">The member type the source produces.</typeparam>
 public sealed class FuncSource<T> : IDataSource<T> {
    private readonly Func<IGenerationContext?, T> _factory;
+   private readonly bool _needsContext;
 
    /// <summary>
    ///   Creates a source that ignores the generation context.
@@ -21,17 +19,25 @@ public sealed class FuncSource<T> : IDataSource<T> {
 
    /// <summary>
    ///   Creates a source that receives the current generation context, e.g. to build related objects
-   ///   via <c>context.Single&lt;TOther&gt;()</c>.
+   ///   via <c>context.Single&lt;TOther&gt;()</c>. Such a source only works inside a session.
    /// </summary>
-   public FuncSource(Func<IGenerationContext?, T> factory) {
+   public FuncSource(Func<IGenerationContext, T> factory) {
       ArgumentNullException.ThrowIfNull(factory);
-      _factory = factory;
+      _factory = context => factory(context!);
+      _needsContext = true;
    }
 
    /// <summary>
    ///   Gets the next value from the lambda.
    /// </summary>
-   public T Next(IGenerationContext? context) => _factory(context);
+   /// <exception cref="InvalidOperationException">the lambda takes the generation context and the source was used outside of a session</exception>
+   public T Next(IGenerationContext? context) {
+      if (_needsContext && context is null)
+         throw new InvalidOperationException(
+            $"The lambda behind this FuncSource<{typeof(T).Name}> takes the generation context, so the source only works inside a session, not standalone.");
 
-   object? IDataSource.InternalNext(IGenerationContext? context) => _factory(context);
+      return _factory(context);
+   }
+
+   object? IDataSource.InternalNext(IGenerationContext? context) => Next(context);
 }

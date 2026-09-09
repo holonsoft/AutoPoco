@@ -28,5 +28,5 @@ public class DefaultSource<T> : DataSourceBase<T> {
       => (typeof(T).IsValueType
          ? default
          : Activator.CreateInstance<T>())
-            ?? throw new InvalidOperationException();
+            ?? throw new InvalidOperationException($"Activator.CreateInstance returned null for '{typeof(T).FullName}'.");
 }

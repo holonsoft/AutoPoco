@@ -6,7 +6,13 @@ namespace holonsoft.AutoPoco.Configuration;
 public class EngineConventionConfiguration : IEngineConventionConfiguration, IEngineConventionProvider {
    private readonly HashSet<Type> _conventions = new();
 
-   public void Register(Type conventionType) => _conventions.Add(conventionType);
+   public void Register(Type conventionType) {
+      ArgumentNullException.ThrowIfNull(conventionType);
+      if (!typeof(IConvention).IsAssignableFrom(conventionType))
+         throw new ArgumentException($"'{conventionType.FullName}' is not a convention, it does not implement IConvention.", nameof(conventionType));
+
+      _conventions.Add(conventionType);
+   }
 
    public void Register<T>() where T : IConvention => Register(typeof(T));
 
@@ -15,6 +21,7 @@ public class EngineConventionConfiguration : IEngineConventionConfiguration, IEn
    public void ScanAssemblyWithType<T>() => ScanAssembly(typeof(T).Assembly);
 
    public void ScanAssembly(Assembly assembly) {
+      ArgumentNullException.ThrowIfNull(assembly);
       foreach (var type in assembly.GetTypes()
                  .Where(x => typeof(IConvention).IsAssignableFrom(x)))
          Register(type);

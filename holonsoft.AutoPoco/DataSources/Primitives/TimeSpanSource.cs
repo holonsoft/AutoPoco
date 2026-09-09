@@ -52,7 +52,7 @@ public class TimeSpanSource(TimeSpan minTimeSpan, TimeSpan maxTimeSpan) : TimeSp
 /// </summary>
 /// <param name="minTimeSpan">Minimum value</param>
 /// <param name="maxTimeSpan">maximum value</param>
-/// <seealso cref="AutoPocoDefaults"/>
+/// <seealso cref="holonsoft.AutoPoco.Configuration.AutoPocoDefaults"/>
 public class NullableTimeSpanSource(TimeSpan minTimeSpan, TimeSpan maxTimeSpan) : TimeSpanSourceBase<TimeSpan?>(minTimeSpan, maxTimeSpan)
 {
    public NullableTimeSpanSource()

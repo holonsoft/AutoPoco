@@ -63,7 +63,7 @@ public class FuncSourceTests {
    [Fact]
    public void NullLambdaIsRejected() {
       Action withoutContext = () => new FuncSource<int>((Func<int>) null!);
-      Action withContext = () => new FuncSource<int>((Func<IGenerationContext?, int>) null!);
+      Action withContext = () => new FuncSource<int>((Func<IGenerationContext, int>) null!);
 
       Should.Throw<ArgumentNullException>(withoutContext);
       Should.Throw<ArgumentNullException>(withContext);

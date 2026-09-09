@@ -37,6 +37,7 @@ public class CollectionSequenceSelectionContext<TPoco, TCollection>
 
    public ICollectionSequenceSelectionContext<TPoco, TCollection> Impose<TMember>(
      Expression<Func<TPoco, TMember>> propertyExpr, TMember value) {
+      ArgumentNullException.ThrowIfNull(propertyExpr);
       foreach (var item in _selected)
          item.Generator.Impose(propertyExpr, value);
       return this;
@@ -44,6 +45,7 @@ public class CollectionSequenceSelectionContext<TPoco, TCollection>
 
    public ICollectionSequenceSelectionContext<TPoco, TCollection> Impose<TMember>(
      Expression<Func<TPoco, TMember>> propertyExpr, Func<int, TMember> valueFactory) {
+      ArgumentNullException.ThrowIfNull(propertyExpr);
       ArgumentNullException.ThrowIfNull(valueFactory);
       foreach (var item in _selected)
          item.Generator.Impose(propertyExpr, valueFactory(item.Index));
@@ -52,6 +54,7 @@ public class CollectionSequenceSelectionContext<TPoco, TCollection>
 
    public ICollectionSequenceSelectionContext<TPoco, TCollection> Impose<TMember>(
      Expression<Func<TPoco, TMember>> propertyExpr, Func<int, TPoco, TMember> valueFactory) {
+      ArgumentNullException.ThrowIfNull(propertyExpr);
       ArgumentNullException.ThrowIfNull(valueFactory);
       foreach (var item in _selected) {
          var index = item.Index;
@@ -62,6 +65,7 @@ public class CollectionSequenceSelectionContext<TPoco, TCollection>
    }
 
    public ICollectionSequenceSelectionContext<TPoco, TCollection> Invoke(Expression<Action<TPoco>> methodExpr) {
+      ArgumentNullException.ThrowIfNull(methodExpr);
       foreach (var item in _selected)
          item.Generator.Invoke(methodExpr);
       return this;
@@ -69,12 +73,14 @@ public class CollectionSequenceSelectionContext<TPoco, TCollection>
 
    public ICollectionSequenceSelectionContext<TPoco, TCollection> Invoke<TMember>(
      Expression<Func<TPoco, TMember>> methodExpr) {
+      ArgumentNullException.ThrowIfNull(methodExpr);
       foreach (var item in _selected)
          item.Generator.Invoke(methodExpr);
       return this;
    }
 
    public ICollectionSequenceSelectionContext<TPoco, TCollection> Next(int count) {
+      ArgumentOutOfRangeException.ThrowIfNegative(count);
       // Skip ahead + return this
       _currentSkip += _currentCount;
       _currentCount = count;

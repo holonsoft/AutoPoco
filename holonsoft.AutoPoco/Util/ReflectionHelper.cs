@@ -20,11 +20,13 @@ public static class ReflectionHelper {
    }
 
    public static EngineTypeMember GetMember<TPoco, TReturn>(Expression<Func<TPoco, TReturn>> expression) {
+      ArgumentNullException.ThrowIfNull(expression);
       var member = GetMemberInfo(typeof(TPoco), expression.Body);
       return GetMember(member);
    }
 
    public static EngineTypeMember GetMember<TPoco>(Expression<Func<TPoco, object>> expression) {
+      ArgumentNullException.ThrowIfNull(expression);
       var member = GetMemberInfo(typeof(TPoco), expression.Body);
       return GetMember(member);
    }
@@ -49,12 +51,14 @@ public static class ReflectionHelper {
 #pragma warning restore IDE0060 // Remove unused parameter
 
    public static string GetMethodName<TPoco>(Expression<Action<TPoco>> action) {
+      ArgumentNullException.ThrowIfNull(action);
       if (action.Body is not MethodCallExpression methodExpression)
          throw new ArgumentException(@"Method expression expected, and not passed in", nameof(action));
       return methodExpression.Method.Name;
    }
 
    public static string GetMethodName<TPoco, TReturn>(Expression<Func<TPoco, TReturn>> function) {
+      ArgumentNullException.ThrowIfNull(function);
       if (function.Body is not MethodCallExpression methodExpression)
          throw new ArgumentException(@"Method expression expected, and not passed in", nameof(function));
       return methodExpression.Method.Name;

@@ -33,7 +33,7 @@ public static class StandardExtensions {
       ///   Computes the member value with a lambda that receives the generation context, e.g. to build
       ///   related objects via <c>context.Single&lt;TOther&gt;()</c> or to walk up the parent chain.
       /// </summary>
-      public IEngineConfigurationTypeBuilder<TPoco> From(Func<IGenerationContext?, TMember> factory)
+      public IEngineConfigurationTypeBuilder<TPoco> From(Func<IGenerationContext, TMember> factory)
          => memberConfig.Use<FuncSource<TMember>>(factory);
    }
 

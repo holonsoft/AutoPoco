@@ -5,5 +5,5 @@ namespace holonsoft.AutoPoco.Configuration;
 public class TypePropertyConventionContext(IEngineConfiguration config, IEngineConfigurationTypeMember member) 
    : TypeMemberConventionContext(config, member), ITypePropertyConventionContext {
    public new EngineTypePropertyMember Member => base.Member as EngineTypePropertyMember 
-                                                   ?? throw new InvalidOperationException();
+                                                   ?? throw new InvalidOperationException($"Member '{base.Member.Name}' is not a property.");
 }

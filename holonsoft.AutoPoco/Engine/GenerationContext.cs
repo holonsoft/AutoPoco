@@ -27,15 +27,19 @@ public class GenerationContext : IGenerationContext {
       return new ObjectGenerator<TPoco>(this, foundType);
    }
 
-   public ICollectionContext<TPoco, IList<TPoco>> List<TPoco>(int count) => new CollectionContext<TPoco, IList<TPoco>>(
+   public ICollectionContext<TPoco, IList<TPoco>> List<TPoco>(int count) {
+      ArgumentOutOfRangeException.ThrowIfNegative(count);
+      return new CollectionContext<TPoco, IList<TPoco>>(
         Enumerable.Range(0, count)
           .Select(x => Single<TPoco>()).ToArray()
           .AsEnumerable(),
         Builders?.Seed ?? AutoPocoDefaults.Seed);
+   }
 
    public TPoco Next<TPoco>() => Single<TPoco>().Get();
 
    public TPoco Next<TPoco>(Action<IObjectGenerator<TPoco>> cfg) {
+      ArgumentNullException.ThrowIfNull(cfg);
       var generator = Single<TPoco>();
       cfg.Invoke(generator);
       return generator.Get();
@@ -47,6 +51,7 @@ public class GenerationContext : IGenerationContext {
    }
 
    public IEnumerable<TPoco> Collection<TPoco>(int count, Action<ICollectionContext<TPoco, IList<TPoco>>> cfg) {
+      ArgumentNullException.ThrowIfNull(cfg);
       var generator = List<TPoco>(count);
       cfg.Invoke(generator);
       return generator.Get();

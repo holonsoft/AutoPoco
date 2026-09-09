@@ -26,6 +26,7 @@ public static class AutoPocoContainer {
    ///   The <see cref="IGenerationSessionFactory" />.
    /// </returns>
    public static IGenerationSessionFactory Configure(Action<IEngineConfigurationBuilder> setup) {
+      ArgumentNullException.ThrowIfNull(setup);
       var config = new EngineConfigurationBuilder();
       config.Conventions(x => x.Register<DefaultPrimitiveCtorConvention>());
       setup.Invoke(config);

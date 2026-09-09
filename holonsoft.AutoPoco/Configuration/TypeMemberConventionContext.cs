@@ -10,6 +10,7 @@ public class TypeMemberConventionContext(IEngineConfiguration configuration, IEn
    public EngineTypeMember Member => member.Member;
 
    public void SetValue(object value) {
+      ArgumentNullException.ThrowIfNull(value);
       var type = typeof(ValueSource<>).MakeGenericType(value.GetType());
       var factory = new AutoPocoDataSourceFactory(type);
       factory.SetParams(value);
@@ -19,6 +20,8 @@ public class TypeMemberConventionContext(IEngineConfiguration configuration, IEn
    public void SetSource<T>() where T : IDataSource 
       => SetSource(typeof(T));
 
-   public void SetSource(Type t) 
-      => member.SetDataSource(new AutoPocoDataSourceFactory(t));
+   public void SetSource(Type t) {
+      ArgumentNullException.ThrowIfNull(t);
+      member.SetDataSource(new AutoPocoDataSourceFactory(t));
+   }
 }

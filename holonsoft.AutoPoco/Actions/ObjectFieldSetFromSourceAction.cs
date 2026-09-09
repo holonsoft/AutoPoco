@@ -7,7 +7,7 @@ namespace holonsoft.AutoPoco.Actions;
 public class ObjectFieldSetFromSourceAction(EngineTypeFieldMember member, IDataSource source) : IObjectAction {
    public void Enact(IGenerationContext? context, object target) {
       var fieldContext = new GenerationContext(context?.Builders!, new TypeFieldGenerationContextNode(
-        context?.Node as TypeGenerationContextNode ?? throw new InvalidOperationException(), member));
+        context?.Node as TypeGenerationContextNode ?? throw new InvalidOperationException($"Member '{member.Name}' can only be set inside the generation of its object, the context has no object node."), member));
 
       member.FieldInfo.SetValue(target, source.InternalNext(fieldContext));
    }

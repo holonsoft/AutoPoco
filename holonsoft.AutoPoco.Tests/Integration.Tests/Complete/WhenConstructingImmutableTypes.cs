@@ -189,6 +189,7 @@ public class WhenConstructingImmutableTypes {
          .Get()
          .ToList();
 
+      users.Count.ShouldBe(10);
       users.Take(5).ShouldAllBe(u => u.FirstName == "Rob");
       users.Skip(5).ShouldAllBe(u => u.LastName == "Smith");
    }

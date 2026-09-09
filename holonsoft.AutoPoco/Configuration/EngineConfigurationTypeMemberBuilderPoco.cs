@@ -12,6 +12,7 @@ public class EngineConfigurationTypeMemberBuilder<TPoco, TMember>(EngineTypeMemb
       where TSource : IDataSource<TMember> => Use<TSource>(Array.Empty<object>());
 
    public IEngineConfigurationTypeBuilder<TPoco> Use<TSource>(params object[] args) where TSource : IDataSource<TMember> {
+      ArgumentNullException.ThrowIfNull(args);
       var factory = new AutoPocoDataSourceFactory(typeof(TSource));
 
       factory.SetParams(args);
@@ -22,6 +23,7 @@ public class EngineConfigurationTypeMemberBuilder<TPoco, TMember>(EngineTypeMemb
 
    public IEngineConfigurationTypeBuilder<TPoco> Use<TSource>(Action<TSource> action)
       where TSource : IDataSource<TMember> {
+      ArgumentNullException.ThrowIfNull(action);
 
       var factory = new AutoPocoDataSourceFactory(typeof(TSource));
 
@@ -33,6 +35,7 @@ public class EngineConfigurationTypeMemberBuilder<TPoco, TMember>(EngineTypeMemb
 
 
    public IEngineConfigurationTypeBuilder<TPoco> Use<TSource>(IDataSourceFactory<TMember> userFactory) where TSource : IDataSource<TMember> {
+      ArgumentNullException.ThrowIfNull(userFactory);
       var factory = new AutoPocoDataSourceFactory(typeof(TSource));
 
       factory.SetUserFactory(userFactory);

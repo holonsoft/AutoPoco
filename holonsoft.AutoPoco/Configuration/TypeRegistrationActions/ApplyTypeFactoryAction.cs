@@ -12,7 +12,7 @@ public class ApplyTypeFactoryAction(IEngineConfigurationProvider configurationPr
 
       if (typeProvider?.GetFactory() != null)
          type.SetFactory(typeProvider.GetFactory()
-                         ?? throw new InvalidOperationException());
+                         ?? throw new InvalidOperationException($"The configured factory of type '{type.RegisteredType.FullName}' is null."));
       else if (type.GetFactory() == null)
          type.SetFactory(new AutoPocoDataSourceFactory(FallbackFactoryType(type.RegisteredType)));
    }

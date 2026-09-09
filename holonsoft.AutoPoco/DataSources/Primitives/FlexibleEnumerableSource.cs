@@ -24,7 +24,7 @@ public class FlexibleEnumerableSource<TSource, TCollectionType, TCollectionEleme
 
       foreach (var item in collectionContents)
          propertyCollection?.Add(item);
-      return propertyCollection ?? throw new InvalidOperationException();
+      return propertyCollection ?? throw new InvalidOperationException($"'{typeof(TCollectionType).FullName}' could not be created or is no ICollection<{typeof(TCollectionElement).Name}>.");
    }
 
    object IDataSource.InternalNext(IGenerationContext? context) {
@@ -33,6 +33,6 @@ public class FlexibleEnumerableSource<TSource, TCollectionType, TCollectionEleme
 
       foreach (var item in collectionContents)
          propertyCollection?.Add(item);
-      return propertyCollection ?? throw new InvalidOperationException();
+      return propertyCollection ?? throw new InvalidOperationException($"'{typeof(TCollectionType).FullName}' could not be created or is no ICollection<{typeof(TCollectionElement).Name}>.");
    }
 }

@@ -77,7 +77,7 @@ public class DateTimeSource(DateTime minDate, DateTime maxDate) : DateTimeSource
 /// </summary>
 /// <param name="minDate">minimum date</param>
 /// <param name="maxDate">maximum date</param>
-/// <seealso cref="AutoPocoDefaults"/>
+/// <seealso cref="holonsoft.AutoPoco.Configuration.AutoPocoDefaults"/>
 public class NullableDateTimeSource(DateTime minDate, DateTime maxDate) : DateTimeSourceBase<DateTime?>(minDate, maxDate) {
    public NullableDateTimeSource()
       : this(DateTime.MinValue, DateTime.MaxValue) { }

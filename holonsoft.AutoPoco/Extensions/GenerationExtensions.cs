@@ -19,7 +19,7 @@ public static class GenerationExtensions {
       /// <summary>
       ///   Overrides the data source of a member for this generation scope with a lambda that receives the generation context.
       /// </summary>
-      public IObjectGenerator<TPoco> Source<TMember>(Expression<Func<TPoco, TMember>> memberExpr, Func<IGenerationContext?, TMember> factory)
+      public IObjectGenerator<TPoco> Source<TMember>(Expression<Func<TPoco, TMember>> memberExpr, Func<IGenerationContext, TMember> factory)
          => generator.Source(memberExpr, new FuncSource<TMember>(factory));
    }
 
@@ -34,7 +34,7 @@ public static class GenerationExtensions {
       /// <summary>
       ///   Overrides the data source of a member for every item of the collection with a lambda that receives the generation context.
       /// </summary>
-      public ICollectionContext<TPoco, TCollection> Source<TMember>(Expression<Func<TPoco, TMember>> memberExpr, Func<IGenerationContext?, TMember> factory)
+      public ICollectionContext<TPoco, TCollection> Source<TMember>(Expression<Func<TPoco, TMember>> memberExpr, Func<IGenerationContext, TMember> factory)
          => context.Source(memberExpr, new FuncSource<TMember>(factory));
    }
 }

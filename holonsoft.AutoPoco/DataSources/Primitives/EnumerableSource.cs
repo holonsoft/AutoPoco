@@ -110,6 +110,6 @@ public class EnumerableSource<TSource, T> : DataSourceBase<IEnumerable<T>>
 
       var factory = new AutoPocoDataSourceFactory(typeof(TSource));
       factory.SetParams(_args);
-      _source = (IDataSource<T>) factory.Build()! ?? throw new InvalidOperationException();
+      _source = (IDataSource<T>) (factory.Build() ?? throw new InvalidOperationException($"The element source '{typeof(TSource).FullName}' could not be created."));
    }
 }

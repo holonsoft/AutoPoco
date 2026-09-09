@@ -33,7 +33,7 @@ public class TimeOnlySource(TimeOnly minTime, TimeOnly maxTime) : TimeOnlySource
 /// </summary>
 /// <param name="minTime"></param>
 /// <param name="maxTime"></param>
-/// <seealso cref="AutoPocoDefaults"/>
+/// <seealso cref="holonsoft.AutoPoco.Configuration.AutoPocoDefaults"/>
 public class NullableTimeOnlySource(TimeOnly minTime, TimeOnly maxTime) : TimeOnlySourceBase<TimeOnly?>(minTime, maxTime) {
    public NullableTimeOnlySource() : this(TimeOnly.MinValue, TimeOnly.MaxValue) { }
 }

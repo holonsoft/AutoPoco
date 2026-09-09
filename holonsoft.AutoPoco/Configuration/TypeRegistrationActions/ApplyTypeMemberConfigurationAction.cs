@@ -15,7 +15,7 @@ public class ApplyTypeMemberConfigurationAction(IEngineConfigurationProvider con
             var typeMember = memberProvider.GetConfigurationMember();
 
             // Get the member
-            var configuredMember = type.GetRegisteredMember(typeMember ?? throw new InvalidOperationException());
+            var configuredMember = type.GetRegisteredMember(typeMember ?? throw new InvalidOperationException($"A member configuration of type '{type.RegisteredType.FullName}' names no member."));
 
             // Set the action on that member if a dataSource has been set explicitly for this member
             var dataSources = memberProvider.GetDataSources().ToArray();

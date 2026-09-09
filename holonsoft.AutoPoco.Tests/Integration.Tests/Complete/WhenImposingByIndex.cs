@@ -57,6 +57,7 @@ public class WhenImposingByIndex {
 
       users.Take(3).Select(u => u.City).ShouldBe(["first 0", "first 1", "first 2"]);
       users.Skip(3).Take(3).Select(u => u.City).ShouldBe(["next 3", "next 4", "next 5"]);
+      users.Skip(6).ShouldNotBeEmpty();
       users.Skip(6).ShouldAllBe(u => u.City != null && !u.City.StartsWith("first") && !u.City.StartsWith("next"));
    }
 

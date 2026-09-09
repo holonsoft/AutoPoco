@@ -42,7 +42,7 @@ public class DateOnlySource(DateOnly minDate, DateOnly maxDate) : DateOnlySource
 /// </summary>
 /// <param name="minDate">Minimum date</param>
 /// <param name="maxDate">Maximum date</param>
-/// <seealso cref="AutoPocoDefaults"/>
+/// <seealso cref="holonsoft.AutoPoco.Configuration.AutoPocoDefaults"/>
 public class NullableDateOnlySource(DateOnly minDate, DateOnly maxDate) : DateOnlySourceBase<DateOnly?>(minDate, maxDate) {
    public NullableDateOnlySource() : this(DateOnly.MinValue, DateOnly.MaxValue) { }
 }

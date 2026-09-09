@@ -37,7 +37,7 @@ public class GenerationExtensionsTests {
    [Fact]
    public void SingleLambdaReceivesTheContext() {
       var poco = NewSession().Single<Poco>()
-         .Source(p => p.Kid, ctx => ctx!.Single<Child>().Impose(c => c.Name, "built in lambda").Get())
+         .Source(p => p.Kid, ctx => ctx.Single<Child>().Impose(c => c.Name, "built in lambda").Get())
          .Get();
 
       poco.Kid.ShouldNotBeNull();
@@ -55,9 +55,10 @@ public class GenerationExtensionsTests {
    [Fact]
    public void ListLambdaReceivesTheContext() {
       var items = NewSession().List<Poco>(3)
-         .Source(p => p.Kid, ctx => ctx!.Single<Child>().Impose(c => c.Name, "kid").Get())
+         .Source(p => p.Kid, ctx => ctx.Single<Child>().Impose(c => c.Name, "kid").Get())
          .Get();
 
+      items.ShouldNotBeEmpty();
       items.ShouldAllBe(p => p.Kid != null && p.Kid.Name == "kid");
       items.Select(p => p.Kid).Distinct().Count().ShouldBe(3, "every item gets its own child instance");
    }

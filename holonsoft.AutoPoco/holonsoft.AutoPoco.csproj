@@ -4,6 +4,9 @@
     <TargetFrameworks>$(LibraryTargetFrameworks)</TargetFrameworks>
     <Title>AutoPoco by holonsoft</Title>
     <Description>AutoPoco is a highly configurable framework for the purpose of fluently building readable test data from Plain Old CLR Objects. This is a modernized (i.e. net6 and higher) port of the excellent AutoPoco project which hasn't been maintained since 2014.</Description>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- CS1591: missing XML comment on a public member; the docs grow with the API, a missing one must not fail the build -->
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>
 
 </Project>

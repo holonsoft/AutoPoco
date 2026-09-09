@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using holonsoft.AutoPoco.Configuration.Interfaces;
+using holonsoft.AutoPoco.DataSources.Base;
 using holonsoft.AutoPoco.Engine.Interfaces;
 using holonsoft.AutoPoco.Util;
 
@@ -12,6 +13,8 @@ public class EngineConfigurationTypeBuilder<TPoco> : EngineConfigurationTypeBuil
 
    public IEngineConfigurationTypeMemberBuilder<TPoco, TMember> Setup<TMember>(
      Expression<Func<TPoco, TMember>> expression) {
+      ArgumentNullException.ThrowIfNull(expression);
+
       // Get the member this set up is for
       var member = ReflectionHelper.GetMember(expression);
 
@@ -32,11 +35,13 @@ public class EngineConfigurationTypeBuilder<TPoco> : EngineConfigurationTypeBuil
 
    public IEngineConfigurationTypeBuilder<TPoco> ConstructWith<TSource>(params object[] args)
      where TSource : IDataSource<TPoco> {
+      ArgumentNullException.ThrowIfNull(args);
       ConstructWith(typeof(TSource), args);
       return this;
    }
 
    public IEngineConfigurationTypeBuilder<TPoco> Invoke(Expression<Action<TPoco>> action) {
+      ArgumentNullException.ThrowIfNull(action);
       var context = GetMethodArgs(action);
       var name = ReflectionHelper.GetMethodName(action);
       SetupMethod(name, context);
@@ -44,15 +49,10 @@ public class EngineConfigurationTypeBuilder<TPoco> : EngineConfigurationTypeBuil
    }
 
    public IEngineConfigurationTypeBuilder<TPoco> Invoke<TReturn>(Expression<Func<TPoco, TReturn>> func) {
+      ArgumentNullException.ThrowIfNull(func);
       var context = GetMethodArgs(func);
       var name = ReflectionHelper.GetMethodName(func);
       SetupMethod(name, context);
-      return this;
-   }
-
-   public IEngineConfigurationTypeBuilder<TPoco> Ctor(Expression<Func<TPoco>> creationExpr) {
-      var ctor = creationExpr.Body as NewExpression;
-      // this.fa
       return this;
    }
 
@@ -68,32 +68,52 @@ public class EngineConfigurationTypeBuilder<TPoco> : EngineConfigurationTypeBuil
       return GetMethodArgs(methodExpression);
    }
 
+   /// <summary>
+   ///   Turns every argument of the invoked method into a data source: <c>Use.Source</c> and <c>Use.From</c>
+   ///   markers become the source they stand for, constants and captured variables become fixed values.
+   ///   Other method calls are rejected, they would run at configuration time instead of per object.
+   /// </summary>
    private static MethodInvocationContext GetMethodArgs(MethodCallExpression methodExpression) {
       var context = new MethodInvocationContext();
       foreach (var arg in methodExpression.Arguments)
-         switch (arg.NodeType) {
-            case ExpressionType.Call:
-
-               var paramCall = arg as MethodCallExpression;
-
-               // Extract the data source type
-               var sourceType = ExtractDataSourceType(paramCall!);
-               var factoryArgs = ExtractDataSourceParameters(paramCall!);
-
-               context.AddArgumentSource(sourceType, factoryArgs);
-
+         switch (arg) {
+            case MethodCallExpression { Method.DeclaringType: var declaringType } call when declaringType == typeof(Use):
+               AddMarkerArgument(context, call);
                break;
-            case ExpressionType.Constant:
-
-               // Simply pop the constant into the list
-               var paramConstant = arg as ConstantExpression;
-               context.AddArgumentValue(paramConstant!);
+            case MethodCallExpression:
+               throw new ArgumentException(
+                  $"Unsupported argument in method invocation '{methodExpression.Method.Name}': a method call is only allowed as Use.Source<...>() or Use.From(...) marker.",
+                  nameof(methodExpression));
+            case ConstantExpression constant:
+               context.AddArgumentValue(constant.Value);
+               break;
+            case MemberExpression or UnaryExpression { NodeType: ExpressionType.Convert }:
+               // a captured variable, a field of a closure or a boxed value: evaluate it once, now
+               context.AddArgumentValue(Expression.Lambda(arg).Compile().DynamicInvoke());
                break;
             default:
-               throw new ArgumentException(@"Unsupported argument used in method invocation list", nameof(methodExpression));
+               throw new ArgumentException(
+                  $"Unsupported argument in method invocation '{methodExpression.Method.Name}': {arg.NodeType} expressions are not supported, use a constant, a variable, Use.Source<...>() or Use.From(...).",
+                  nameof(methodExpression));
          }
 
       return context;
+   }
+
+   private static void AddMarkerArgument(MethodInvocationContext context, MethodCallExpression marker) {
+      switch (marker.Method.Name) {
+         case nameof(Use.Source):
+            context.AddArgumentSource(ExtractDataSourceType(marker), ExtractDataSourceParameters(marker));
+            break;
+         case nameof(Use.From):
+            var valueType = marker.Method.GetGenericArguments()[0];
+            var lambda = Expression.Lambda(marker.Arguments[0]).Compile().DynamicInvoke()
+                         ?? throw new ArgumentException("Use.From needs a lambda.", nameof(marker));
+            context.AddArgumentSource(typeof(FuncSource<>).MakeGenericType(valueType), lambda);
+            break;
+         default:
+            throw new ArgumentException($"Unknown Use marker '{marker.Method.Name}'.", nameof(marker));
+      }
    }
 
    private static Type ExtractDataSourceType(MethodCallExpression paramCall) {
@@ -123,7 +143,8 @@ public class EngineConfigurationTypeBuilder<TPoco> : EngineConfigurationTypeBuil
          if (argumentExpression.Operand is not ConstantExpression constantValue)
             throw new ArgumentException(@"Method expression uses unrecognized method and types cannot be resolved");
 
-         args.Add(constantValue.Value ?? throw new InvalidOperationException());
+         args.Add(constantValue.Value
+                  ?? throw new ArgumentException("Constructor arguments of a Use.Source marker must not be null.", nameof(paramCall)));
       }
 
       return args.ToArray();

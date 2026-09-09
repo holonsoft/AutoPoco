@@ -10,12 +10,12 @@ namespace holonsoft.AutoPoco.Engine;
 /// </summary>
 public sealed record IndexedGenerator<TPoco>(int Index, IObjectGenerator<TPoco> Generator);
 
-/// <param name="generators">one generator per element, in collection order</param>
-/// <param name="seed">seed of the shuffle behind <see cref="Random(int)" />, the session seed when created by a session</param>
 public class CollectionContext<TPoco, TCollection> : ICollectionContext<TPoco, TCollection> where TCollection : ICollection<TPoco> {
    private readonly IndexedGenerator<TPoco>[] _generators;
    private readonly Random _random;
 
+   /// <param name="generators">one generator per element, in collection order</param>
+   /// <param name="seed">seed of the shuffle behind <see cref="Random(int)" />, the session seed when created by a session</param>
    public CollectionContext(IEnumerable<IObjectGenerator<TPoco>> generators, int seed = AutoPocoDefaults.Seed) {
       ArgumentNullException.ThrowIfNull(generators);
       _generators = generators.Select((g, i) => new IndexedGenerator<TPoco>(i, g)).ToArray();
@@ -23,12 +23,14 @@ public class CollectionContext<TPoco, TCollection> : ICollectionContext<TPoco, T
    }
 
    public ICollectionContext<TPoco, TCollection> Impose<TMember>(Expression<Func<TPoco, TMember>> propertyExpr, TMember value) {
+      ArgumentNullException.ThrowIfNull(propertyExpr);
       foreach (var item in _generators)
          item.Generator.Impose(propertyExpr, value);
       return this;
    }
 
    public ICollectionContext<TPoco, TCollection> Impose<TMember>(Expression<Func<TPoco, TMember>> propertyExpr, Func<int, TMember> valueFactory) {
+      ArgumentNullException.ThrowIfNull(propertyExpr);
       ArgumentNullException.ThrowIfNull(valueFactory);
       foreach (var item in _generators)
          item.Generator.Impose(propertyExpr, valueFactory(item.Index));
@@ -36,6 +38,7 @@ public class CollectionContext<TPoco, TCollection> : ICollectionContext<TPoco, T
    }
 
    public ICollectionContext<TPoco, TCollection> Impose<TMember>(Expression<Func<TPoco, TMember>> propertyExpr, Func<int, TPoco, TMember> valueFactory) {
+      ArgumentNullException.ThrowIfNull(propertyExpr);
       ArgumentNullException.ThrowIfNull(valueFactory);
       foreach (var item in _generators) {
          var index = item.Index;
@@ -47,20 +50,23 @@ public class CollectionContext<TPoco, TCollection> : ICollectionContext<TPoco, T
 
    public ICollectionContext<TPoco, TCollection> Source<TMember>(Expression<Func<TPoco, TMember>> propertyExpr,
      IDataSource dataSource) {
+      ArgumentNullException.ThrowIfNull(propertyExpr);
+      ArgumentNullException.ThrowIfNull(dataSource);
       foreach (var item in _generators)
          item.Generator.Source(propertyExpr, dataSource);
       return this;
    }
 
-   public ICollectionSequenceSelectionContext<TPoco, TCollection> First(int count)
-      => new CollectionSequenceSelectionContext<TPoco, TCollection>(this, _generators, count);
+   public ICollectionSequenceSelectionContext<TPoco, TCollection> First(int count) {
+      ArgumentOutOfRangeException.ThrowIfNegative(count);
+      return new CollectionSequenceSelectionContext<TPoco, TCollection>(this, _generators, count);
+   }
 
-   public ICollectionSequenceSelectionContext<TPoco, TCollection> Random(int count)
+   public ICollectionSequenceSelectionContext<TPoco, TCollection> Random(int count) {
+      ArgumentOutOfRangeException.ThrowIfNegative(count);
       // Randomize and return, the original positions travel with the generators
-      => new CollectionSequenceSelectionContext<TPoco, TCollection>(
-        this,
-        _generators.OrderBy(r => _random.Next()).ToArray(),
-        count);
+      return new CollectionSequenceSelectionContext<TPoco, TCollection>(this, _generators.OrderBy(r => _random.Next()).ToArray(), count);
+   }
 
    public TCollection Get() {
       // Create an array if it's an array
@@ -69,16 +75,18 @@ public class CollectionContext<TPoco, TCollection> : ICollectionContext<TPoco, T
       // Return a list if it's a list
       if (typeof(IList<>).MakeGenericType(typeof(TPoco)).IsAssignableFrom(typeof(TCollection)))
          return (TCollection) (object) _generators.Select(x => x.Generator.Get()).ToList();
-      throw new InvalidOperationException();
+      throw new InvalidOperationException($"Collection type '{typeof(TCollection).Name}' is not supported, use an array or a type assignable from List<{typeof(TPoco).Name}>.");
    }
 
    public ICollectionContext<TPoco, TCollection> Invoke(Expression<Action<TPoco>> methodExpr) {
+      ArgumentNullException.ThrowIfNull(methodExpr);
       foreach (var item in _generators)
          item.Generator.Invoke(methodExpr);
       return this;
    }
 
    public ICollectionContext<TPoco, TCollection> Invoke<TMember>(Expression<Func<TPoco, TMember>> methodExpr) {
+      ArgumentNullException.ThrowIfNull(methodExpr);
       foreach (var item in _generators)
          item.Generator.Invoke(methodExpr);
       return this;

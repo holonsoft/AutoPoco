@@ -53,7 +53,7 @@ public class DecimalSource(decimal min, decimal max, int? decimals = null) : Dec
 /// <param name="min">Minimum value</param>
 /// <param name="max">Maximum value</param>
 /// <param name="decimals">Count of decimals</param>
-/// <seealso cref="AutoPocoDefaults"/>
+/// <seealso cref="holonsoft.AutoPoco.Configuration.AutoPocoDefaults"/>
 public class NullableDecimalSource(decimal min, decimal max, int? decimals = null) : DecimalSourceBase<decimal?>(min, max, decimals) {
    public NullableDecimalSource()
       : this(decimal.MinValue, decimal.MaxValue, null) { }

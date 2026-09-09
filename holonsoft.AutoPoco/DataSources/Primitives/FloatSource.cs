@@ -56,7 +56,7 @@ public class FloatSource(float min, float max, int? decimals) : FloatSourceBase<
 /// <param name="min">Minimum value</param>
 /// <param name="max">Maximum value</param>
 /// <param name="decimals">Count of decimals</param>
-/// <seealso cref="AutoPocoDefaults"/>
+/// <seealso cref="holonsoft.AutoPoco.Configuration.AutoPocoDefaults"/>
 public class NullableFloatSource(float min, float max, int? decimals) : FloatSourceBase<float?>(min, max, decimals) {
    public NullableFloatSource()
       : this(float.MinValue, float.MaxValue, null) { }

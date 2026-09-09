@@ -25,6 +25,8 @@ public class EngineConfigurationBuilder : IEngineConfigurationBuilder, IEngineCo
    }
 
    public IEngineConfigurationTypeBuilder Include(Type t) {
+      ArgumentNullException.ThrowIfNull(t);
+
       // Create the configuration
       var configuration = new EngineConfigurationTypeBuilder(t);
 
@@ -35,11 +37,15 @@ public class EngineConfigurationBuilder : IEngineConfigurationBuilder, IEngineCo
       return configuration;
    }
 
-   public void Conventions(Action<IEngineConventionConfiguration> config) 
-      => config.Invoke(_conventions);
+   public void Conventions(Action<IEngineConventionConfiguration> config) {
+      ArgumentNullException.ThrowIfNull(config);
+      config.Invoke(_conventions);
+   }
 
-   public void RegisterTypeProvider(IEngineConfigurationTypeProvider provider) 
-      => _types.Add(provider);
+   public void RegisterTypeProvider(IEngineConfigurationTypeProvider provider) {
+      ArgumentNullException.ThrowIfNull(provider);
+      _types.Add(provider);
+   }
 
    public IEnumerable<IEngineConfigurationTypeProvider> GetConfigurationTypes()
       => _types;

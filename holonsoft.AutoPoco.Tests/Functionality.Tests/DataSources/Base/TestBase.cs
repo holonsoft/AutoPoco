@@ -18,7 +18,10 @@ public class TestBase() {
          throw new ShouldAssertException($"{e.Message}\nREGENERATE: {CSharpLiteral.Array(generated)}");
       }
 
-      if (typeof(T) == typeof(bool) || (typeof(T) == typeof(bool?)))
+      // the checks below compare the data of two random seeds; for small value spaces (bool, enums)
+      // two short samples reproduce the same multiset by chance, which made the enum test flaky on CI
+      var valueType = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
+      if (valueType == typeof(bool) || valueType.IsEnum)
          return;
 
       List<T> randomGenerated1 = new();

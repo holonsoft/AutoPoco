@@ -21,7 +21,7 @@ public class ObjectBuilder : IObjectBuilder {
       InnerType = type.RegisteredType;
 
       if (type.GetFactory() != null) {
-         _factory = type.GetFactory()?.Build() ?? throw new InvalidOperationException();
+         _factory = type.GetFactory()?.Build() ?? throw new InvalidOperationException($"The factory configured for '{InnerType.FullName}' did not produce a data source.");
          (_factory as ISessionSeedable)?.ApplySessionSeed(SeedDerivation.ForType(seed, InnerType));
       }
 
@@ -38,7 +38,7 @@ public class ObjectBuilder : IObjectBuilder {
             if (sources.Count == 0)
                continue;
 
-            var inner = sources[0] ?? throw new InvalidOperationException();
+            var inner = sources[0] ?? throw new InvalidOperationException($"The data source configured for member '{registered.Member.Name}' of '{InnerType.FullName}' could not be created.");
             (inner as ISessionSeedable)?.ApplySessionSeed(SeedDerivation.ForMember(seed, InnerType, registered.Member.Name));
             var source = NullableMemberDataSource.ForMember(inner, registered.Member, nullableAnnotations, seed);
             sources[0] = source;
@@ -70,7 +70,7 @@ public class ObjectBuilder : IObjectBuilder {
             continue;
          }
 
-         var source = sources[0] ?? throw new InvalidOperationException();
+         var source = sources[0] ?? throw new InvalidOperationException($"The data source configured for member '{member.Name}' of '{InnerType.FullName}' could not be created.");
          if (member.IsField)
             AddAction(new ObjectFieldSetFromSourceAction((EngineTypeFieldMember) member, source));
          else if (member.IsProperty)

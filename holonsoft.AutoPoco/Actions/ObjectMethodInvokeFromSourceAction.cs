@@ -10,7 +10,7 @@ public class ObjectMethodInvokeFromSourceAction(EngineTypeMethodMember member, I
    public void Enact(IGenerationContext? context, object target) {
       var methodContext = new GenerationContext(context?.Builders!,
         new TypeMethodGenerationContextNode(context?.Node as TypeGenerationContextNode
-                                            ?? throw new InvalidOperationException(), member));
+                                            ?? throw new InvalidOperationException($"Method '{member.Name}' can only be invoked inside the generation of its object, the context has no object node."), member));
 
       member.MethodInfo.Invoke(target, _sources.Select(source => source.InternalNext(methodContext)).ToArray());
    }

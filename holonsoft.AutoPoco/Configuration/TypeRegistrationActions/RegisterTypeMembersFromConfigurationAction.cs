@@ -12,7 +12,7 @@ public class RegisterTypeMembersFromConfigurationAction(IEngineConfigurationProv
          foreach (var member in typeProvider.GetConfigurationMembers()) {
             var typeMember = member.GetConfigurationMember();
 
-            if (type.GetRegisteredMember(typeMember ?? throw new InvalidOperationException()) == null)
+            if (type.GetRegisteredMember(typeMember ?? throw new InvalidOperationException($"A member configuration of type '{type.RegisteredType.FullName}' names no member.")) == null)
                type.RegisterMember(typeMember);
          }
    }

@@ -18,7 +18,7 @@ var factory = AutoPocoContainer.Configure(x => {
       .Setup(c => c.Id).From(() => ++counter)
       .Setup(c => c.EmailAddress).From(() => $"user{counter}@example.org")
       // the context variant can build related objects
-      .Setup(c => c.Role).From(ctx => ctx!.Single<SimpleUserRole>().Impose(r => r.Name, "Guest").Get());
+      .Setup(c => c.Role).From(ctx => ctx.Single<SimpleUserRole>().Impose(r => r.Name, "Guest").Get());
 });
 
 // the same at generation time, overriding the configuration for this call only
@@ -108,6 +108,17 @@ var admin = session.Single<SimpleUser>()
 ```
 
   The item lambda runs after the configured sources and after every `Impose` registered before it, so it sees those values.
+* `Invoke(c => c.Method(...))` in the configuration takes lambdas and values as arguments now: `Use.From(() => value)` and `Use.From(ctx => ...)` compute an argument per object, constants and captured variables arrive as their value (constants used to arrive as the expression object, a bug), `null` is allowed. Any other method call in the argument list is rejected with a message that names the options.
+
+```CSHARP
+var counter = 0;
+x.Include<SimpleUser>()
+   .Invoke(c => c.SetPassword(Use.From(() => $"pw-{++counter}")))
+   .Invoke(c => c.SetSomething("fixed", Use.Source<string, LastNameSource>()!));
+```
+
+* The lambdas receiving the generation context (`From(ctx => ...)`, `Source(member, ctx => ...)`, `Use.From(ctx => ...)`) get a non-nullable `IGenerationContext`, no more `ctx!`. A `FuncSource` built from such a lambda throws a clear `InvalidOperationException` when used outside of a session.
+* Hardening: the public configuration and generation API validates its arguments (`ArgumentNullException`, `ArgumentOutOfRangeException` for negative counts, `ArgumentException` for unknown members, non-source types and non-convention types) and every internal failure carries the type and member it happened at. The never implemented `Ctor(...)` stub on the type builder is gone. The package ships an XML documentation file.
 * `IDataSource<T>` is covariant now, so a source of `string` (e.g. `CitySource`) can be used for a `string?` member without a nullability warning.
 * Bug fix: every `Nullable*` source ignored an explicit null creation threshold. The fixed array and dictionary based sources (names, companies, cities, capitals, countries, states, zip codes, urls) even used the threshold as their random seed. The threshold is honored now. As a consequence the null positions in the stable sequences of these sources changed, the data itself comes in the same order as before.
 * Bug fix: `DateTimeSource`, `DateOnlySource`, `TimeOnlySource` and `DateOfBirthSource` never produced the upper end of their ranges: no December, no 31st, no 23:00, no minute or second 59, and the maximum year of a date of birth was never reached. Ranges within a single year could produce values outside the range. All four sources now pick uniformly from the whole range, both bounds inclusive, and throw an `ArgumentOutOfRangeException` when the maximum lies before the minimum. `TimeOnlySource` supports ranges that wrap around midnight (22:00 to 02:00). `DateTimeSource` keeps the `DateTimeKind` of the minimum date. The generated sequences for a given seed changed.

@@ -60,7 +60,7 @@ public abstract class CreditCardSourceBase(CreditCardSourceBase.CreditCardType p
          CreditCardType.MasterCard => FormatCreditCardNumber(GenerateCreditCardNumber(5, 16)),
          CreditCardType.Visa => FormatCreditCardNumber(GenerateCreditCardNumber(4, 16)),
          _ => null,
-      } ?? throw new InvalidOperationException();
+      } ?? throw new InvalidOperationException($"Credit card type '{cardType}' has no number format.");
    }
 
    private string GenerateCreditCardNumber(int prefix, int length) {
