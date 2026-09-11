@@ -31,4 +31,30 @@ public class DoubleSourceTests : TestBase {
 
       NextReturnsStableElementListInTermsOfTestability(source, expectedValues);
    }
+
+   [Fact]
+   public void NextOverTheWholeRangeOfTheTypeStaysFinite() {
+      // the default range used to compute max - min, which is infinity for double
+      var values = Enumerable.Range(0, 200).Select(_ => new DoubleSource().Next(null)).ToList();
+
+      values.ShouldAllBe(x => double.IsFinite(x));
+      values.ShouldAllBe(x => x >= double.MinValue && x <= double.MaxValue);
+   }
+
+   [Fact]
+   public void NextOverTheWholeRangeOfTheTypeVaries() {
+      var source = new DoubleSource();
+      var values = Enumerable.Range(0, 200).Select(_ => source.Next(null)).ToList();
+
+      values.Distinct().Count().ShouldBe(200);
+      values.ShouldContain(x => x > 0);
+      values.ShouldContain(x => x < 0);
+   }
+
+   [Fact]
+   public void NextThrowsWhenMaxIsBelowMin() {
+      var source = new DoubleSource(10, 5);
+
+      Should.Throw<ArgumentOutOfRangeException>(() => source.Next(null));
+   }
 }

@@ -1,9 +1,17 @@
 ﻿using holonsoft.AutoPoco.Engine;
 using holonsoft.AutoPoco.Engine.Interfaces;
+using holonsoft.AutoPoco.Util;
 
 namespace holonsoft.AutoPoco.DataSources.Primitives;
 public abstract class FloatSourceBase<T>(float min, float max, int? decimals) : DataSourceBase<T> {
+   /// <summary>
+   ///   Lower bound, inclusive.
+   /// </summary>
    public float Min { get; private set; } = min;
+
+   /// <summary>
+   ///   Upper bound.
+   /// </summary>
    public float Max { get; private set; } = max;
    public int? Decimals { get; private set; } = decimals;
 
@@ -20,15 +28,17 @@ public abstract class FloatSourceBase<T>(float min, float max, int? decimals) : 
    public FloatSourceBase<T> SetDecimals(int decimals)
       => SetMinMaxAndDecimals(Min, Max, decimals);
 
+   /// <summary>
+   ///   Interpolates between the bounds without overflowing, even over the whole range of the type.
+   /// </summary>
+   /// <exception cref="ArgumentOutOfRangeException"><see cref="Max" /> is smaller than <see cref="Min" /></exception>
    protected override T GetNextValue(IGenerationContext? context) {
-      // Perform arithmetic in double type to avoid overflowing
-      var range = (double) Max - Min;
-      var sample = Random.NextDouble();
-      var scaled = (sample * range) + Min;
+      var value = Random.NextBetween(Min, Max);
 
       var result = Decimals.HasValue
-            ? (float) Math.Round(scaled, Decimals.Value)
-            : (float) scaled;
+            ? (float) Math.Round(value, Decimals.Value)
+            : value;
+
       return (T) (object) result;
    }
 }

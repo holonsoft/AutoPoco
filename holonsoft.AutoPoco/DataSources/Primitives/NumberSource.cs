@@ -77,17 +77,7 @@ public abstract class NumberSourceBase<TResult, TNumber> : DataSourceBase<TResul
       => SetMinMax(Min, max);
 
    protected override TResult GetNextValue(IGenerationContext? context)
-      => (TResult) (object) (_isBinaryInteger ? Random.NextInclusive(Min, Max) : NextContinuous());
-
-   /// <summary>
-   ///   Interpolates between the bounds. Each product stays within the magnitude of its bound,
-   ///   so the whole range of the type is safe from overflow.
-   /// </summary>
-   private TNumber NextContinuous() {
-      var sample = TNumber.CreateChecked(Random.NextDouble());
-      var value = (Min * (TNumber.One - sample)) + (Max * sample);
-      return TNumber.Clamp(value, Min, Max);
-   }
+      => (TResult) (object) (_isBinaryInteger ? Random.NextInclusive(Min, Max) : Random.NextBetween(Min, Max));
 }
 
 /// <summary>

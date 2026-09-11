@@ -1,11 +1,19 @@
 ﻿using holonsoft.AutoPoco.Configuration;
 using holonsoft.AutoPoco.Engine;
 using holonsoft.AutoPoco.Engine.Interfaces;
+using holonsoft.AutoPoco.Util;
 
 namespace holonsoft.AutoPoco.DataSources.Primitives;
 public abstract class DecimalSourceBase<T>(decimal min, decimal max, int? decimals) : DataSourceBase<T> {
 
+   /// <summary>
+   ///   Lower bound, inclusive.
+   /// </summary>
    public decimal Min { get; private set; } = min;
+
+   /// <summary>
+   ///   Upper bound.
+   /// </summary>
    public decimal Max { get; private set; } = max;
    public int? Decimals { get; private set; } = decimals;
 
@@ -22,15 +30,17 @@ public abstract class DecimalSourceBase<T>(decimal min, decimal max, int? decima
    public DecimalSourceBase<T> SetDecimals(int decimals)
       => SetMinMaxAndDecimals(Min, Max, decimals);
 
+   /// <summary>
+   ///   Interpolates between the bounds in decimal arithmetic. Does not overflow, even over the whole
+   ///   range of the type, and keeps the precision that the detour through double used to lose.
+   /// </summary>
+   /// <exception cref="ArgumentOutOfRangeException"><see cref="Max" /> is smaller than <see cref="Min" /></exception>
    protected override T GetNextValue(IGenerationContext? context) {
-      // Perform arithmetic in double type to avoid overflowing
-      var range = (double) Max - (double) Min;
-      var sample = Random.NextDouble();
-      var scaled = (sample * range) + (double) Min;
+      var value = Random.NextBetween(Min, Max);
 
       var result = Decimals.HasValue
-         ? Math.Round((decimal) scaled, Decimals.Value)
-         : (decimal) scaled;
+         ? Math.Round(value, Decimals.Value)
+         : value;
 
       return (T) (object) result;
    }

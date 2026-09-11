@@ -4,22 +4,21 @@ using System.Numerics;
 namespace holonsoft.AutoPoco.Util;
 
 /// <summary>
-///   Uniform picks from an inclusive integer range, shared by all integer data sources.
+///   Uniform picks from a numeric range, shared by all numeric data sources.
 /// </summary>
-internal static class RandomIntegerExtensions {
+internal static class RandomNumberExtensions {
    extension(Random random) {
       /// <summary>
-      ///   Uniform pick from the inclusive range, both bounds can be produced. The width of the range is
-      ///   computed in modular 128 bit arithmetic, which is exact for every integer type up to 128 bit,
-      ///   signed or unsigned, including the whole range of the type.
+      ///   Uniform pick from the inclusive range of an integer type, both bounds can be produced. The width
+      ///   of the range is computed in modular 128 bit arithmetic, which is exact for every integer type up
+      ///   to 128 bit, signed or unsigned, including the whole range of the type.
       /// </summary>
       /// <exception cref="ArgumentOutOfRangeException">
       ///   <paramref name="max" /> is smaller than <paramref name="min" />
       /// </exception>
       public TNumber NextInclusive<TNumber>(TNumber min, TNumber max)
          where TNumber : INumber<TNumber> {
-         if (max < min)
-            throw new ArgumentOutOfRangeException(nameof(max), max, $"The maximum must not be smaller than the minimum {min}.");
+         ThrowIfMaxBelowMin(min, max);
 
          var width = unchecked(UInt128.CreateTruncating(max) - UInt128.CreateTruncating(min));
 
@@ -33,6 +32,29 @@ internal static class RandomIntegerExtensions {
 
          return unchecked(min + TNumber.CreateTruncating(offset));
       }
+
+      /// <summary>
+      ///   Interpolates between the bounds of a continuous type as <c>min * (1 - sample) + max * sample</c>
+      ///   with a sample in [0, 1). Each product stays within the magnitude of its own bound, so the whole
+      ///   range of the type is safe from overflow, unlike the obvious <c>min + sample * (max - min)</c>.
+      /// </summary>
+      /// <exception cref="ArgumentOutOfRangeException">
+      ///   <paramref name="max" /> is smaller than <paramref name="min" />
+      /// </exception>
+      public TNumber NextBetween<TNumber>(TNumber min, TNumber max)
+         where TNumber : INumber<TNumber> {
+         ThrowIfMaxBelowMin(min, max);
+
+         var sample = TNumber.CreateChecked(random.NextDouble());
+         var value = (min * (TNumber.One - sample)) + (max * sample);
+         return TNumber.Clamp(value, min, max);
+      }
+   }
+
+   private static void ThrowIfMaxBelowMin<TNumber>(TNumber min, TNumber max)
+      where TNumber : INumber<TNumber> {
+      if (max < min)
+         throw new ArgumentOutOfRangeException(nameof(max), max, $"The maximum must not be smaller than the minimum {min}.");
    }
 
    private static UInt128 NextUInt128(Random random) {
