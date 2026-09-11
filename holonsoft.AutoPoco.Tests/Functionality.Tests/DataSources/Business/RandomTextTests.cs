@@ -15,6 +15,19 @@ public class RandomTextTests : TestBase {
    }
 
    [Fact]
+   public void NextReachesTheMaximumParagraphCount() {
+      // no truncation, so every paragraph survives and can be counted
+      var source = new RandomTextSource(int.MaxValue, 1, 3, 1, 1, "abc".ToCharArray());
+      var counts = Enumerable.Range(0, 200)
+         .Select(_ => source.Next(null).Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries).Length)
+         .ToList();
+
+      counts.ShouldAllBe(c => c >= 1 && c <= 3);
+      counts.ShouldContain(3);
+      counts.ShouldContain(1);
+   }
+
+   [Fact]
    public void NextReturnsTwoParagraph() {
       var source = new RandomTextSource();
       var source2 = new RandomTextSource(800, 6, 10, 3, 7, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ".ToCharArray());

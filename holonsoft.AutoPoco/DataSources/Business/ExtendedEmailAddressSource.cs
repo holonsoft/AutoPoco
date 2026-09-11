@@ -1,11 +1,16 @@
 ﻿using holonsoft.AutoPoco.Configuration;
 using holonsoft.AutoPoco.Engine;
 using holonsoft.AutoPoco.Engine.Interfaces;
+using holonsoft.AutoPoco.Util;
 
 namespace holonsoft.AutoPoco.DataSources.Business;
 public abstract class ExtendedEmailAddressSourceBase(int? nullCreationThreshold = null, params string[] domains) : DataSourceBase<string>(nullCreationThreshold) {
-   private readonly FirstNameSource _firstNameSource = new();
-   private readonly LastNameSource _lastNameSource = new();
+   private const string _firstNamePurpose = "ExtendedEmailAddressSource#firstName";
+   private const string _lastNamePurpose = "ExtendedEmailAddressSource#lastName";
+
+   // own streams from the start, otherwise both names follow the same sequence of indices into their catalog
+   private readonly FirstNameSource _firstNameSource = NestedSource.Seeded(new FirstNameSource(), _firstNamePurpose);
+   private readonly LastNameSource _lastNameSource = NestedSource.Seeded(new LastNameSource(), _lastNamePurpose);
 
    private readonly string[] _domainsOfCaller = domains;
 
@@ -17,8 +22,8 @@ public abstract class ExtendedEmailAddressSourceBase(int? nullCreationThreshold 
 
    public override void SetSeedToRandomValue(int seed) {
       base.SetSeedToRandomValue(seed);
-      _firstNameSource.SetSeedToRandomValue(seed);
-      _lastNameSource.SetSeedToRandomValue(seed);
+      _firstNameSource.SetSeedToRandomValue(NestedSource.Seed(seed, _firstNamePurpose));
+      _lastNameSource.SetSeedToRandomValue(NestedSource.Seed(seed, _lastNamePurpose));
    }
 
    /// <summary>

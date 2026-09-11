@@ -2,6 +2,7 @@
 using holonsoft.AutoPoco.Configuration;
 using holonsoft.AutoPoco.Engine;
 using holonsoft.AutoPoco.Engine.Interfaces;
+using holonsoft.AutoPoco.Util;
 
 namespace holonsoft.AutoPoco.DataSources.Primitives;
 
@@ -31,9 +32,10 @@ public abstract class ColorSourceBase<T>(byte alpha, byte rangeStartRed, byte ra
    protected override T GetNextValue(IGenerationContext? context)
       => (T) (object)
          Color.FromArgb(
-            Random.Next(RangeStartRed, RangeEndRed),
-            Random.Next(RangeStartGreen, RangeEndGreen),
-            Random.Next(RangeStartBlue, RangeEndBlue));
+            Alpha,
+            Random.NextInclusive(RangeStartRed, RangeEndRed),
+            Random.NextInclusive(RangeStartGreen, RangeEndGreen),
+            Random.NextInclusive(RangeStartBlue, RangeEndBlue));
 }
 
 /// <summary>

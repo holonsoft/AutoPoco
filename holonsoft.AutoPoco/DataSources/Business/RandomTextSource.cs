@@ -8,6 +8,7 @@ using System.Text;
 using holonsoft.AutoPoco.Configuration;
 using holonsoft.AutoPoco.Engine;
 using holonsoft.AutoPoco.Engine.Interfaces;
+using holonsoft.AutoPoco.Util;
 
 namespace holonsoft.AutoPoco.DataSources.Business;
 
@@ -20,7 +21,7 @@ public abstract class RandomTextSourceBase(int? nullCreationThreshold, int maxLe
 
       StringBuilder builder = new();
 
-      var paragraphCount = Random.Next(minParagraphCount, maxParagraphCount);
+      var paragraphCount = Random.NextInclusive(minParagraphCount, maxParagraphCount);
 
       for (var i = 0; i < paragraphCount; i++) {
          for (var j = minSentenceCount; j <= maxSentenceCount; j++) {

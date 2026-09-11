@@ -1,6 +1,7 @@
 ﻿using holonsoft.AutoPoco.Configuration;
 using holonsoft.AutoPoco.Engine.Interfaces;
 using holonsoft.AutoPoco.Engine;
+using holonsoft.AutoPoco.Util;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -23,7 +24,7 @@ public abstract class RandomUtfTextSourceBase(int? nullCreationThreshold, int ma
          ?? new HashSet<UnicodeCategory>() { UnicodeCategory.Control, UnicodeCategory.OtherNotAssigned, UnicodeCategory.Surrogate, UnicodeCategory.LineSeparator, UnicodeCategory.PrivateUse };
 
       StringBuilder builder = new();
-      var paragraphCount = Random.Next(minParagraphCount, maxParagraphCount);
+      var paragraphCount = Random.NextInclusive(minParagraphCount, maxParagraphCount);
 
       for (var i = 0; i < paragraphCount; i++) {
          for (var j = minSentenceCount; j <= maxSentenceCount; j++) {

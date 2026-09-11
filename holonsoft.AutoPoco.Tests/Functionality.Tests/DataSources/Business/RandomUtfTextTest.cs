@@ -14,6 +14,19 @@ public class RandomUtfTextTests : TestBase {
    }
 
    [Fact]
+   public void NextReachesTheMaximumParagraphCount() {
+      // no truncation, so every paragraph survives and can be counted
+      var source = new RandomUtfTextSource(int.MaxValue, 1, 3, 1, 1);
+      var counts = Enumerable.Range(0, 200)
+         .Select(_ => source.Next(null).Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries).Length)
+         .ToList();
+
+      counts.ShouldAllBe(c => c >= 1 && c <= 3);
+      counts.ShouldContain(3);
+      counts.ShouldContain(1);
+   }
+
+   [Fact]
    public void NextTerminatesForManyDrawsEvenWhenABlockHasNoAllowedCharacters() {
       // regression: a block made only of excluded categories used to loop forever
       var source = new RandomUtfTextSource();

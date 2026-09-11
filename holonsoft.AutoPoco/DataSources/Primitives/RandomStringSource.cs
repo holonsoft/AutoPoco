@@ -47,7 +47,7 @@ public abstract class RandomStringSourceBase<T> : DataSourceBase<T> {
       }
 
       var result = Enumerable.Range(0, Random.Next(_minLength, _maxLength + 1))
-            .Select(x => _allowedChars[Random.Next(0, _allowedChars.Length - 1)])
+            .Select(x => _allowedChars[Random.Next(_allowedChars.Length)])
             .Aggregate(new StringBuilder(), (builder, c) => builder.Append(c))
             .ToString();
 

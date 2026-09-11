@@ -2,11 +2,26 @@
 using holonsoft.AutoPoco.DataSources.Base;
 using holonsoft.AutoPoco.DataSources.Primitives;
 using holonsoft.AutoPoco.Engine.Interfaces;
+using holonsoft.AutoPoco.Util;
 
 namespace holonsoft.AutoPoco.DataSources.Business;
 public abstract class UrlSourceBase(int? nullCreationThreshold = null) : FixedArrayWithStringsSourceBase(nullCreationThreshold) {
 
-   private readonly RandomStringSource _randomStringSource = new(3, 10, 'a', 'z');
+   private const string _hostPurpose = "UrlSource#host";
+
+   // an own stream, otherwise the host would follow the same sequence of draws as the top level domain
+   private readonly RandomStringSource _randomStringSource = NestedSource.Seeded(new RandomStringSource(3, 10, 'a', 'z'), _hostPurpose);
+
+   public override void SetSeedToRandomValue() {
+      base.SetSeedToRandomValue();
+      _randomStringSource.SetSeedToRandomValue();
+   }
+
+   public override void SetSeedToRandomValue(int seed) {
+      base.SetSeedToRandomValue(seed);
+      // the nested source used to keep the default seed, so every session produced the same hosts
+      _randomStringSource.SetSeedToRandomValue(NestedSource.Seed(seed, _hostPurpose));
+   }
 
    private static readonly string[] _tlds = {
       "com", "org", "net", "gov", "edu", "mil", "int", "eu", "biz", "co.uk",
@@ -25,7 +40,7 @@ public abstract class UrlSourceBase(int? nullCreationThreshold = null) : FixedAr
             return null!;
       }
 
-      return $"http://www.{_randomStringSource.Next(null)}.{_tlds[Random.Next(0, _tlds.Length - 1)]}";
+      return $"http://www.{_randomStringSource.Next(null)}.{_tlds[Random.Next(_tlds.Length)]}";
    }
 }
 
