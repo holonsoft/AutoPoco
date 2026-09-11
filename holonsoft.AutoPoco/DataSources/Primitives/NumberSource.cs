@@ -1,8 +1,8 @@
-using System.Buffers.Binary;
 using System.Numerics;
 using holonsoft.AutoPoco.Configuration;
 using holonsoft.AutoPoco.Engine;
 using holonsoft.AutoPoco.Engine.Interfaces;
+using holonsoft.AutoPoco.Util;
 
 namespace holonsoft.AutoPoco.DataSources.Primitives;
 
@@ -77,25 +77,7 @@ public abstract class NumberSourceBase<TResult, TNumber> : DataSourceBase<TResul
       => SetMinMax(Min, max);
 
    protected override TResult GetNextValue(IGenerationContext? context)
-      => (TResult) (object) (_isBinaryInteger ? NextInteger() : NextContinuous());
-
-   /// <summary>
-   ///   Uniform pick from the inclusive integer range. The width of the range is computed in modular
-   ///   128 bit arithmetic, which is exact for every integer type up to 128 bit, signed or unsigned.
-   /// </summary>
-   private TNumber NextInteger() {
-      var width = unchecked(UInt128.CreateTruncating(Max) - UInt128.CreateTruncating(Min));
-
-      UInt128 offset;
-      if (width < long.MaxValue)
-         offset = (UInt128) Random.NextInt64(0, (long) width + 1);
-      else if (width == UInt128.MaxValue)
-         offset = NextUInt128();
-      else
-         offset = NextUInt128Below(width + 1);
-
-      return unchecked(Min + TNumber.CreateTruncating(offset));
-   }
+      => (TResult) (object) (_isBinaryInteger ? Random.NextInclusive(Min, Max) : NextContinuous());
 
    /// <summary>
    ///   Interpolates between the bounds. Each product stays within the magnitude of its bound,
@@ -105,27 +87,6 @@ public abstract class NumberSourceBase<TResult, TNumber> : DataSourceBase<TResul
       var sample = TNumber.CreateChecked(Random.NextDouble());
       var value = (Min * (TNumber.One - sample)) + (Max * sample);
       return TNumber.Clamp(value, Min, Max);
-   }
-
-   private UInt128 NextUInt128() {
-      Span<byte> bytes = stackalloc byte[16];
-      Random.NextBytes(bytes);
-      return BinaryPrimitives.ReadUInt128LittleEndian(bytes);
-   }
-
-   /// <summary>
-   ///   Uniform value in [0, bound) without modulo bias, by rejecting the incomplete last block.
-   /// </summary>
-   private UInt128 NextUInt128Below(UInt128 bound) {
-      var excess = ((UInt128.MaxValue % bound) + 1) % bound;
-      var highestAccepted = UInt128.MaxValue - excess;
-
-      UInt128 candidate;
-      do
-         candidate = NextUInt128();
-      while (candidate > highestAccepted);
-
-      return candidate % bound;
    }
 }
 

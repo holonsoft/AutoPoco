@@ -10,7 +10,7 @@ public class Int128IdSource(Int128 startValue) : DataSourceBase<Int128> {
 
    public Int128IdSource() : this(Int128.Zero) { }
 
-   public Int128IdSource SetStartValue(long startValue) {
+   public Int128IdSource SetStartValue(Int128 startValue) {
       _currentId = startValue;
       return this;
    }

@@ -7,6 +7,17 @@ AutoPoco is a highly configurable framework for the purpose of fluently building
 holonsoft ported this famous lib to newest version of dotnet
 
 # New in 6.0.0 (in progress)
+
+## Breaking changes at a glance
+* Every generated sequence changed once, because of the own random generator and the per-member seeds. Tests that pin generated values need new expectations. This is the last time.
+* `IntegerSource`, `NullableIntegerSource`, `LongSource`, `NullableLongSource`, `RandomNumberSource` and `NullableRandomNumberSource` treat `max` as **inclusive** now, it used to be exclusive. `new IntegerSource(1, 3)` produces 3 as well. This matches `NumberSource<T>` and the date sources, all ranges in AutoPoco are inclusive on both ends now.
+* `Int128Source` and `NullableInt128Source` pick uniformly from their range instead of generating a value and clamping it to the bounds. The old implementation never produced a negative value and returned the upper bound almost always on a restricted range.
+* `AutoPocoGlobalSettings` is gone, the defaults are read-only constants in `AutoPocoDefaults`.
+* The never implemented `Ctor(...)` stub on the type builder is gone.
+* The lambdas receiving the generation context get a non-nullable `IGenerationContext`, no more `ctx!`.
+* Recompile needed, source code unchanged: four engine constructors gained optional parameters, `LongSourceBase.SetMinMax` takes `long` instead of `int` (it could not reach the range of its own source before) and `Int128IdSource.SetStartValue` takes `Int128` instead of `long`.
+
+## Features and fixes
 * Lambda data sources: compute a member value inline instead of writing a data source class
 
 ```CSHARP
@@ -120,6 +131,7 @@ x.Include<SimpleUser>()
 * The lambdas receiving the generation context (`From(ctx => ...)`, `Source(member, ctx => ...)`, `Use.From(ctx => ...)`) get a non-nullable `IGenerationContext`, no more `ctx!`. A `FuncSource` built from such a lambda throws a clear `InvalidOperationException` when used outside of a session.
 * Hardening: the public configuration and generation API validates its arguments (`ArgumentNullException`, `ArgumentOutOfRangeException` for negative counts, `ArgumentException` for unknown members, non-source types and non-convention types) and every internal failure carries the type and member it happened at. The never implemented `Ctor(...)` stub on the type builder is gone. The package ships an XML documentation file.
 * `IDataSource<T>` is covariant now, so a source of `string` (e.g. `CitySource`) can be used for a `string?` member without a nullability warning.
+* Bug fix: the integer sources that existed before `NumberSource<T>` never produced their maximum, `new IntegerSource(1, 3)` gave 1 or 2 only. `IntegerSource`, `LongSource`, `RandomNumberSource` and their nullable variants draw uniformly from the inclusive range now, both bounds can be produced. `Int128Source` and `NullableInt128Source` were worse: they built a value from two non-negative draws and clamped it to the range, so the default source never produced a negative value and `new Int128Source(1, 5)` returned 5 almost every time. All of them share the pick of `NumberSource<T>` now. `LongSourceBase.SetMinMax` takes `long` arguments at last, and all four throw an `ArgumentOutOfRangeException` when the maximum lies below the minimum. The generated sequences of the long and Int128 sources changed, the ones of the integer sources did not.
 * Bug fix: every `Nullable*` source ignored an explicit null creation threshold. The fixed array and dictionary based sources (names, companies, cities, capitals, countries, states, zip codes, urls) even used the threshold as their random seed. The threshold is honored now. As a consequence the null positions in the stable sequences of these sources changed, the data itself comes in the same order as before.
 * Bug fix: `DateTimeSource`, `DateOnlySource`, `TimeOnlySource` and `DateOfBirthSource` never produced the upper end of their ranges: no December, no 31st, no 23:00, no minute or second 59, and the maximum year of a date of birth was never reached. Ranges within a single year could produce values outside the range. All four sources now pick uniformly from the whole range, both bounds inclusive, and throw an `ArgumentOutOfRangeException` when the maximum lies before the minimum. `TimeOnlySource` supports ranges that wrap around midnight (22:00 to 02:00). `DateTimeSource` keeps the `DateTimeKind` of the minimum date. The generated sequences for a given seed changed.
 * Bug fix: `RandomUtfTextSource` could loop forever when it hit a Unicode block without any allowed character.

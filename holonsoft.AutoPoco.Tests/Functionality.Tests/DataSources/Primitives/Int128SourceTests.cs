@@ -14,14 +14,58 @@ public class Int128SourceTests : TestBase {
 
       value2.ShouldNotBe(value1);
 
-      var expectedValues = new Int128[] { Int128.Parse("60987084906937984112046819220676830573"), Int128.Parse("33835948027648810824318586988430284115"), Int128.Parse("77675183650409931858877803340199100256"), Int128.Parse("142015491253806660708691336154857305052"), Int128.Parse("63545246249042533839977056743032445794"), Int128.Parse("7141739557454812798578630150314014694"), Int128.Parse("133989770755707609774151602249422214161"), Int128.Parse("51160944211386362012696806524424246320"), Int128.Parse("143416118351510298964194540107973806313"), Int128.Parse("117237721780817223276236274990635170371") };
+      var expectedValues = new Int128[] { Int128.Parse("52574408570445668602952862031623518323"), Int128.Parse("-81454287396521681934135293700379577423"), Int128.Parse("108627274490468967281591080578071069176"), Int128.Parse("-1701883700024824354554067136260673513"), Int128.Parse("-107321079751597364356135199189103805246"), Int128.Parse("165769995339853085516163578607075436844"), Int128.Parse("129337432268046073300617073194816895354"), Int128.Parse("-34365565662198526319518735958392579928"), Int128.Parse("-82604512145917092532540618957667971715"), Int128.Parse("146716362576520372719327904926591472454") };
       NextReturnsStableElementListInTermsOfTestability(source, expectedValues);
    }
 
    [Fact]
    public void NextReturnsStableIntegerListInTermsOfTestabilityAndListCanContainNull() {
       var source = new NullableInt128Source();
-      var expectedValues = new Int128?[] { Int128.Parse("59870440665555846531897554548306763247"), Int128.Parse("94432775096124116087659504134120137108"), Int128.Parse("60987084906937984112046819220676830573"), Int128.Parse("33835948027648810824318586988430284115"), Int128.Parse("77675183650409931858877803340199100256"), Int128.Parse("142015491253806660708691336154857305052"), Int128.Parse("63545246249042533839977056743032445794"), Int128.Parse("7141739557454812798578630150314014694"), Int128.Parse("133989770755707609774151602249422214161"), Int128.Parse("51160944211386362012696806524424246320") };
+      var expectedValues = new Int128?[] { Int128.Parse("107009837290989317134782020631440535260"), Int128.Parse("146617463808392992256105003233854242371"), Int128.Parse("52574408570445668602952862031623518323"), Int128.Parse("-81454287396521681934135293700379577423"), Int128.Parse("108627274490468967281591080578071069176"), Int128.Parse("-1701883700024824354554067136260673513"), Int128.Parse("-107321079751597364356135199189103805246"), Int128.Parse("165769995339853085516163578607075436844"), Int128.Parse("129337432268046073300617073194816895354"), Int128.Parse("-34365565662198526319518735958392579928") };
       NextReturnsStableElementListInTermsOfTestability(source, expectedValues);
    }
+
+   [Fact]
+   public void NextCoversTheWholeRangeOfTheTypeIncludingNegativeValues() {
+      var values = Draw(new Int128Source(), 200);
+
+      values.ShouldContain(x => x < Int128.Zero);
+      values.ShouldContain(x => x > Int128.Zero);
+   }
+
+   [Fact]
+   public void NextReachesBothEndsOfAShortRange() {
+      var source = new Int128Source(Int128.MaxValue - 2, Int128.MaxValue);
+      var values = Draw(source, 300);
+
+      values.ShouldAllBe(x => x >= Int128.MaxValue - 2 && x <= Int128.MaxValue);
+      values.ShouldContain(Int128.MaxValue - 2);
+      values.ShouldContain(Int128.MaxValue);
+   }
+
+   [Fact]
+   public void NextStaysInARestrictedRangeInsteadOfPilingUpOnTheBounds() {
+      var source = new Int128Source(1, 5);
+      var values = Draw(source, 500);
+
+      values.ShouldAllBe(x => x >= 1 && x <= 5);
+      values.Distinct().Count().ShouldBe(5);
+   }
+
+   [Fact]
+   public void NextWithMinEqualToMaxReturnsThatValue() {
+      var source = new Int128Source(42, 42);
+
+      Draw(source, 10).ShouldAllBe(x => x == 42);
+   }
+
+   [Fact]
+   public void NextThrowsWhenMaxIsBelowMin() {
+      var source = new Int128Source(10, 5);
+
+      Should.Throw<ArgumentOutOfRangeException>(() => source.Next(null));
+   }
+
+   private static List<Int128> Draw(Int128Source source, int count)
+      => Enumerable.Range(0, count).Select(_ => source.Next(null)).ToList();
 }
