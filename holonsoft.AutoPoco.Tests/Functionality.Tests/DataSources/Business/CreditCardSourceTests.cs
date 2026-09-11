@@ -36,10 +36,23 @@ public partial class CreditCardSourceTests : TestBase {
    [Fact]
    public void NextReturnsStableCreditCardListInTermsOfTestability()
       => NextReturnsStableElementListInTermsOfTestability(
-         new CreditCardSource(), new string[] { "5343 1380 7226 1800", "4963 6432 2865 0035", "4655 0609 2255 2430", "5914 8329 7669 1747", "3306 710005 18638", "3576 703413 80305", "5171 2438 3073 1141", "5030 2600 8079 1583", "5159 0467 9793 1279", "5238 6720 4807 5702" });
+         new CreditCardSource(), new string[] { "5343 1380 7226 1800", "4963 6432 2865 0035", "4655 0609 2255 2430", "6891 4832 9766 9177", "3430 671000 51867", "6657 6703 4138 0302", "5171 2438 3073 1141", "6030 2600 8079 1582", "5159 0467 9793 1279", "5238 6720 4807 5702" });
 
    [Fact]
    public void NextReturnsStableCreditCardListInTermsOfTestabilityAndListCanContainNull()
       => NextReturnsStableElementListInTermsOfTestability(
-         new NullableCreditCardSource()!, new string[] { "5343 1380 7226 1800", "4963 6432 2865 0035", "4655 0609 2255 2430", "5914 8329 7669 1747", "3306 710005 18638", "3576 703413 80305", "5171 2438 3073 1141", "5030 2600 8079 1583", "5159 0467 9793 1279", "5238 6720 4807 5702" });
+         new NullableCreditCardSource()!, new string[] { "5343 1380 7226 1800", "4963 6432 2865 0035", "4655 0609 2255 2430", "6891 4832 9766 9177", "3430 671000 51867", "6657 6703 4138 0302", "5171 2438 3073 1141", "6030 2600 8079 1582", "5159 0467 9793 1279", "5238 6720 4807 5702" });
+
+   [Fact]
+   public void TheRandomCardTypeProducesEveryCardType() {
+      // Random.Next(1, 4) stopped at AmericanExpress, so Discover was never generated
+      var source = new CreditCardSource();
+      var firstDigits = Enumerable.Range(0, 500)
+         .Select(_ => source.Next(null).Replace(" ", "")[0])
+         .Distinct()
+         .OrderBy(c => c)
+         .ToList();
+
+      firstDigits.ShouldBe(new[] { '3', '4', '5', '6' });
+   }
 }

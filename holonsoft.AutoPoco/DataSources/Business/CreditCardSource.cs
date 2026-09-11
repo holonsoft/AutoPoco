@@ -39,6 +39,13 @@ public abstract class CreditCardSourceBase(CreditCardSourceBase.CreditCardType p
 
    private readonly CreditCardType _preferred = preferred;
 
+   /// <summary>
+   ///   Every card type that <see cref="CreditCardType.Random" /> can pick, taken from the enum itself
+   ///   so that a type added later is drawn as well.
+   /// </summary>
+   private static readonly CreditCardType[] _selectableTypes =
+      [.. Enum.GetValues<CreditCardType>().Where(x => x != CreditCardType.Random)];
+
    public CreditCardSourceBase()
       : this(CreditCardType.Random) {
    }
@@ -52,7 +59,7 @@ public abstract class CreditCardSourceBase(CreditCardSourceBase.CreditCardType p
       var cardType = _preferred;
 
       if (_preferred == CreditCardType.Random)
-         cardType = (CreditCardType) Random.Next(1, 4);
+         cardType = _selectableTypes[Random.Next(_selectableTypes.Length)];
 
       return cardType switch {
          CreditCardType.AmericanExpress => FormatAmexCardNumber(GenerateCreditCardNumber(3, 15)),
