@@ -6,7 +6,7 @@
 AutoPoco is a highly configurable framework for the purpose of fluently building readable (test) data.
 holonsoft ported this famous lib to newest version of dotnet
 
-# New in 6.0.0 (in progress)
+# New in 6.0.0
 
 ## Breaking changes at a glance
 * Every generated sequence changed once, mainly because every member has its own random stream now. Tests that pin generated values need new expectations. This is the last time, see "Why the sequences changed" below.
