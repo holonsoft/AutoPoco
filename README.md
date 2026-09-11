@@ -9,7 +9,7 @@ holonsoft ported this famous lib to newest version of dotnet
 # New in 6.0.0 (in progress)
 
 ## Breaking changes at a glance
-* Every generated sequence changed once, because of the own random generator and the per-member seeds. Tests that pin generated values need new expectations. This is the last time.
+* Every generated sequence changed once, mainly because every member has its own random stream now. Tests that pin generated values need new expectations. This is the last time, see "Why the sequences changed" below.
 * `IntegerSource`, `NullableIntegerSource`, `LongSource`, `NullableLongSource`, `RandomNumberSource` and `NullableRandomNumberSource` treat `max` as **inclusive** now, it used to be exclusive. `new IntegerSource(1, 3)` produces 3 as well. This matches `NumberSource<T>` and the date sources: the maximum of every integer and date source is inclusive now.
 * `Int128Source` and `NullableInt128Source` pick uniformly from their range instead of generating a value and clamping it to the bounds. The old implementation never produced a negative value and returned the upper bound almost always on a restricted range.
 * `AutoPocoGlobalSettings` is gone, the defaults are read-only constants in `AutoPocoDefaults`.
@@ -100,8 +100,9 @@ var other = factory.CreateSession(5, 4711);      // seed 4711, same configuratio
 ```
 
 * Own random number generator: every source draws from `StableRandom` (xoshiro256** seeded through SplitMix64), a `Random` subclass owned by AutoPoco, instead of `System.Random`. The sequence for a seed is defined by AutoPoco's code alone, so test data stays the same across .NET versions; Microsoft explicitly does not promise that for a seeded `System.Random`. The generator is pinned by tests. Rule from now on: catalogs (names, cities, zip codes, ...) and source algorithms are frozen within a major version, a change to either is a major version bump.
+
 * Breaking: `AutoPocoGlobalSettings` is gone, it was mutable process-wide state that leaked between test fixtures. The defaults are read-only constants in `AutoPocoDefaults` (`Seed`, `NullCreationThreshold`, `RecursionLimit`). Set a seed with `UseSeed`, null thresholds per source or with `RespectNullableAnnotations(threshold)`.
-* Breaking: because of the own generator and the per-member seeds, every generated sequence changed once with 6.0. Tests that pin generated values need new expectations, this is the last time.
+* Breaking: every generated sequence changed once with 6.0, mainly because every member has its own random stream now and to a smaller part because of the own generator. Tests that pin generated values need new expectations, this is the last time. "Why the sequences changed" at the end of this section has the full story.
 * Index-aware `Impose`: on a list or a selection the imposed value can depend on the position of the item (0 based), and on the item as generated so far. The position is the one in the whole list, also inside `First`/`Next` and after `Random`. A single generator gets `Impose(member, item => value)` for values that depend on other members.
 
 ```CSHARP
@@ -137,6 +138,20 @@ x.Include<SimpleUser>()
 * Bug fix: `RandomUtfTextSource` could loop forever when it hit a Unicode block without any allowed character.
 * Build and packaging: GitHub Actions CI, trusted publishing to nuget.org, MinVer versioning from git tags, central package management, tests on xunit.v3 for net8/9/10
 * The library no longer drags FluentAssertions and Moq into your project as dependencies
+
+## Why the sequences changed
+A fair question when you upgrade and every pinned test value is suddenly wrong: was something broken about `System.Random`?
+
+No. `System.Random` is not the reason, and this was never a difference between Windows and Linux. A seeded `System.Random` gives the same sequence on every operating system, as long as the runtime version is the same.
+
+Two independent things came together in 6.0:
+
+* **Per-member seeds are what actually moved the values.** Until 5.x all sources of a session shared one seed. Two members with the same source type produced the same values, and the nullable members of an object became null all at once. Giving every member its own stream derived from the session seed fixes that, and it changes every sequence by definition. The bug fixes above (null thresholds, inclusive date and integer ranges) moved a few more.
+* **`StableRandom` is insurance, not a bug fix.** .NET treats the algorithm behind `Random` as an implementation detail and has already replaced it once: .NET 6 moved the unseeded path to xoshiro256** and kept the old algorithm for seeded instances purely for compatibility. Nothing promises that the seeded path survives the next change. "The same seed gives the same test data in five years, on whatever .NET is current then" is not something you can build on `System.Random`, so AutoPoco owns its generator now. Since 6.0 was going to break the sequences anyway, this was the moment to do it.
+
+Afterwards the sequences are frozen by AutoPoco's own code for the whole major version.
+
+For the record, this library did have a real operating system dependency once, but it was not the generator: `CountrySource` read the culture list from the operating system, which made test data differ between developer machines and build pipelines. That was fixed in 4.1.3 with a stable country list; the old source lives on as `CountryFromCultureListSource` and its tests are skipped for exactly this reason.
 
 # New in 5.1.1
 * Support for .NET 9 / .NET 10 added
