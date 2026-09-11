@@ -44,12 +44,16 @@ public class Int128SourceTests : TestBase {
    }
 
    [Fact]
-   public void NextStaysInARestrictedRangeInsteadOfPilingUpOnTheBounds() {
+   public void NextSpreadsOverARestrictedRangeInsteadOfPilingUpOnTheBounds() {
       var source = new Int128Source(1, 5);
       var values = Draw(source, 500);
 
       values.ShouldAllBe(x => x >= 1 && x <= 5);
       values.Distinct().Count().ShouldBe(5);
+
+      // the old implementation clamped, which put almost every draw on one bound
+      var mostFrequent = values.GroupBy(x => x).Max(g => g.Count());
+      mostFrequent.ShouldBeLessThan(250);
    }
 
    [Fact]

@@ -10,7 +10,7 @@ holonsoft ported this famous lib to newest version of dotnet
 
 ## Breaking changes at a glance
 * Every generated sequence changed once, because of the own random generator and the per-member seeds. Tests that pin generated values need new expectations. This is the last time.
-* `IntegerSource`, `NullableIntegerSource`, `LongSource`, `NullableLongSource`, `RandomNumberSource` and `NullableRandomNumberSource` treat `max` as **inclusive** now, it used to be exclusive. `new IntegerSource(1, 3)` produces 3 as well. This matches `NumberSource<T>` and the date sources, all ranges in AutoPoco are inclusive on both ends now.
+* `IntegerSource`, `NullableIntegerSource`, `LongSource`, `NullableLongSource`, `RandomNumberSource` and `NullableRandomNumberSource` treat `max` as **inclusive** now, it used to be exclusive. `new IntegerSource(1, 3)` produces 3 as well. This matches `NumberSource<T>` and the date sources: the maximum of every integer and date source is inclusive now.
 * `Int128Source` and `NullableInt128Source` pick uniformly from their range instead of generating a value and clamping it to the bounds. The old implementation never produced a negative value and returned the upper bound almost always on a restricted range.
 * `AutoPocoGlobalSettings` is gone, the defaults are read-only constants in `AutoPocoDefaults`.
 * The never implemented `Ctor(...)` stub on the type builder is gone.
