@@ -57,6 +57,67 @@ internal static class CheckDigits {
    }
 
    /// <summary>
+   ///   The mod 97 remainder of ISO/IEC 7064 as an IBAN uses it: the characters are read as one long number,
+   ///   a letter counting as its position in the alphabet plus nine, so A becomes 10 and Z becomes 35.
+   ///   For the two IBAN check digits the caller passes BBAN, country code and 00 and subtracts the remainder
+   ///   from 98; a complete IBAN rearranged the same way is valid when the remainder is one.
+   /// </summary>
+   /// <param name="rearranged">Digits and capital letters only, in the rearranged IBAN order.</param>
+   public static int Mod97(ReadOnlySpan<char> rearranged) {
+      var remainder = 0;
+
+      foreach (var c in rearranged) {
+         if (c is >= '0' and <= '9') {
+            remainder = (remainder * 10 + (c - '0')) % 97;
+         } else {
+            var value = c - 'A' + 10;
+            remainder = (remainder * 10 + (value / 10)) % 97;
+            remainder = (remainder * 10 + (value % 10)) % 97;
+         }
+      }
+
+      return remainder;
+   }
+
+   /// <summary>
+   ///   The MOD 11,10 hybrid of ISO/IEC 7064, used by the German VAT ID and the Croatian OIB: a running
+   ///   product is folded through every data digit (sum mod 10, zero becomes ten, doubled mod 11), and the
+   ///   check digit is what lifts the final product to eleven, where ten is written as zero.
+   /// </summary>
+   /// <param name="digits">The number, at least <paramref name="dataLength" /> characters long.</param>
+   /// <param name="dataLength">How many leading characters are data digits, the check digit not counted.</param>
+   public static int Iso7064Mod1110(ReadOnlySpan<char> digits, int dataLength) {
+      var product = 10;
+
+      for (var i = 0; i < dataLength; i++) {
+         var sum = (digits[i] - '0' + product) % 10;
+         if (sum == 0)
+            sum = 10;
+
+         product = 2 * sum % 11;
+      }
+
+      var check = 11 - product;
+      return check == 10 ? 0 : check;
+   }
+
+   /// <summary>
+   ///   A weighted sum mod 11, the check digit scheme of the Dutch and Polish VAT IDs: every data digit is
+   ///   multiplied with its weight, and the check digit is the sum mod eleven.
+   /// </summary>
+   /// <param name="digits">The number, at least as many characters as <paramref name="weights" /> entries.</param>
+   /// <param name="weights">One weight per data digit, the check digit not counted.</param>
+   /// <returns>Zero to nine, or ten, which means the digits have no valid check digit and must be redrawn.</returns>
+   public static int WeightedMod11(ReadOnlySpan<char> digits, ReadOnlySpan<int> weights) {
+      var sum = 0;
+
+      for (var i = 0; i < weights.Length; i++)
+         sum += (digits[i] - '0') * weights[i];
+
+      return sum % 11;
+   }
+
+   /// <summary>
    ///   A mod 11 check digit over descending weights: the first data digit carries the highest weight, the
    ///   last one carries two, and the check digit makes the weighted sum a multiple of eleven.
    ///   An ISBN-10 uses it over nine data digits, so the weights run ten down to two. An ISSN uses it over
