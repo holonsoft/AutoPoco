@@ -2,6 +2,7 @@
 using holonsoft.AutoPoco.Configuration;
 using holonsoft.AutoPoco.Engine;
 using holonsoft.AutoPoco.Engine.Interfaces;
+using holonsoft.AutoPoco.Util;
 using static holonsoft.AutoPoco.DataSources.Business.CreditCardSourceBase;
 
 namespace holonsoft.AutoPoco.DataSources.Business;
@@ -61,40 +62,44 @@ public abstract class CreditCardSourceBase(CreditCardSourceBase.CreditCardType p
       if (_preferred == CreditCardType.Random)
          cardType = _selectableTypes[Random.Next(_selectableTypes.Length)];
 
-      return cardType switch {
-         CreditCardType.AmericanExpress => FormatAmexCardNumber(GenerateCreditCardNumber(3, 15)),
-         CreditCardType.Discover => FormatCreditCardNumber(GenerateCreditCardNumber(6, 16)),
-         CreditCardType.MasterCard => FormatCreditCardNumber(GenerateCreditCardNumber(5, 16)),
-         CreditCardType.Visa => FormatCreditCardNumber(GenerateCreditCardNumber(4, 16)),
-         _ => null,
-      } ?? throw new InvalidOperationException($"Credit card type '{cardType}' has no number format.");
+      var number = GenerateCreditCardNumber(GetIssuerIdentification(cardType), LengthOf(cardType));
+
+      return cardType == CreditCardType.AmericanExpress
+         ? FormatAmexCardNumber(number)
+         : FormatCreditCardNumber(number);
    }
 
-   private string GenerateCreditCardNumber(int prefix, int length) {
-      var cardNumber = new StringBuilder(prefix.ToString());
+   /// <summary>
+   ///   The digits a number of this card type starts with. This class returns the single digit that names the
+   ///   scheme, so everything behind it is drawn and the number can land on a range a real issuer uses.
+   ///   A derived source returns a longer prefix, see <c>TestBinCreditCardSource</c>.
+   /// </summary>
+   /// <exception cref="InvalidOperationException"><paramref name="cardType" /> is not a card type with a known format.</exception>
+   protected virtual string GetIssuerIdentification(CreditCardType cardType)
+      => cardType switch {
+         CreditCardType.AmericanExpress => "3",
+         CreditCardType.Discover => "6",
+         CreditCardType.MasterCard => "5",
+         CreditCardType.Visa => "4",
+         _ => throw new InvalidOperationException($"Credit card type '{cardType}' has no number format.")
+      };
+
+   /// <summary>
+   ///   The total length of a number of this card type, the check digit included.
+   /// </summary>
+   protected static int LengthOf(CreditCardType cardType)
+      => cardType == CreditCardType.AmericanExpress
+         ? 15
+         : 16;
+
+   private string GenerateCreditCardNumber(string prefix, int length) {
+      var cardNumber = new StringBuilder(prefix);
       while (cardNumber.Length < length - 1)
          cardNumber.Append(Random.Next(0, 10));
 
-      cardNumber.Append(CalculateLuhnDigit(cardNumber.ToString()));
+      var partial = cardNumber.ToString();
+      cardNumber.Append(CheckDigits.Luhn(partial, partial.Length));
       return cardNumber.ToString();
-   }
-
-   private static int CalculateLuhnDigit(string number) {
-      var sum = 0;
-      var isEven = false;
-      for (var i = number.Length - 1; i >= 0; i--) {
-         var digit = number[i] - '0';
-         if (isEven) {
-            digit *= 2;
-            if (digit > 9)
-               digit -= 9;
-         }
-
-         sum += digit;
-         isEven = !isEven;
-      }
-
-      return (10 - (sum % 10)) % 10;
    }
 
    private static string FormatCreditCardNumber(string number) {

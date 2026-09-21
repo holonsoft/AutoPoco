@@ -9,4 +9,9 @@
     <NoWarn>$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>
 
+  <ItemGroup Label="Testability">
+    <!-- the check digit helpers in Util are internal, the test project pins them with known answers -->
+    <InternalsVisibleTo Include="holonsoft.AutoPoco.Tests" />
+  </ItemGroup>
+
 </Project>
