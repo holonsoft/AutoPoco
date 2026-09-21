@@ -6,6 +6,117 @@
 AutoPoco is a highly configurable framework for the purpose of fluently building readable (test) data.
 holonsoft ported this famous lib to newest version of dotnet
 
+# New in 6.1.0
+
+## Trade identifiers
+
+New data sources in `holonsoft.AutoPoco.DataSources.Identifiers` for the numbers an article carries in a real catalogue. Every number gets a correct check digit, so it passes the validation of an importer or a database constraint instead of being rejected as a typo.
+
+| Source | Produces |
+| --- | --- |
+| `GtinSource` | A GTIN with a valid GS1 check digit, a `GtinFormat.Gtin13` unless another format is asked for. `Gtin8` is the EAN-8, `Gtin12` the UPC-A, `Gtin13` the EAN-13 and `Gtin14` the ITF-14 of a carton. |
+| `Ean13Source` | The GTIN-13 under its everyday name, the barcode number of a retail article. |
+| `IsbnSource` | An ISBN, an `IsbnFormat.Isbn13` unless `Isbn10` is asked for. The ISBN-13 starts with a registration group that is actually handed out (978-0 to 978-5, 978-7, 979-8, 979-10, 979-11, 979-12), the ISBN-10 carries a mod 11 check digit that can be an `X`. |
+| `AsinSource` | An ASIN, the ten character article number Amazon assigns. |
+
+Each of them has a `Nullable...` variant that returns null every now and then, like the other reference type sources.
+
+```CSHARP
+x.Include<Article>()
+  .Setup(a => a.Ean).Use<Ean13Source>()
+  .Setup(a => a.CartonGtin).Use<GtinSource>(GtinFormat.Gtin14)
+  .Setup(a => a.Isbn).Use<IsbnSource>(IsbnFormat.Isbn10)
+  .Setup(a => a.Asin).Use<AsinSource>();
+```
+
+A prefix fixes the leading digits of a GTIN, so a whole catalogue can share one GS1 company prefix and every article still gets its own number. Only the check digit is calculated, everything between the prefix and the check digit stays random.
+
+```CSHARP
+  .Setup(a => a.Ean).Use<Ean13Source>("40063")
+```
+
+The numbers are syntactically valid. They are not registered with GS1, ISBN International or Amazon and do not identify a real article, so please keep them inside your test data.
+
+`IsbnSource` stays inside the registration groups that ISBN International has handed out, so a validator that knows those groups accepts the number. The range 979-0 is left out on purpose, it belongs to the ISMN of sheet music and never carries an ISBN. A GTIN has no such restriction: without a prefix the leading digits are drawn freely, so a number can land in a range GS1 reserves for a special purpose, e.g. 2 for goods weighed in the shop or 977 for periodicals. Give a prefix when that matters.
+
+An ISBN comes without hyphens on purpose: where the groups of an ISBN start depends on the registrant ranges that ISBN International publishes, and a wrongly grouped ISBN is worse test data than an ungrouped one.
+
+## holonsoft.AutoPoco.Faker, realistic values from Bogus
+
+A separate, optional package. The core package keeps its promise of having no dependency, and who wants believable names and addresses installs one more:
+
+```
+dotnet add package holonsoft.AutoPoco.Faker
+```
+
+The split of work is the whole idea. [Bogus](https://github.com/bchavez/Bogus) is good at a single believable value, AutoPoco is good at everything around it: building the object graph, keeping members apart, following relationships and repeating the whole thing for a seed. So Bogus never builds an object here, it only answers "give me a city name".
+
+| Source | Produces |
+| --- | --- |
+| `FakerFirstNameSource`, `FakerLastNameSource`, `FakerFullNameSource` | Names in the language of the locale |
+| `FakerEmailAddressSource` | An email address on one of the example domains |
+| `FakerPhoneNumberSource` | A phone number in the format of the locale |
+| `FakerStreetAddressSource`, `FakerCitySource`, `FakerPostalCodeSource`, `FakerCountrySource` | The parts of an address |
+| `FakerCompanyNameSource` | A company name including its legal form, e.g. "Müller GmbH" |
+| `FakerProductNameSource` | A product name that reads like a catalogue entry |
+| `FakerPriceSource` | A `decimal` amount between two bounds, 1 to 1000 with 2 decimals by default |
+| `FakerCurrencyCodeSource` | An ISO 4217 code such as `EUR` |
+| `FakerDateTimeSource` | A point in time between two bounds, 2000-01-01 to 2035-12-31 by default |
+
+Every one of them has a `Nullable...` variant, like the sources of the core package.
+
+```CSHARP
+var factory = AutoPocoContainer.Configure(x => {
+   x.UseSeed(4711);
+
+   x.Include<Customer>()
+     .Setup(c => c.FirstName).Use<FakerFirstNameSource>("de")
+     .Setup(c => c.LastName).Use<FakerLastNameSource>("de")
+     .Setup(c => c.EmailAddress).Use<FakerEmailAddressSource>("de")
+     .Setup(c => c.City).Use<FakerCitySource>("de");
+});
+```
+
+The first argument is the Bogus locale. Locales are written lower case with an underscore before the region, `en`, `en_US`, `de`, `de_AT`, `de_CH` and so on, and every locale of the pinned Bogus version works with every source. Leave it out for the default `en`. Where a locale is missing a piece of data Bogus falls back to English rather than failing, so an unusual locale can give you an English city.
+
+### Seeds
+
+The AutoPoco session seed drives Bogus. Every source instance owns one Bogus faker, and that faker draws from AutoPoco's own `StableRandom`, so the same seed gives the same data, each member keeps its own stream, and the static `Randomizer.Seed` of Bogus is never read or written.
+
+```CSHARP
+// the same customers, every run, in every process
+var customers = factory.CreateSession().Collection<Customer>(1000);
+```
+
+One limit worth knowing. AutoPoco guarantees a sequence across .NET versions because it brings its own generator. Bogus takes its values from locale data that ships inside its package, so a different Bogus version can give different names for the same seed. That is why this package depends on **exactly** Bogus 35.6.5 and not on "35.6.5 or newer". A project that already references another Bogus version gets a NuGet version conflict instead of a silent change of its test data, which is the trade this package makes on purpose. Pin this package too when your tests compare against stored data.
+
+### What stays in the core package
+
+Numbers with a check digit. Bogus has a `Commerce.Ean` of its own and its check digit is not guaranteed to be valid, so use `Ean13Source`, `GtinSource`, `IsbnSource` and `AsinSource` from the core package for article numbers and let Bogus do the names.
+
+The sources are also independent of each other. A `FakerCitySource` and a `FakerPostalCodeSource` on the same object give a correct city and a correct postal code, but not a postal code that belongs to that city, and an email address does not contain the name of the customer it sits on. Build the member from the finished object where the parts have to match:
+
+```CSHARP
+var customers = factory.CreateSession().Collection<Customer>(1000, c =>
+   c.Impose(x => x.EmailAddress, (_, x) => $"{x.FirstName}.{x.LastName}@example.com".ToLowerInvariant()));
+```
+
+### The two packages together
+
+```CSHARP
+x.Include<Product>()
+  .Setup(p => p.Name).Use<FakerProductNameSource>("de")     // Bogus, believable
+  .Setup(p => p.Ean).Use<Ean13Source>("40063")              // core, check digit is correct
+  .Setup(p => p.Price).Use<FakerPriceSource>(5m, 500m, 2, "de");
+
+x.Include<Order>()
+  .Setup(o => o.Customer).Use<AutoSource<Customer>>()       // AutoPoco, the graph
+  .Setup(o => o.Lines).Collection(1, 4);
+```
+
+Bogus creates believable single values, AutoPoco creates the consistent, repeatable object graph around them. That combination is what fills a shared developer database.
+
+
 # New in 6.0.0
 
 ## Breaking changes at a glance
