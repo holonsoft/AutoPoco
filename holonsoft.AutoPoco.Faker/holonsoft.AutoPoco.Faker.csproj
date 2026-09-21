@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>$(LibraryTargetFrameworks)</TargetFrameworks>
+    <Title>AutoPoco Faker integration by holonsoft</Title>
+    <Description>Optional Bogus integration for AutoPoco. Adds data sources for realistic names, companies, addresses, phone numbers, product names and prices, driven by the AutoPoco session seed. AutoPoco keeps building the object graph, Bogus only supplies the individual values.</Description>
+    <PackageTags>autopoco;testdata;test-data;bogus;faker;generator;fake-data</PackageTags>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- CS1591: missing XML comment on a public member; the docs grow with the API, a missing one must not fail the build -->
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <!-- the core README opens with AutoPoco itself, this package gets its own landing page -->
+    <PackageReadmeFile>README.Faker.md</PackageReadmeFile>
+    <!-- the release notes of the core package say nothing about this one -->
+    <PackageReleaseNotes>6.1: First release. Data sources backed by Bogus for first, last and full names, company names, email addresses, phone numbers, street addresses, cities, countries, postal codes, product names, prices, currency codes and dates, each with a nullable variant and a configurable locale. The AutoPoco session seed drives Bogus through a Randomizer that runs on AutoPoco's own StableRandom, so a seed produces the same values on every .NET version. The Bogus version is pinned exactly, because its locale data decides the values for a seed.</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Directory.Build.props packs the core README into every packable project, this one carries its own.
+         README.Faker.md sits next to README.md in the repository root on purpose, both are package landing
+         pages and belong together; moving it into this folder means changing the two paths below. -->
+    <None Remove="$(MSBuildThisFileDirectory)..\README.md" />
+    <None Include="$(MSBuildThisFileDirectory)..\README.Faker.md" Pack="true" PackagePath="\" Visible="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Bogus" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\holonsoft.AutoPoco\holonsoft.AutoPoco.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -9,6 +9,12 @@
     <PackageVersion Include="MinVer" Version="7.0.0" />
   </ItemGroup>
 
+  <ItemGroup Label="Faker integration">
+    <!-- Exact version on purpose, the brackets pin it. Bogus draws its values from locale data that ships
+         inside the package, so a different Bogus version produces different values for the same seed. -->
+    <PackageVersion Include="Bogus" Version="[35.6.5]" />
+  </ItemGroup>
+
   <ItemGroup Label="Test">
     <PackageVersion Include="Shouldly" Version="4.3.0" />
     <PackageVersion Include="Moq" Version="4.20.72" />

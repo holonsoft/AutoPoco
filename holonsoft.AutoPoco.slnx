@@ -1,4 +1,6 @@
 <Solution>
   <Project Path="holonsoft.AutoPoco.Tests/holonsoft.AutoPoco.Tests.csproj" />
+  <Project Path="holonsoft.AutoPoco.Faker.Tests/holonsoft.AutoPoco.Faker.Tests.csproj" />
+  <Project Path="holonsoft.AutoPoco.Faker/holonsoft.AutoPoco.Faker.csproj" />
   <Project Path="holonsoft.AutoPoco/holonsoft.AutoPoco.csproj" />
 </Solution>
