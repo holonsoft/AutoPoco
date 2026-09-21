@@ -10,13 +10,17 @@ holonsoft ported this famous lib to newest version of dotnet
 
 ## Trade identifiers
 
-New data sources in `holonsoft.AutoPoco.DataSources.Identifiers` for the numbers an article carries in a real catalogue. Every number gets a correct check digit, so it passes the validation of an importer or a database constraint instead of being rejected as a typo.
+New data sources in `holonsoft.AutoPoco.DataSources.Identifiers` for the numbers that circulate in real trade data: article numbers, the serial numbers of devices and logistic units, and the identifiers of books, periodicals and securities. Every number gets a correct check digit, so it passes the validation of an importer or a database constraint instead of being rejected as a typo.
 
 | Source | Produces |
 | --- | --- |
 | `GtinSource` | A GTIN with a valid GS1 check digit, a `GtinFormat.Gtin13` unless another format is asked for. `Gtin8` is the EAN-8, `Gtin12` the UPC-A, `Gtin13` the EAN-13 and `Gtin14` the ITF-14 of a carton. |
 | `Ean13Source` | The GTIN-13 under its everyday name, the barcode number of a retail article. |
+| `SsccSource` | An SSCC, the eighteen digit number of a single logistic unit such as a pallet or a parcel, with the same GS1 check digit as a GTIN. |
 | `IsbnSource` | An ISBN, an `IsbnFormat.Isbn13` unless `Isbn10` is asked for. The ISBN-13 starts with a registration group that is actually handed out (978-0 to 978-5, 978-7, 979-8, 979-10, 979-11, 979-12), the ISBN-10 carries a mod 11 check digit that can be an `X`. |
+| `IssnSource` | An ISSN, the eight character number of a periodical, without the hyphen. The check character uses the same mod 11 arithmetic as an ISBN-10 and can be an `X`. |
+| `IsinSource` | An ISIN, the twelve character number of a security: a two letter country prefix (drawn from countries that really have a numbering agency, or a given one), nine alphanumeric characters and a Luhn check digit over the expanded letters. |
+| `ImeiSource` | An IMEI, the fifteen digit serial number of a mobile device with a valid Luhn check digit. Give the eight digit Type Allocation Code as a prefix when the numbers have to look like one device model. |
 | `AsinSource` | An ASIN, the ten character article number Amazon assigns. |
 
 Each of them has a `Nullable...` variant that returns null every now and then, like the other reference type sources.
@@ -29,17 +33,27 @@ x.Include<Article>()
   .Setup(a => a.Asin).Use<AsinSource>();
 ```
 
-A prefix fixes the leading digits of a GTIN, so a whole catalogue can share one GS1 company prefix and every article still gets its own number. Only the check digit is calculated, everything between the prefix and the check digit stays random.
+A prefix fixes the leading digits of a GTIN, an SSCC or an IMEI, so a whole catalogue can share one GS1 company prefix and every article still gets its own number. Only the check digit is calculated, everything between the prefix and the check digit stays random.
 
 ```CSHARP
   .Setup(a => a.Ean).Use<Ean13Source>("40063")
 ```
 
-The numbers are syntactically valid. They are not registered with GS1, ISBN International or Amazon and do not identify a real article, so please keep them inside your test data.
+The numbers are syntactically valid. They are not registered with GS1, ISBN International, Amazon or any other registry and do not identify a real article, device or security, so please keep them inside your test data.
 
 `IsbnSource` stays inside the registration groups that ISBN International has handed out, so a validator that knows those groups accepts the number. The range 979-0 is left out on purpose, it belongs to the ISMN of sheet music and never carries an ISBN. A GTIN has no such restriction: without a prefix the leading digits are drawn freely, so a number can land in a range GS1 reserves for a special purpose, e.g. 2 for goods weighed in the shop or 977 for periodicals. Give a prefix when that matters.
 
 An ISBN comes without hyphens on purpose: where the groups of an ISBN start depends on the registrant ranges that ISBN International publishes, and a wrongly grouped ISBN is worse test data than an ungrouped one.
+
+## Credit cards
+
+`CreditCardSource` calculated its Luhn check digit with the doubling shifted by one position, so the numbers it produced failed a real Luhn validation. The check digit is correct now, which means the generated sequences changed once: for a given seed the last digit of every card number is different from 6.0.
+
+New in `holonsoft.AutoPoco.DataSources.Business`: `TestBinCreditCardSource` (and its `Nullable...` variant) builds every number on one of the first-six-digit test BINs the payment processors publish for their test environments, e.g. 411111 or 555555. A number from `CreditCardSource` can land in a range a real issuer uses and can therefore coincide with a card that exists; a number on a published test BIN is recognisable as test data and very unlikely to belong to anybody. Use it when the generated data leaves your machine, e.g. in a shared developer database. The BINs the source can draw are published as `TestBinCreditCardSourceBase.PublishedTestBins`.
+
+```CSHARP
+  .Setup(c => c.CardNumber).Use<TestBinCreditCardSource>(CreditCardType.Visa)
+```
 
 ## holonsoft.AutoPoco.Faker, realistic values from Bogus
 
