@@ -344,13 +344,281 @@ internal static class IdentifierValidation {
 
       return value[..2] switch {
          "AT" => IsValidAustrianVatId(value),
+         "BE" => IsValidBelgianVatId(value),
          "DE" => IsValidGermanVatId(value),
+         "DK" => IsValidDanishVatId(value),
+         "EE" => IsValidEstonianVatId(value),
+         "FI" => IsValidFinnishVatId(value),
+         "GB" or "XI" => IsValidUnitedKingdomVatId(value),
          "HR" => IsValidCroatianVatId(value),
+         "HU" => IsValidHungarianVatId(value),
+         "IE" => IsValidIrishVatId(value),
          "IT" => IsValidItalianVatId(value),
+         "LT" => IsValidLithuanianVatId(value),
+         "LU" => IsValidLuxembourgishVatId(value),
          "NL" => IsValidDutchVatId(value),
          "PL" => IsValidPolishVatId(value),
+         "PT" => IsValidPortugueseVatId(value),
+         "SE" => IsValidSwedishVatId(value),
+         "SI" => IsValidSlovenianVatId(value),
+         "SK" => IsValidSlovakVatId(value),
          _ => false
       };
+   }
+
+   private static bool AllDigits(ReadOnlySpan<char> value) {
+      foreach (var c in value)
+         if (c is < '0' or > '9')
+            return false;
+
+      return true;
+   }
+
+   /// <summary>
+   ///   BE and ten digits starting with a zero or a one: the last two are 97 minus the first eight mod 97.
+   /// </summary>
+   private static bool IsValidBelgianVatId(string value) {
+      if (value.Length != 12 || !AllDigits(value.AsSpan(2)) || value[2] is not ('0' or '1'))
+         return false;
+
+      var body = int.Parse(value.AsSpan(2, 8), System.Globalization.CultureInfo.InvariantCulture);
+      var check = int.Parse(value.AsSpan(10, 2), System.Globalization.CultureInfo.InvariantCulture);
+
+      return check == 97 - (body % 97);
+   }
+
+   /// <summary>
+   ///   DK and eight digits, the first off zero: weighted 2, 7, 6, 5, 4, 3, 2, 1 the number is divisible
+   ///   by eleven.
+   /// </summary>
+   private static bool IsValidDanishVatId(string value) {
+      if (value.Length != 10 || !AllDigits(value.AsSpan(2)) || value[2] == '0')
+         return false;
+
+      ReadOnlySpan<int> weights = [2, 7, 6, 5, 4, 3, 2, 1];
+      var sum = 0;
+
+      for (var i = 0; i < 8; i++)
+         sum += (value[2 + i] - '0') * weights[i];
+
+      return sum % 11 == 0;
+   }
+
+   /// <summary>
+   ///   EE and nine digits starting with 10: weighted 3, 7, 1 repeating with the check digit added, the sum
+   ///   is a multiple of ten.
+   /// </summary>
+   private static bool IsValidEstonianVatId(string value) {
+      if (value.Length != 11 || !AllDigits(value.AsSpan(2)) || value[2] != '1' || value[3] != '0')
+         return false;
+
+      ReadOnlySpan<int> weights = [3, 7, 1];
+      var sum = value[10] - '0';
+
+      for (var i = 0; i < 8; i++)
+         sum += (value[2 + i] - '0') * weights[i % 3];
+
+      return sum % 10 == 0;
+   }
+
+   /// <summary>
+   ///   FI and eight digits: weighted 7, 9, 10, 5, 8, 4, 2 with the check digit added, the sum is a
+   ///   multiple of eleven.
+   /// </summary>
+   private static bool IsValidFinnishVatId(string value) {
+      if (value.Length != 10 || !AllDigits(value.AsSpan(2)))
+         return false;
+
+      ReadOnlySpan<int> weights = [7, 9, 10, 5, 8, 4, 2];
+      var sum = value[9] - '0';
+
+      for (var i = 0; i < 7; i++)
+         sum += (value[2 + i] - '0') * weights[i];
+
+      return sum % 11 == 0;
+   }
+
+   /// <summary>
+   ///   GB or XI and nine digits: the sum over the weights 8 down to 2 plus the two digit tail is a
+   ///   multiple of 97, either directly or after adding 55, and the leading seven digits avoid the ranges
+   ///   the matching scheme excludes.
+   /// </summary>
+   private static bool IsValidUnitedKingdomVatId(string value) {
+      if (value.Length != 11 || !AllDigits(value.AsSpan(2)))
+         return false;
+
+      var sum = 0;
+      for (var i = 0; i < 7; i++)
+         sum += (value[2 + i] - '0') * (8 - i);
+
+      sum += int.Parse(value.AsSpan(9, 2), System.Globalization.CultureInfo.InvariantCulture);
+      var body = int.Parse(value.AsSpan(2, 7), System.Globalization.CultureInfo.InvariantCulture);
+
+      if (sum % 97 == 0)
+         return body is (< 100_000 or > 999_999) and (< 9_490_001 or > 9_700_000) and (< 9_990_001 or > 9_999_999);
+
+      if ((sum + 55) % 97 == 0)
+         return body is 0 or > 1_000_000;
+
+      return false;
+   }
+
+   /// <summary>
+   ///   HU and eight digits: weighted 9, 7, 3, 1, 9, 7, 3 with the check digit added, the sum is a
+   ///   multiple of ten. The official rules name no constraint on the first digit, so none is checked.
+   /// </summary>
+   private static bool IsValidHungarianVatId(string value) {
+      if (value.Length != 10 || !AllDigits(value.AsSpan(2)))
+         return false;
+
+      ReadOnlySpan<int> weights = [9, 7, 3, 1, 9, 7, 3];
+      var sum = value[9] - '0';
+
+      for (var i = 0; i < 7; i++)
+         sum += (value[2 + i] - '0') * weights[i];
+
+      return sum % 10 == 0;
+   }
+
+   /// <summary>
+   ///   IE and seven digits with a check letter mod 23, either as the eight character form or the nine
+   ///   character form whose trailing letter A to I is weighted nine into the sum.
+   /// </summary>
+   private static bool IsValidIrishVatId(string value) {
+      const string checkCharacters = "WABCDEFGHIJKLMNOPQRSTUV";
+
+      if (value.Length is not (10 or 11) || !AllDigits(value.AsSpan(2, 7)))
+         return false;
+
+      var sum = 0;
+      for (var i = 0; i < 7; i++)
+         sum += (value[2 + i] - '0') * (8 - i);
+
+      if (value.Length == 11) {
+         if (value[10] is < 'A' or > 'I')
+            return false;
+
+         sum += (value[10] - 'A' + 1) * 9;
+      }
+
+      return value[9] == checkCharacters[sum % 23];
+   }
+
+   /// <summary>
+   ///   LT and nine digits with an eighth digit of one, or twelve digits with an eleventh digit of one.
+   ///   The check digit comes from the first weight pass mod 11, or from the second pass when the first
+   ///   lands on ten, a ten there counting as zero.
+   /// </summary>
+   private static bool IsValidLithuanianVatId(string value) {
+      if (value.Length is not (11 or 14) || !AllDigits(value.AsSpan(2)))
+         return false;
+
+      var dataLength = value.Length - 3;
+
+      if (value[2 + dataLength - 1] != '1')
+         return false;
+
+      var first = 0;
+      for (var i = 0; i < dataLength; i++)
+         first += (value[2 + i] - '0') * ((i % 9) + 1);
+
+      var check = first % 11;
+
+      if (check == 10) {
+         var second = 0;
+         for (var i = 0; i < dataLength; i++)
+            second += (value[2 + i] - '0') * (((i + 2) % 9) + 1);
+
+         check = second % 11;
+         if (check == 10)
+            check = 0;
+      }
+
+      return value[^1] - '0' == check;
+   }
+
+   /// <summary>
+   ///   LU and eight digits: the last two are the first six mod 89.
+   /// </summary>
+   private static bool IsValidLuxembourgishVatId(string value) {
+      if (value.Length != 10 || !AllDigits(value.AsSpan(2)))
+         return false;
+
+      var body = int.Parse(value.AsSpan(2, 6), System.Globalization.CultureInfo.InvariantCulture);
+      var check = int.Parse(value.AsSpan(8, 2), System.Globalization.CultureInfo.InvariantCulture);
+
+      return check == body % 89;
+   }
+
+   /// <summary>
+   ///   PT and nine digits, the first off zero: the check digit is 11 minus the sum over the weights 9 down
+   ///   to 2 mod 11, a ten or eleven written as zero.
+   /// </summary>
+   private static bool IsValidPortugueseVatId(string value) {
+      if (value.Length != 11 || !AllDigits(value.AsSpan(2)) || value[2] == '0')
+         return false;
+
+      var sum = 0;
+      for (var i = 0; i < 8; i++)
+         sum += (value[2 + i] - '0') * (9 - i);
+
+      var check = 11 - (sum % 11);
+      if (check >= 10)
+         check = 0;
+
+      return value[10] - '0' == check;
+   }
+
+   /// <summary>
+   ///   SE and twelve digits: the first ten pass the Luhn check and the suffix lies between 01 and 94.
+   /// </summary>
+   private static bool IsValidSwedishVatId(string value) {
+      if (value.Length != 14 || !AllDigits(value.AsSpan(2)))
+         return false;
+
+      if (!IsValidLuhn(value[2..12]))
+         return false;
+
+      var suffix = int.Parse(value.AsSpan(12, 2), System.Globalization.CultureInfo.InvariantCulture);
+      return suffix is >= 1 and <= 94;
+   }
+
+   /// <summary>
+   ///   SI and eight digits, the first off zero: the check digit is 11 minus the sum over the weights 8
+   ///   down to 2 mod 11, a ten written as zero and a sum divisible by eleven allowed no number at all.
+   /// </summary>
+   private static bool IsValidSlovenianVatId(string value) {
+      if (value.Length != 10 || !AllDigits(value.AsSpan(2)) || value[2] == '0')
+         return false;
+
+      var sum = 0;
+      for (var i = 0; i < 7; i++)
+         sum += (value[2 + i] - '0') * (8 - i);
+
+      var remainder = sum % 11;
+      if (remainder == 0)
+         return false;
+
+      var check = 11 - remainder;
+      if (check == 10)
+         check = 0;
+
+      return value[9] - '0' == check;
+   }
+
+   /// <summary>
+   ///   SK and ten digits, the first off zero and the third a 2, 3, 4, 7, 8 or 9: the whole number is
+   ///   divisible by eleven.
+   /// </summary>
+   private static bool IsValidSlovakVatId(string value) {
+      if (value.Length != 12 || !AllDigits(value.AsSpan(2)) || value[2] == '0' || value[4] is not ('2' or '3' or '4' or '7' or '8' or '9'))
+         return false;
+
+      var remainder = 0;
+      foreach (var c in value.AsSpan(2))
+         remainder = ((remainder * 10) + (c - '0')) % 11;
+
+      return remainder == 0;
    }
 
    /// <summary>

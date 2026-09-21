@@ -24,6 +24,24 @@ public class VatIdSourceTests : TestBase {
    [InlineData("PL5212207257")]
    [InlineData("PL5850010588")]
    [InlineData("HR29524210204")]
+   [InlineData("BE0776091951")]      // the worked example of the BMF construction rules
+   [InlineData("DK88146328")]        // BMF worked example
+   [InlineData("DK26259495")]        // Coop Danmark
+   [InlineData("FI09853608")]        // BMF worked example
+   [InlineData("GB434031494")]       // BMF worked example, the MOD 97 branch
+   [InlineData("XI434031494")]       // Northern Ireland runs on the same scheme
+   [InlineData("IE3628739L")]        // BMF worked example, eight characters
+   [InlineData("IE3628739UA")]       // BMF worked example, nine characters
+   [InlineData("LU10000356")]        // BMF worked example
+   [InlineData("PT502757191")]       // BMF worked example
+   [InlineData("SE556188840401")]    // BMF worked example
+   [InlineData("EE100207415")]       // BMF worked example
+   [InlineData("HU21376414")]        // BMF worked example
+   [InlineData("HU10597190")]        // BMF worked example, check digit zero
+   [InlineData("LT213179412")]       // BMF worked example, decided by the second weight pass
+   [InlineData("LT290061371314")]    // BMF worked example of the twelve digit form
+   [InlineData("SI15012557")]        // BMF worked example
+   [InlineData("SK4030000007")]      // BMF worked example
    public void TheValidatorAcceptsRealVatIds(string value)
       => IdentifierValidation.IsValidVatId(value).ShouldBeTrue();
 
@@ -42,24 +60,60 @@ public class VatIdSourceTests : TestBase {
    [InlineData("FR12345678901")]    // a country the source does not generate
    [InlineData("DE24905181")]       // one digit short
    [InlineData("DE2490518131")]     // one digit too many
+   [InlineData("BE0776091952")]     // check pair off by one
+   [InlineData("BE2776091951")]     // the first digit is a zero or a one
+   [InlineData("DK88146327")]       // no longer divisible by eleven
+   [InlineData("FI09853609")]       // check digit off by one
+   [InlineData("GB434031493")]      // neither scheme lands on a multiple of 97
+   [InlineData("GB050000062")]      // the sum fits MOD 97, but 0500000 lies in a range that scheme excludes
+   [InlineData("IE3628739M")]       // check letter off by one
+   [InlineData("IE3628739UB")]      // the trailing letter changes the sum, so the check letter no longer fits
+   [InlineData("LU10000357")]       // check pair off by one
+   [InlineData("PT502757192")]      // check digit off by one
+   [InlineData("SE556188840501")]   // the Luhn digit of the organisation number is broken
+   [InlineData("SE556188840400")]   // the suffix starts at 01
+   [InlineData("SE556188840495")]   // the suffix ends at 94
+   [InlineData("EE100207416")]      // check digit off by one
+   [InlineData("EE200207415")]      // an Estonian number starts with 10
+   [InlineData("HU21376415")]       // check digit off by one
+   [InlineData("LT213179413")]      // check digit off by one
+   [InlineData("LT213179402")]      // the eighth digit is always a one
+   [InlineData("SI15012558")]       // check digit off by one
+   [InlineData("SI05012557")]       // a Slovenian number has no leading zero
+   [InlineData("SK4030000008")]     // no longer divisible by eleven
+   [InlineData("SK5407062531")]     // the counter example of the BMF document: third digit invalid, not divisible
    [InlineData("")]
    [InlineData(null)]
    public void TheValidatorRejectsABrokenVatId(string? value)
       => IdentifierValidation.IsValidVatId(value).ShouldBeFalse();
 
    [Theory]
-   [InlineData("AT", 11)]
-   [InlineData("DE", 11)]
-   [InlineData("HR", 13)]
-   [InlineData("IT", 13)]
-   [InlineData("NL", 14)]
-   [InlineData("PL", 12)]
-   public void EveryNumberOfAFixedCountryIsValid(string countryCode, int expectedLength) {
+   [InlineData("AT", 11, 11)]
+   [InlineData("BE", 12, 12)]
+   [InlineData("DE", 11, 11)]
+   [InlineData("DK", 10, 10)]
+   [InlineData("EE", 11, 11)]
+   [InlineData("FI", 10, 10)]
+   [InlineData("GB", 11, 11)]
+   [InlineData("HR", 13, 13)]
+   [InlineData("HU", 10, 10)]
+   [InlineData("IE", 10, 11)]      // eight or nine characters behind the prefix
+   [InlineData("IT", 13, 13)]
+   [InlineData("LT", 11, 11)]
+   [InlineData("LU", 10, 10)]
+   [InlineData("NL", 14, 14)]
+   [InlineData("PL", 12, 12)]
+   [InlineData("PT", 11, 11)]
+   [InlineData("SE", 14, 14)]
+   [InlineData("SI", 10, 10)]
+   [InlineData("SK", 12, 12)]
+   [InlineData("XI", 11, 11)]
+   public void EveryNumberOfAFixedCountryIsValid(string countryCode, int minLength, int maxLength) {
       var source = new VatIdSource(countryCode);
 
       for (var i = 0; i < 200; i++) {
          var value = source.Next(null);
-         value.Length.ShouldBe(expectedLength);
+         value.Length.ShouldBeInRange(minLength, maxLength);
          value.ShouldStartWith(countryCode);
          IdentifierValidation.IsValidVatId(value).ShouldBeTrue($"'{value}' has a broken check digit");
       }
@@ -85,16 +139,29 @@ public class VatIdSourceTests : TestBase {
          .ShouldAllBe(v => v.StartsWith("NL"));
 
    /// <summary>
-   ///   Every check digit scheme in here detects any single digit substitution, so no mutation of the
-   ///   checksummed digits may still validate. The Dutch suffix carries no check digit and is left alone.
+   ///   These check digit schemes detect any single digit substitution, so no mutation of the checksummed
+   ///   digits may still validate. The Dutch suffix and the Irish and Swedish tails carry no check digit
+   ///   and are left alone. GB and XI stay out because a mutation can legitimately flip a number from the
+   ///   MOD 97 scheme into the MOD 9755 scheme, LT because its second weight pass can rescue a mutation,
+   ///   and PT because its check digit folds ten and eleven onto the same zero.
    /// </summary>
    [Theory]
    [InlineData("AT")]
+   [InlineData("BE")]
    [InlineData("DE")]
+   [InlineData("DK")]
+   [InlineData("EE")]
+   [InlineData("FI")]
    [InlineData("HR")]
+   [InlineData("HU")]
+   [InlineData("IE")]
    [InlineData("IT")]
+   [InlineData("LU")]
    [InlineData("NL")]
    [InlineData("PL")]
+   [InlineData("SE")]
+   [InlineData("SI")]
+   [InlineData("SK")]
    public void NoSingleDigitChangeOfTheChecksummedPartStillValidates(string countryCode) {
       var source = new VatIdSource(countryCode);
 
@@ -102,7 +169,12 @@ public class VatIdSourceTests : TestBase {
          var value = source.Next(null);
 
          var digitsStart = countryCode == "AT" ? 3 : 2;
-         var digitsEnd = countryCode == "NL" ? 11 : value.Length;
+         var digitsEnd = countryCode switch {
+            "NL" => 11,                    // the B and the suffix carry no check digit
+            "IE" => 9,                     // the check letter and the trailing letter are not digits
+            "SE" => value.Length - 2,      // the suffix carries no check digit
+            _ => value.Length
+         };
          var digits = value[digitsStart..digitsEnd];
 
          foreach (var mutatedDigits in IdentifierValidation.SingleCharacterMutations(digits, false)) {
@@ -124,12 +196,12 @@ public class VatIdSourceTests : TestBase {
    [Fact]
    public void NextReturnsStableVatIdListInTermsOfTestability()
       => NextReturnsStableElementListInTermsOfTestability(
-         new VatIdSource(), new string[] { "NL343138074B93", "HR26180963647", "IT22865000685", "PL7550609224", "PL6243891485", "IT29766910789", "HR43067100051", "DE963657675", "ATU34138037", "HR01712438307" });
+         new VatIdSource(), new string[] { "PT443138079", "DE361809634", "PL7432286509", "SE365506092370", "LU52438901", "BE0583297622", "IE1743067M", "BE0100518625", "DK51380304", "LU17124307" });
 
    [Fact]
    public void NextReturnsStableVatIdListInTermsOfTestabilityAndListCanContainNull()
       => NextReturnsStableElementListInTermsOfTestability(
-         new NullableVatIdSource()!, new string?[] { "NL343138074B93", "HR26180963647", "IT22865000685", "PL7550609224", "PL6243891485", "IT29766910789", "HR43067100051", "DE963657675", "ATU34138037", "HR01712438307", "NL731140308B64", "HR60080791588", "NL159046798B24", "DE412742380", "IT67204800139", "PL8035560965", "IT97678500642", "ATU29389792", "NL007817617B41", "ATU72797967", "PL9609770190", "DE401306280", "NL328678995B68", "PL9542138596", null, "DE231245175", "PL9731344115", null, "PL4213312990", "DE970703677" });
+         new NullableVatIdSource()!, new string?[] { "PT443138079", "DE361809634", "PL7432286509", "SE365506092370", "LU52438901", "BE0583297622", "IE1743067M", "BE0100518625", "DK51380304", "LU17124307", "HU40731142", "LU03026000", "ATU80791582", "LU15904603", "HR97931274232", "HU77204800", "LU75703501", "FI60963976", "GB483911274", "LT002938910", "LU79400738", "HU27618071", "LU27979669", "PL9609770190", null, "LU30130641", "LU28328688", null, "PT889973580", "EE102138595" });
 
    [Fact]
    public void ANullableSourceReturnsNullsAndOtherwiseValidNumbers() {
