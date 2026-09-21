@@ -55,6 +55,20 @@ New in `holonsoft.AutoPoco.DataSources.Business`: `TestBinCreditCardSource` (and
   .Setup(c => c.CardNumber).Use<TestBinCreditCardSource>(CreditCardType.Visa)
 ```
 
+## IBANs and VAT IDs
+
+Two more sources in `holonsoft.AutoPoco.DataSources.Identifiers`, for the numbers on an invoice.
+
+| Source | Produces |
+| --- | --- |
+| `IbanSource` | An IBAN of any SEPA country in the electronic format without spaces, with correct mod 97 check digits. Where a country keeps its own check digits inside the account part they are calculated as well: the Belgian mod 97 tail, the Spanish DC pair, the French and Monegasque RIB key, the Italian and Sammarinese CIN letter, the Norwegian, Estonian, Finnish, Hungarian, Polish and Icelandic schemes and the Portuguese and Slovenian ISO 7064 pairs. `new IbanSource("DE")` pins the country. |
+| `TestBlzIbanSource` | A German IBAN whose bank code starts with a nine. The Bundesbank hands out clearing areas one to eight only, and in the current official bank code file not a single one of the 13760 codes starts with a nine, so the number is recognisable as test data and can name nobody's account. |
+| `VatIdSource` | An EU VAT identification number with a valid check digit for Germany, Austria, Croatia, Italy, the Netherlands and Poland, e.g. `DE249051813` or `ATU13585627`. Only countries with an implemented check digit are drawn, `new VatIdSource("DE")` pins the country. |
+
+Each has a `Nullable...` variant. The structures come from the SWIFT IBAN registry and the official construction rules of the tax authorities; the tests are calibrated against the registry example of every country and against registered VAT IDs of real companies before they judge the generator.
+
+One warning, stronger than for the credit cards: an IBAN needs no CVV and no second factor for a SEPA direct debit, so a generated IBAN that coincidentally names a real account is a sharper tool than a generated card number. `IbanSource` draws its bank codes, so use `TestBlzIbanSource` whenever the data leaves your test systems. A generated VAT ID is harmless in comparison, VIES simply reports it as not registered.
+
 ## holonsoft.AutoPoco.Faker, realistic values from Bogus
 
 A separate, optional package. The core package keeps its promise of having no dependency, and who wants believable names and addresses installs one more:
