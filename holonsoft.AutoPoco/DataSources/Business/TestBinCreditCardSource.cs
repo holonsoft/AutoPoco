@@ -8,7 +8,7 @@ namespace holonsoft.AutoPoco.DataSources.Business;
 ///   test environments, so it is recognisable as test data instead of possibly being somebody's card.
 /// </summary>
 /// <remarks>
-///   <see cref="CreditCardSourceBase" /> draws everything behind the single scheme digit, so a number it
+///   <see cref="CreditCardSourceBase" /> draws everything behind a short scheme prefix, so a number it
 ///   produces can fall inside a range a real issuer actually uses. Nothing is broken about that, a valid
 ///   check digit is no secret and a number alone buys nobody anything without the security code, the name,
 ///   the expiry date and, these days, a strong customer authentication. Two things still speak for this

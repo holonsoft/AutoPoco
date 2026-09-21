@@ -70,16 +70,27 @@ public abstract class CreditCardSourceBase(CreditCardSourceBase.CreditCardType p
    }
 
    /// <summary>
-   ///   The digits a number of this card type starts with. This class returns the single digit that names the
-   ///   scheme, so everything behind it is drawn and the number can land on a range a real issuer uses.
-   ///   A derived source returns a longer prefix, see <c>TestBinCreditCardSource</c>.
+   ///   The digits a number of this card type starts with. This class draws a prefix inside a range the
+   ///   scheme really issues in, so a validator that detects the scheme from the number agrees with the
+   ///   requested card type. Everything behind the prefix is drawn freely, so the number can still land on a
+   ///   range a real issuer uses. A derived source returns a longer prefix, see <c>TestBinCreditCardSource</c>.
    /// </summary>
    /// <exception cref="InvalidOperationException"><paramref name="cardType" /> is not a card type with a known format.</exception>
    protected virtual string GetIssuerIdentification(CreditCardType cardType)
       => cardType switch {
-         CreditCardType.AmericanExpress => "3",
-         CreditCardType.Discover => "6",
-         CreditCardType.MasterCard => "5",
+         // 34 and 37 belong to American Express; 35 is JCB and 36 is Diners Club, so the second digit is not free
+         CreditCardType.AmericanExpress => Random.Next(0, 2) == 0 ? "34" : "37",
+         // Discover issues in 6011, 644 to 649 and 65; the rest of the 6 range belongs to other schemes
+         CreditCardType.Discover => Random.Next(0, 3) switch {
+            0 => "6011",
+            1 => $"64{Random.Next(4, 10)}",
+            _ => "65"
+         },
+         // 51 to 55, plus the 2 series 2221 to 2720 that Mastercard hands out since 2017
+         CreditCardType.MasterCard => Random.Next(0, 2) == 0
+            ? $"5{Random.Next(1, 6)}"
+            : (2221 + Random.Next(0, 500)).ToString(),
+         // every number that starts with a 4 is a Visa
          CreditCardType.Visa => "4",
          _ => throw new InvalidOperationException($"Credit card type '{cardType}' has no number format.")
       };

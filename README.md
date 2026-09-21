@@ -47,7 +47,7 @@ An ISBN comes without hyphens on purpose: where the groups of an ISBN start depe
 
 ## Credit cards
 
-`CreditCardSource` calculated its Luhn check digit with the doubling shifted by one position, so the numbers it produced failed a real Luhn validation. The check digit is correct now, which means the generated sequences changed once: for a given seed the last digit of every card number is different from 6.0.
+`CreditCardSource` had two correctness problems up to 6.0. Its Luhn check digit was calculated with the doubling shifted by one position, so the numbers failed a real Luhn validation. And only the first digit of the scheme was fixed, so an "American Express" could start with 36 and be detected as a Diners Club, and a "MasterCard" could start with 56, a range no scheme issues. Both are fixed: the check digit is correct and every number now starts inside a range its scheme really issues in (34/37 for American Express, 51-55 and the 2 series 2221-2720 for Mastercard, 6011, 644-649 and 65 for Discover, 4 for Visa). The generated sequences changed once for that.
 
 New in `holonsoft.AutoPoco.DataSources.Business`: `TestBinCreditCardSource` (and its `Nullable...` variant) builds every number on one of the first-six-digit test BINs the payment processors publish for their test environments, e.g. 411111 or 555555. A number from `CreditCardSource` can land in a range a real issuer uses and can therefore coincide with a card that exists; a number on a published test BIN is recognisable as test data and very unlikely to belong to anybody. Use it when the generated data leaves your machine, e.g. in a shared developer database. The BINs the source can draw are published as `TestBinCreditCardSourceBase.PublishedTestBins`.
 
