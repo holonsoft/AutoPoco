@@ -742,6 +742,48 @@ internal static class IdentifierValidation {
    }
 
    /// <summary>
+   ///   True when a seventeen character VIN carries the correct North American check digit at position nine.
+   ///   Validated the other way round than the generator: every character is transliterated and weighted,
+   ///   the check position with weight zero, and the sum mod 11 has to name the check character, a ten
+   ///   written as an X.
+   /// </summary>
+   public static bool IsValidVin(string? value) {
+      const string alphabet = "0123456789ABCDEFGHJKLMNPRSTUVWXYZ";
+      ReadOnlySpan<int> weights = [8, 7, 6, 5, 4, 3, 2, 10, 0, 9, 8, 7, 6, 5, 4, 3, 2];
+
+      if (value is not { Length: 17 })
+         return false;
+
+      var sum = 0;
+
+      for (var i = 0; i < 17; i++) {
+         if (!alphabet.Contains(value[i]))
+            return false;
+
+         sum += VinTransliterationValue(value[i]) * weights[i];
+      }
+
+      var expected = sum % 11;
+      var actual = value[8] switch {
+         >= '0' and <= '9' => value[8] - '0',
+         'X' => 10,
+         _ => -1
+      };
+
+      return actual == expected;
+   }
+
+   private static int VinTransliterationValue(char c)
+      => c switch {
+         >= '0' and <= '9' => c - '0',
+         >= 'A' and <= 'H' => c - 'A' + 1,
+         >= 'J' and <= 'N' => c - 'J' + 1,
+         'P' => 7,
+         'R' => 9,
+         _ => c - 'S' + 2
+      };
+
+   /// <summary>
    ///   Every single character variation of the value at the given position, the original excluded.
    ///   An ISBN-10 may carry an X in its last position, everything else is a digit.
    /// </summary>
