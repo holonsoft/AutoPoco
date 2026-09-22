@@ -742,6 +742,46 @@ internal static class IdentifierValidation {
    }
 
    /// <summary>
+   ///   True when an EORI number is well formed for its country and its national part carries the check
+   ///   digits of the underlying national identifier. Only the countries the source generates are known.
+   /// </summary>
+   public static bool IsValidEori(string? value) {
+      if (value is null || value.Length < 4)
+         return false;
+
+      var country = value[..2];
+      var national = value[2..];
+
+      return country switch {
+         // the Belgian enterprise number is the Belgian VAT number without the prefix
+         "BE" => national.Length == 10 && IsValidVatId($"BE{national}"),
+         "DE" => national.Length == 15 && AllDigits(national),
+         // the CVR number is the Danish VAT number without the prefix
+         "DK" => national.Length == 8 && IsValidVatId($"DK{national}"),
+         "FR" => IsValidSiret(national),
+         // the VAT registration number with three zeros behind it
+         "GB" or "XI" => national.Length == 12 && national.EndsWith("000", StringComparison.Ordinal)
+                         && IsValidVatId($"GB{national[..9]}"),
+         // the OIB is the Croatian VAT number without the prefix
+         "HR" => national.Length == 11 && IsValidVatId($"HR{national}"),
+         // the partita IVA is the Italian VAT number without the prefix
+         "IT" => national.Length == 11 && IsValidVatId($"IT{national}"),
+         "NL" => national.Length == 9 && AllDigits(national),
+         // the NIP with five zeros behind it
+         "PL" => national.Length == 15 && national.EndsWith("00000", StringComparison.Ordinal)
+                 && IsValidVatId($"PL{national[..10]}"),
+         _ => false
+      };
+   }
+
+   /// <summary>
+   ///   True when a fourteen digit SIRET is valid: the whole number passes the Luhn check and so does the
+   ///   nine digit SIREN it starts with.
+   /// </summary>
+   private static bool IsValidSiret(string national)
+      => national.Length == 14 && AllDigits(national) && IsValidLuhn(national) && IsValidLuhn(national[..9]);
+
+   /// <summary>
    ///   True when a seventeen character VIN carries the correct North American check digit at position nine.
    ///   Validated the other way round than the generator: every character is transliterated and weighted,
    ///   the check position with weight zero, and the sum mod 11 has to name the check character, a ten

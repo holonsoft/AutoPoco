@@ -81,6 +81,7 @@ One warning, stronger than for the credit cards: an IBAN needs no CVV and no sec
 | `SerialNumberSource` | A serial number, four blocks of four characters unless another pattern is given. |
 | `LotNumberSource` | A lot or batch number with the widespread date code of two digit year plus day of the year, e.g. `L26265-0387`, the date drawn from a seeded range, never from the clock. |
 | `LatitudeSource`, `LongitudeSource` | Decimal degrees, the whole world unless a bounding box is given, e.g. `new LatitudeSource(47, 55)` with `new LongitudeSource(5, 15)`. The two members are drawn independently; where the pair has to name one meaningful place, build it with `Impose`. |
+| `EoriSource` | An EORI customs number (Annex 12-01 UCC IA) for BE, DE, DK, FR, GB, HR, IT, NL, PL and XI. The format itself has no check digit, but the national part is built from the underlying national identifier with its real checks: the Belgian enterprise number, the Danish CVR, a doubly Luhn-valid French SIRET, the Croatian OIB, the Italian partita IVA, the Polish NIP plus `00000`, the UK VAT registration number plus `000`. Austria publishes no structure and the Portuguese third country check digit is unpublished, so both stay out. |
 
 Each has a `Nullable...` variant.
 
