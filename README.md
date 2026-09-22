@@ -69,6 +69,21 @@ Each has a `Nullable...` variant. The structures come from the SWIFT IBAN regist
 
 One warning, stronger than for the credit cards: an IBAN needs no CVV and no second factor for a SEPA direct debit, so a generated IBAN that coincidentally names a real account is a sharper tool than a generated card number. `IbanSource` draws its bank codes, so use `TestBlzIbanSource` whenever the data leaves your test systems. A generated VAT ID is harmless in comparison, VIES simply reports it as not registered.
 
+## Devices, codes and coordinates
+
+| Source | Produces |
+| --- | --- |
+| `VinSource` | A seventeen character vehicle identification number with the valid North American check digit at position nine, I, O and Q never appear, and the model year position follows 49 CFR 565. A prefix pins the world manufacturer identifier, e.g. `new VinSource("WVW")`. |
+| `MacAddressSource` | A unicast MAC address as upper case hex, colons, hyphens or bare via `MacAddressFormat`. The plain source draws universally administered addresses; `TestMacAddressSource` sets the locally administered bit, the space IEEE 802 keeps free of manufacturer assignments, so those addresses provably name no vendor hardware. |
+| `GuidV7Source` | An RFC 9562 version 7 UUID whose 48 timestamp bits are drawn from a seeded date range instead of the clock, so the same seed gives the same UUIDs on every run. Version and variant bits are correct and the encoded instant stays inside the range. |
+| `PatternSource` | A string from a pattern: `#` digit, `@` capital letter, `*` both, backslash escapes, everything else literal. `"@@@-#####"` gives `KDX-83741`. The building block for every code that follows no public standard. |
+| `SkuSource` | An SKU, `@@@-#####` unless another pattern is given. An SKU is merchant convention, so the pattern is the contract; for standardised article numbers use `GtinSource` and friends. |
+| `SerialNumberSource` | A serial number, four blocks of four characters unless another pattern is given. |
+| `LotNumberSource` | A lot or batch number with the widespread date code of two digit year plus day of the year, e.g. `L26265-0387`, the date drawn from a seeded range, never from the clock. |
+| `LatitudeSource`, `LongitudeSource` | Decimal degrees, the whole world unless a bounding box is given, e.g. `new LatitudeSource(47, 55)` with `new LongitudeSource(5, 15)`. The two members are drawn independently; where the pair has to name one meaningful place, build it with `Impose`. |
+
+Each has a `Nullable...` variant.
+
 ## holonsoft.AutoPoco.Faker, realistic values from Bogus
 
 A separate, optional package. The core package keeps its promise of having no dependency, and who wants believable names and addresses installs one more:
