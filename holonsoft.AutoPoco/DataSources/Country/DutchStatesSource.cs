@@ -7,6 +7,7 @@ public abstract class DutchStatesSourceBase(bool useAbbreviations, int? nullCrea
    /// <summary>
    ///   The states.
    /// </summary>
+   // Stryker disable once String : catalog data, a changed entry is still a valid value and only costs mutation test time
    private static readonly Dictionary<string, string> _states = new() {
          {"Drenthe", "DR"},
          {"Flevoland", "FL"},

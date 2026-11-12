@@ -6,6 +6,7 @@ public abstract class CitySourceBase(int? nullCreationThreshold = null) : FixedA
 
    protected override string[] Data => _cities;
 
+   // Stryker disable once String : catalog data, a changed entry is still a valid value and only costs mutation test time
    private static readonly string[] _cities = {
     "Shanghai",
     "Beijing",

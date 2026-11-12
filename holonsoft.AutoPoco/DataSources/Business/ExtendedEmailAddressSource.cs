@@ -29,6 +29,7 @@ public abstract class ExtendedEmailAddressSourceBase(int? nullCreationThreshold 
    /// <summary>
    /// According to RFC2606
    /// </summary>
+   // Stryker disable once String : catalog data, a changed entry is still a valid value and only costs mutation test time
    private static readonly string[] _someProvidedDomains = {
       "google.invalid",
       "msn.invalid",

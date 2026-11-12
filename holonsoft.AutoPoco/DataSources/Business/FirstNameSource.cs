@@ -8,6 +8,7 @@ public abstract class FirstNameSourceBase(int? nullCreationThreshold = null) : F
 
    protected override string[] Data => _firstNames;
 
+   // Stryker disable once String : catalog data, a changed entry is still a valid value and only costs mutation test time
    private static readonly string[] _firstNames =
    {
       "Alexa", "Claire", "Lucy", "Makayla", "Violet", "Aria", "Scarlet", "Maya", "Sophie", "Ariana",

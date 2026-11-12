@@ -5,6 +5,7 @@ namespace holonsoft.AutoPoco.DataSources.Business;
 public abstract class CompanySourceBase(int? nullCreationThreshold = null) : FixedArrayWithStringsSourceBase(nullCreationThreshold) {
    protected override string[] Data => _companies;
 
+   // Stryker disable once String : catalog data, a changed entry is still a valid value and only costs mutation test time
    private static readonly string[] _companies = {
             "Acme, inc.",
             "Widget Corp",

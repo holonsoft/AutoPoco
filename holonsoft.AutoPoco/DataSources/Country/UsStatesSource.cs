@@ -4,6 +4,7 @@ using holonsoft.AutoPoco.DataSources.Base;
 namespace holonsoft.AutoPoco.DataSources.Country;
 
 public abstract class USStatesSourceBase(bool useAbbreviations, int? nullCreationThreshold = null) : DictionarySourceBase(useAbbreviations, nullCreationThreshold) {
+   // Stryker disable once String : catalog data, a changed entry is still a valid value and only costs mutation test time
    private static readonly Dictionary<string, string> _states =
      new()
      {

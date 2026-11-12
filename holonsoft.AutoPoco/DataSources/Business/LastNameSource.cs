@@ -16,6 +16,7 @@ public abstract class LastNameSourceBase(int? nullCreationThreshold = null) : Fi
 
    protected override string[] Data => _lastNames;
 
+   // Stryker disable once String : catalog data, a changed entry is still a valid value and only costs mutation test time
    private static readonly string[] _lastNames =
    {
     "Smith",

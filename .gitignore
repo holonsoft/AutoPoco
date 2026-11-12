@@ -347,3 +347,6 @@ MigrationBackup/
 
 # Editor-local settings
 .vscode/
+
+# Stryker.NET mutation test reports
+StrykerOutput/

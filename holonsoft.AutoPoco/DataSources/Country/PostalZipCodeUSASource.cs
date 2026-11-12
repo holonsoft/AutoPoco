@@ -5,6 +5,7 @@ namespace holonsoft.AutoPoco.DataSources.Country;
 public abstract class PostalZipCodeUSASourceBase(int? nullCreationThreshold = null) : FixedArrayWithStringsSourceBase(nullCreationThreshold) {
    protected override string[] Data => _usPostalZipCodes;
 
+   // Stryker disable once String : catalog data, a changed entry is still a valid value and only costs mutation test time
    private static readonly string[] _usPostalZipCodes = {
             "60764",
             "47418",

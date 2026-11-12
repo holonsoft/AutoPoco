@@ -23,6 +23,7 @@ public abstract class UrlSourceBase(int? nullCreationThreshold = null) : FixedAr
       _randomStringSource.SetSeedToRandomValue(NestedSource.Seed(seed, _hostPurpose));
    }
 
+   // Stryker disable once String : catalog data, a changed entry is still a valid value and only costs mutation test time
    private static readonly string[] _tlds = {
       "com", "org", "net", "gov", "edu", "mil", "int", "eu", "biz", "co.uk",
       "uk", "de", "jp","fr", "au", "ca", "us", "ru", "cn", "br", "in", "it", "nl", "pl", "se", "es", "ch", "at", "be", "dk",
