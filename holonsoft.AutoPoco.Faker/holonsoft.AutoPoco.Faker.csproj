@@ -11,7 +11,7 @@
     <!-- the core README opens with AutoPoco itself, this package gets its own landing page -->
     <PackageReadmeFile>README.Faker.md</PackageReadmeFile>
     <!-- the release notes of the core package say nothing about this one -->
-    <PackageReleaseNotes>6.1: First release. Data sources backed by Bogus for first, last and full names, company names, email addresses, phone numbers, street addresses, cities, countries, postal codes, product names, prices, currency codes and dates, each with a nullable variant and a configurable locale. The AutoPoco session seed drives Bogus through a Randomizer that runs on AutoPoco's own StableRandom, so a seed produces the same values on every .NET version. The Bogus version is pinned exactly, because its locale data decides the values for a seed.</PackageReleaseNotes>
+    <PackageReleaseNotes>7.0: Breaking: targets .NET 10 and .NET 11 only. .NET 8 and .NET 9 are out of support since 2026-11-10 and no longer targeted, stay on 6.1.x for them. FakerPriceSource keeps its values on .NET 11: it uses the formula of Bogus Finance.Amount with AutoPoco's own double to decimal conversion, because .NET 11 changed the conversion Bogus relies on. 6.1: First release. Data sources backed by Bogus for first, last and full names, company names, email addresses, phone numbers, street addresses, cities, countries, postal codes, product names, prices, currency codes and dates, each with a nullable variant and a configurable locale. The AutoPoco session seed drives Bogus through a Randomizer that runs on AutoPoco's own StableRandom, so a seed produces the same values on every .NET version. The Bogus version is pinned exactly, because its locale data decides the values for a seed.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,6 +28,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\holonsoft.AutoPoco\holonsoft.AutoPoco.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- compiled in as source, internal in both assemblies: the packages version independently, an internal
+         type shared through InternalsVisibleTo would break with the first change on one side -->
+    <Compile Include="..\holonsoft.AutoPoco\Util\DoubleToDecimal.cs" Link="Util\DoubleToDecimal.cs" />
   </ItemGroup>
 
 </Project>

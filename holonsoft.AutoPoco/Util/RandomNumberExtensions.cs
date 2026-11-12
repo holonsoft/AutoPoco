@@ -45,7 +45,10 @@ internal static class RandomNumberExtensions {
          where TNumber : INumber<TNumber> {
          ThrowIfMaxBelowMin(min, max);
 
-         var sample = TNumber.CreateChecked(random.NextDouble());
+         // decimal goes through AutoPoco's own conversion, .NET 11 changed the runtime's one (see DoubleToDecimal)
+         var sample = typeof(TNumber) == typeof(decimal)
+            ? (TNumber) (object) DoubleToDecimal.FromSample(random.NextDouble())
+            : TNumber.CreateChecked(random.NextDouble());
          var value = (min * (TNumber.One - sample)) + (max * sample);
          return TNumber.Clamp(value, min, max);
       }

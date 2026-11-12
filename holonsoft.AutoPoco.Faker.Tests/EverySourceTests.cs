@@ -87,6 +87,19 @@ public class EverySourceTests {
          .ShouldBe(Enumerable.Range(0, 50).Select(_ => second.Next(null)));
    }
 
+   /// <summary>
+   ///   Pinned as text with every decimal, so the scale counts too. Bogus converts its sample with a cast, and
+   ///   .NET 11 changed that cast; the source must give these values on every runtime anyway.
+   /// </summary>
+   [Fact]
+   public void ThePriceSourceIsPinnedOnEveryRuntimeWithAllDecimals() {
+      var source = new FakerPriceSource(1m, 500m, 28);
+
+      Enumerable.Range(0, 4)
+         .Select(_ => source.Next(null).ToString(System.Globalization.CultureInfo.InvariantCulture))
+         .ShouldBe(["338.295762567542996", "407.422350374417575", "388.978979088312086", "465.504130547224857"]);
+   }
+
    [Fact]
    public void APriceRangeWithTheMaximumBelowTheMinimumIsRejected() {
       var ex = Should.Throw<ArgumentOutOfRangeException>(() => new FakerPriceSource(100m, 10m));

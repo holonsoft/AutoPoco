@@ -143,8 +143,15 @@ public abstract class FakerPriceSourceBase<T> : FakerSourceBase<T> {
    /// </summary>
    public int Decimals => _decimals;
 
-   protected override T GetFakerValue(BogusFaker faker)
-      => (T) (object) faker.Finance.Amount(_min, _max, _decimals);
+   /// <summary>
+   ///   Same formula as <c>Finance.Amount</c> of Bogus 35.6.5, except for the double to decimal conversion:
+   ///   Bogus casts, and .NET 11 changed that cast, so the amounts would differ between runtimes beyond two
+   ///   decimals. <see cref="Util.DoubleToDecimal" /> keeps the conversion of .NET 8 to 10 on every runtime.
+   /// </summary>
+   protected override T GetFakerValue(BogusFaker faker) {
+      var part = Util.DoubleToDecimal.FromSample(faker.Random.Double()) * (_max - _min);
+      return (T) (object) Math.Round(_min + part, _decimals);
+   }
 }
 
 /// <inheritdoc cref="FakerPriceSourceBase{T}" />

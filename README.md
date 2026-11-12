@@ -6,6 +6,25 @@
 AutoPoco is a highly configurable framework for the purpose of fluently building readable (test) data.
 holonsoft ported this famous lib to newest version of dotnet
 
+# New in 7.0.0
+
+## .NET 11
+
+**Breaking:** both packages target .NET 10 and .NET 11 only. .NET 8 and .NET 9 reached their end of support on 2026-11-10, and AutoPoco no longer builds or tests against runtimes that get no security fixes. A project on .NET 8 or 9 gets a clear NuGet error (NU1202) when it updates and can stay on 6.1.x. Dropping these two frameworks is the only reason for the new major version: the API is unchanged, and the same seed gives the same values as in 6.1.
+
+.NET 11 changed how a `double` is converted to a `decimal`. Up to .NET 10 the conversion rounded to 15 significant digits, now it is close to exact: `(decimal)0.1` gives `0.1000000000000000055511151231` instead of `0.1`. Every decimal source draws a `double` sample and converts it, so on .NET 11 `NumberSource<decimal>`, `DecimalSource` and `FakerPriceSource` would have produced different values for the same seed. That breaks the promise that a seed gives the same data on every runtime, so AutoPoco now does this conversion itself, the way .NET 8 to 10 did it, bit for bit including the scale. Nothing changes on .NET 8, 9 and 10, and .NET 11 gives the same values.
+
+`FakerPriceSource` no longer calls `Finance.Amount` of Bogus. It uses the same formula with AutoPoco's conversion, so the amounts stay the same as before on .NET 8 to 10.
+
+On .NET 11 `NumberSource<T>` and `NullableNumberSource<T>` also work with the new IEEE 754 decimal types `Decimal32`, `Decimal64` and `Decimal128`, over any range up to the whole range of the type:
+
+```CSHARP
+x.Include<Invoice>()
+   .Setup(c => c.Total).Use<NumberSource<Decimal64>>(Decimal64.Zero, Decimal64.CreateChecked(1000));
+```
+
+The .NET 11 build of both packages is compiled with runtime async (`<Features>runtime-async=on</Features>`). AutoPoco has no async methods today, so this has no effect yet.
+
 # New in 6.1.0
 
 ## Trade identifiers

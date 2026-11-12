@@ -83,6 +83,7 @@ public abstract class NumberSourceBase<TResult, TNumber> : DataSourceBase<TResul
 /// <summary>
 ///   Creates numbers of any built-in numeric type between a minimum and a maximum:
 ///   <c>NumberSource&lt;decimal&gt;</c>, <c>NumberSource&lt;byte&gt;</c>, <c>NumberSource&lt;UInt128&gt;</c>, <c>NumberSource&lt;Half&gt;</c>, ...
+///   On .NET 11 also <c>Decimal32</c>, <c>Decimal64</c> and <c>Decimal128</c>.
 /// </summary>
 /// <typeparam name="T">the numeric type</typeparam>
 /// <param name="min">Minimum value, inclusive</param>
