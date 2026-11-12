@@ -38,9 +38,11 @@ jobs:
       - name: Run Stryker.NET
         shell: pwsh
         run: |
-          ./eng/mutation-test.ps1 -Package ${{ matrix.package }} | Tee-Object -FilePath stryker.log
+          # absolute path: Tee-Object opens the file only after the script has changed into the test project
+          $log = Join-Path $env:RUNNER_TEMP 'stryker.log'
+          ./eng/mutation-test.ps1 -Package ${{ matrix.package }} | Tee-Object -FilePath $log
           $exitCode = $LASTEXITCODE
-          $score = Select-String -Path stryker.log -Pattern 'final mutation score is (.+)$' | Select-Object -Last 1
+          $score = Select-String -Path $log -Pattern 'final mutation score is (.+)$' | Select-Object -Last 1
           $line = if ($score) { $score.Matches[0].Groups[1].Value } else { 'not reported' }
           "### Mutation score ${{ matrix.package }}: $line" >> $env:GITHUB_STEP_SUMMARY
           exit $exitCode
